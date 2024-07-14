@@ -1,0 +1,154 @@
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: white;
+  color: #34495e;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
+ .logo-container {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  cursor: pointer;
+} 
+
+.logo1 {
+  max-width: 100%;
+  height: auto;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 10;
+  width: 100%;
+  
+}
+
+.sidebar ul li {
+  margin: 20px 0;
+}
+.sidebar-button {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+.sidebar-button .circle-icon {
+  font-size: 25px;
+  color: #285581;
+  margin-right: 30px;
+}
+
+.sidebar-button span {
+  color: #5B789F;
+}
+
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ecf0f1;
+  position: relative;
+}
+.icon-container {
+  display: flex;
+  align-items: center;
+}
+.bell-icon {
+  font-size: 24px;
+  color: #2c3e50;
+  margin-right: 50px; 
+  cursor: pointer;
+}
+
+
+.topbar {
+  width: calc(100% - 250px); 
+  display: flex;
+  justify-content: flex-end;
+  
+  padding: 30px 50px;
+  background-color: #ecf0f1;
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 0;
+}
+
+.user-icon {
+  font-size: 24px;
+  color: #2c3e50;
+  cursor: pointer;
+}
+
+.content h1 {
+  font-size: 36px;
+  color: #2c3e50;
+  margin-top: 60px; 
+}
+.add-task-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #6D87A9;
+  color: white;
+  padding: 15px 24px;
+  border-radius: 15px;
+  margin-top: 90px;
+  margin-right: 720px;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-task-icon {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.chat-button-container {
+  position: absolute;
+  bottom: 35px;
+  right: 50px;
+}
+.chat-icon {
+  font-size: 30px;
+  color: #5E80A0;
+  cursor: pointer;
+}
+.flip-horizontal {
+  transform: scaleX(-1);
+}
+.time{
+  position: absolute;
+  top: 140px;
+  left: 70px;
+  font-size: 50px;
+  color: #5B789F;
+}
+.present_time{
+  position: absolute;
+  top: 165px;
+  right: 80px;
+  font-size: 20px;
+  color: #5B789F;
+}
+.task_added{
+  position: absolute;
+  top: 225px;
+  left: 70px;
+  font-size: 26px;
+  color: #8996A2;
+}
