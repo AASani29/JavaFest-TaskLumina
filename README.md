@@ -5,13 +5,20 @@ TaskLumina is a smart AI-integrated task management system designed to assist us
 TaskLumina helps users increase productivity and complete tasks on time by leveraging AI to prioritize tasks based on past behavior and estimate completion times. The system also incorporates fun games into the task management process to make it enjoyable and worthwhile.
 
 <h1>Features</h1>
-Task Management: Create, update, delete, and manage tasks and subtasks.
-AI-driven Prioritization: Automatically prioritize tasks based on past behavior.
-Deadline Reminders: Receive notifications for upcoming deadlines and overdue tasks.
-Gamification: Earn badges, accumulate points, and participate in challenges and leaderboards.
-Interaction: Comment on and rate tasks, follow other users, and track progress.
-Chatbot: Ask questions and get suggestions and tips from the chatbot.
-Games: Play fun and engaging games during free time.
+<h3>Task Management<h3>
+Create, update, delete, and manage tasks and subtasks.
+<h3> AI-driven Prioritization</h3>
+Automatically prioritize tasks based on past behavior.
+<h3>Deadline Reminders</h3> 
+Receive notifications for upcoming deadlines and overdue tasks.
+<h3>Gamification</h3> 
+Earn badges, accumulate points, and participate in challenges and leaderboards.
+<h3>Interaction</h3> 
+Comment on and rate tasks, follow other users, and track progress.
+<h3>Chatbot</h3> 
+Ask questions and get suggestions and tips from the chatbot.
+<h3>Games</h3> 
+Play fun and engaging games during free time.
 <h1>Users and Roles</h1>
 Anonymous User: View public tasks and explore the website. Can register to become a registered user.
 Registered User: Access full functionality, including task management, notifications, gamification, and interaction.
