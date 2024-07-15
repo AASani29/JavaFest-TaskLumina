@@ -11,8 +11,8 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public  ResponseEntity<String> addTask(Task task) {
+    public ResponseEntity<String> addTask(Task task) {
         taskRepository.save(task);
-        return new ResponseEntity<>("success", HttpStatus.CREATED) ;
+        return new ResponseEntity<>("success", HttpStatus.CREATED);
     }
 }

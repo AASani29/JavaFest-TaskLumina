@@ -6,9 +6,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Setter
-@Getter
 @Entity
+@Getter
+@Setter
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +23,12 @@ public class Task {
 
     private String category;
 
-    // Getters and Setters
+    // Add user ID field
+    private Integer userId;
 
+    // Getters and Setters
 }
+
 
 enum Priority {
     HIGH, MEDIUM, LOW
