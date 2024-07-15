@@ -1,4 +1,3 @@
-// src/components/SignUp.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../CSS Files/LoginSignup.css';
@@ -21,7 +20,6 @@ const SignUp = () => {
     name: "",
     email: "",
     password: "",
-    role: "",
     city: "",
   });
 
@@ -40,7 +38,6 @@ const SignUp = () => {
       name: "",
       email: "",
       password: "",
-      role: "",
       city: "",
     });
     setError({ errors: {}, isError: false });
@@ -49,9 +46,11 @@ const SignUp = () => {
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     try {
-      await signUp(formData);
+      // Add role: "USER" to formData before signing up
+      const formDataWithRole = { ...formData, role: "USER" };
+      await signUp(formDataWithRole);
       toast.success("User is registered!");
-      navigate('/dashboard');
+      navigate('/login');
       resetData();
     } catch (error) {
       setError({
@@ -111,17 +110,7 @@ const SignUp = () => {
                   invalid={error.errors?.response?.data?.password ? true : false}
                 />
               </div>
-              <div className='input'>
-                <img src={role_icon} alt=""/>
-                <input 
-                  onChange={handleInputChange}
-                  id="role"
-                  name="role"
-                  placeholder="Role"
-                  type="text"
-                  value={formData.role}
-                />
-              </div>
+              {/* Role input removed from here */}
               <div className='input'>
                 <img src={city_icon} alt=""/>
                 <input 
