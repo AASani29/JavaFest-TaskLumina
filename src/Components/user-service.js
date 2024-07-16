@@ -34,10 +34,11 @@ export const addTask = (task) => {
   return privateAxios.post("/adminuser/task/add", task).then((res) => res.data);
 };
 
-export const getTasks = async () => {
+export const getTasks = async (date = null) => {
   try {
-    const token = localStorage.getItem("token"); // Get token as a string
-    const response = await myAxios.get("/adminuser/task/tasks", {
+    const token = localStorage.getItem("token");
+    const url = date ? `/adminuser/task/tasks?date=${date}` : `/adminuser/task/tasks`;
+    const response = await myAxios.get(url, {
       headers: {
         'Authorization': `Bearer ${token}`
       }

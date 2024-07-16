@@ -1,0 +1,93 @@
+/* ScheduleAnEvent.css */
+
+.main{
+    align-items: left;
+    margin-top: 50px;
+
+}
+.schedule-an-event {
+    display: inline;
+    flex-direction: row;
+    align-items: left;
+    margin-top: 50px;
+  }
+  
+  .calendar-container {
+    display: flex;
+    align-items: left;
+    margin-top: 20px;
+    max-width: 400px; /* Adjust as per your design */
+  }
+  
+  .schedule-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #6D87A9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .schedule-button:hover {
+    background-color: #56799D;
+  }
+  
+  .event-form {
+    width: 100%;
+    max-width: 600px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    border-radius: 5px;
+  }
+  
+  .event-form h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #34495E; /* Darker text color for headings */
+  }
+  
+  .event-form .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .event-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #34495E; /* Darker text color */
+  }
+  
+  .event-form input[type="text"],
+  .event-form input[type="time"],
+  .event-form input[type="checkbox"] {
+    width: calc(100% - 20px); /* Adjust for padding */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .event-form input[type="checkbox"] {
+    width: auto;
+    margin-top: 5px;
+  }
+  
+  .event-form button.set-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #6D87A9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .event-form button.set-button:hover {
+    background-color: #56799D;
+  }
+  

@@ -1,8 +1,6 @@
-// Dashboard.jsx
-
 import React, { useState, useEffect } from 'react';
 import '../CSS Files/Dashboard.css';
-import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
+import { useNavigate } from 'react-router-dom';
 import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,9 +9,8 @@ import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faComment, fa
 import { getCurrentUser } from '../Auth';
 import { getTasks, deleteTask } from '../user-service';
 
-const Dashboard = () => {
+const ViewTodoList = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // Hook to get current location
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [editTask, setEditTask] = useState(null);
@@ -25,7 +22,7 @@ const Dashboard = () => {
       navigate("/login");
       console.log("Not logged in, userData missing");
     } else {
-      fetchTodayTasks();
+      fetchAllTasks();
     }
   }, [navigate]);
 
@@ -36,28 +33,13 @@ const Dashboard = () => {
     setTodayDate(formattedDate);
   }, []);
 
-  const fetchTodayTasks = async () => {
+  const fetchAllTasks = async () => {
     try {
-      const today = new Date().toISOString().split('T')[0];
-      console.log("Today's date:", today); // Debugging line
       const data = await getTasks();
-      console.log("Fetched tasks:", data); // Debugging line
-  
-      // Filter tasks for today's date
-      const todayTasks = data.filter(task => {
-        const taskDate = new Date(task.dateTime);
-        if (isNaN(taskDate)) {
-          console.log(`Invalid date for task: ${task.name}, Task Date: ${task.dateTime}`); // Debugging line
-          return false;
-        }
-        const taskDateFormatted = taskDate.toISOString().split('T')[0];
-        console.log(`Task: ${task.name}, Task Date: ${taskDateFormatted}, Is Today: ${taskDateFormatted === today}`); // Debugging line
-        return taskDateFormatted === today;
-      });
-  
-      setTasks(todayTasks);
+      setTasks(data);
+      console.log("Fetched all tasks:", data);
     } catch (error) {
-      console.error("Failed to fetch tasks:", error);
+      console.error("Failed to fetch all tasks:", error);
     }
   };
 
@@ -80,6 +62,51 @@ const Dashboard = () => {
     setShowAddTaskForm(!showAddTaskForm);
   };
 
+  const renderTasks = () => {
+    const today = new Date().toISOString().split('T')[0];
+    const dueTasks = tasks.filter(task => {
+      const taskDate = new Date(task.dateTime).toISOString().split('T')[0];
+      return taskDate < today;
+    });
+
+    const futureTasks = tasks.filter(task => {
+      const taskDate = new Date(task.dateTime).toISOString().split('T')[0];
+      return taskDate >= today;
+    });
+
+    return (
+      <>
+        {dueTasks.length > 0 && (
+          <div className="task-section">
+            <h3>Due Tasks</h3>
+            <ul>
+              {dueTasks.map(task => (
+                <li key={task.id}>
+                  {task.name} - {task.description}
+                  <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                  <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div className="task-section">
+          <h3>Upcoming Tasks</h3>
+          <ul>
+            {futureTasks.map(task => (
+              <li key={task.id}>
+                {task.name} - {task.description}
+                <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </>
+    );
+  };
+
   return (
     <div className="dashboard">
       <nav className="sidebar">
@@ -88,45 +115,39 @@ const Dashboard = () => {
         </div>
         <ul>
           <li>
-            <div className={`sidebar-button ${location.pathname === '/dashboard' ? 'active' : ''}`} onClick={toggleAddTaskForm}>
+            <div className="sidebar-button" onClick={toggleAddTaskForm}>
               <FontAwesomeIcon icon={faCirclePlus} className="circle-icon" />
               <span>Add Task</span>
-              {location.pathname === '/dashboard' && <span className="arrow-sign">{'>'}</span>} {/* Indicator */}
             </div>
           </li>
           <li>
-            <div className={`sidebar-button ${location.pathname === '/viewtodolist' ? 'active' : ''}`} onClick={() => navigate('/viewtodolist')}>
+            <div className="sidebar-button" onClick={() => navigate('/dashboard')}>
               <FontAwesomeIcon icon={faList} className="circle-icon" />
-              <span>View Todo List</span>
-              {location.pathname === '/viewtodolist' && <span className="arrow-sign">{'>'}</span>} {/* Indicator */}
+              <span>Todays Tasks</span>
             </div>
           </li>
           <li>
-            <div className={`sidebar-button ${location.pathname === '/dashboard' ? 'active' : ''}`} >
+            <div className="sidebar-button">
               <FontAwesomeIcon icon={faClock} className="circle-icon" />
               <span>Make Me a Routine</span>
-              {location.pathname === '/dashboard' && <span className="arrow-sign">{'>'}</span>} {/* Indicator */}
             </div>
           </li>
           <li>
-            <div className={`sidebar-button ${location.pathname === '/scheduleanevent' ? 'active' : ''}`} onClick={() => navigate('/scheduleanevent')}>
+            <div className="sidebar-button" onClick={() => navigate('/scheduleanevent')}>
               <FontAwesomeIcon icon={faCalendarDays} className="circle-icon" />
               <span>Schedule an Event</span>
-              {location.pathname === '/scheduleanevent' && <span className="arrow-sign">{'>'}</span>} {/* Indicator */}
             </div>
           </li>
           <li>
-            <div className={`sidebar-button ${location.pathname === '/dashboard' ? 'active' : ''}`}>
+            <div className="sidebar-button" >
               <FontAwesomeIcon icon={faAward} className="circle-icon" />
               <span>View Achievements</span>
-              {location.pathname === '/dashboard' && <span className="arrow-sign">{'>'}</span>} {/* Indicator */}
             </div>
           </li>
           <li>
-            <div className={`sidebar-button ${location.pathname === '/dashboard' ? 'active' : ''}`}>
+            <div className="sidebar-button">
               <FontAwesomeIcon icon={faGamepad} className="circle-icon" />
               <span>Play a Game</span>
-              {location.pathname === '/dashboard' && <span className="arrow-sign">{'>'}</span>} {/* Indicator */}
             </div>
           </li>
         </ul>
@@ -139,23 +160,13 @@ const Dashboard = () => {
           </div>
         </header>
         <div className='time'>
-          Today
+          All Tasks
         </div>
         <div className='present_time'>
-          {todayDate}
+        {todayDate}
         </div>
         <div className='task_added'>
-          {tasks.length === 0 ? "No task added yet" : (
-            <ul>
-              {tasks.map(task => (
-                <li key={task.id}>
-                  {task.name} - {task.description}
-                  <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                  <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
-                </li>
-              ))}
-            </ul>
-          )}
+          {tasks.length === 0 ? "No task added yet" : renderTasks()}
         </div>
         <div className="add-task-button" onClick={toggleAddTaskForm}>
           <FontAwesomeIcon icon={faPlus} className="add-task-icon" />
@@ -170,4 +181,4 @@ const Dashboard = () => {
   );
 }
 
-export default Dashboard;
+export default ViewTodoList;

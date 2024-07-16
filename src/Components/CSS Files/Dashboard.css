@@ -18,17 +18,20 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  
 }
 
- .logo-container {
+.logo-container {
   display: flex;
   justify-content: right;
   align-items: center;
   width: 100%;
   margin-bottom: 20px;
   cursor: pointer;
-} 
+  padding-top: 10px;
+  
+  height: 60px;
+}
+
 
 .logo1 {
   max-width: 100%;
@@ -37,20 +40,21 @@
 
 .sidebar ul {
   list-style-type: none;
-  padding: 10;
+  padding: 10px;
   width: 100%;
-  
 }
 
 .sidebar ul li {
   margin: 20px 0;
 }
+
 .sidebar-button {
   display: flex;
   align-items: center;
   padding: 10px;
   cursor: pointer;
 }
+
 .sidebar-button .circle-icon {
   font-size: 25px;
   color: #285581;
@@ -61,38 +65,39 @@
   color: #5B789F;
 }
 
-
 .content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* Adjusted to start from top */
   align-items: center;
   background-color: #ecf0f1;
   position: relative;
+  padding-top: 120px; /* Added padding-top to push content below topbar */
 }
+
 .icon-container {
   display: flex;
   align-items: center;
 }
+
 .bell-icon {
   font-size: 24px;
   color: #2c3e50;
-  margin-right: 50px; 
+  margin-right: 50px;
   cursor: pointer;
 }
 
-
 .topbar {
-  width: calc(100% - 250px); 
+  width: calc(100% - 400px);
   display: flex;
   justify-content: flex-end;
-  
   padding: 30px 50px;
   background-color: #ecf0f1;
   box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1);
-  position: absolute;
+  position: fixed; /* Changed to fixed for persistent topbar */
   top: 0;
+  
 }
 
 .user-icon {
@@ -104,9 +109,14 @@
 .content h1 {
   font-size: 36px;
   color: #2c3e50;
-  margin-top: 60px; 
+  margin-top: 60px;
 }
+
 .add-task-button {
+  position: absolute; /* Changed to absolute positioning */
+  bottom: 20px; /* Adjusted to position at the bottom */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Center horizontally */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,8 +124,6 @@
   color: white;
   padding: 15px 24px;
   border-radius: 15px;
-  margin-top: 90px;
-  margin-right: 720px;
   cursor: pointer;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -126,36 +134,58 @@
 }
 
 .chat-button-container {
-  position: absolute;
+  position: fixed; /* Changed to fixed positioning */
   bottom: 35px;
   right: 50px;
 }
+
 .chat-icon {
   font-size: 30px;
   color: #5E80A0;
   cursor: pointer;
 }
+
 .flip-horizontal {
   transform: scaleX(-1);
 }
-.time{
+
+.time {
   position: absolute;
   top: 140px;
   left: 70px;
   font-size: 50px;
   color: #5B789F;
 }
-.present_time{
+
+.present_time {
   position: absolute;
   top: 165px;
   right: 80px;
   font-size: 20px;
   color: #5B789F;
 }
-.task_added{
+
+.task_added {
   position: absolute;
   top: 225px;
   left: 70px;
   font-size: 26px;
   color: #8996A2;
+}
+
+/* Dashboard.css */
+
+.sidebar-button {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  position: relative; /* Ensure relative positioning for absolute child */
+}
+
+.arrow-sign {
+  position: absolute;
+  right: 10px; /* Adjust as needed */
+  font-size: 14px; /* Adjust size */
+  color: #3498db; /* Adjust color */
 }
