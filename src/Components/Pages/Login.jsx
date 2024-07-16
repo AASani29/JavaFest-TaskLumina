@@ -27,6 +27,7 @@ const Login = () => {
       if (userData.token) {
         localStorage.setItem('token', userData.token);
         localStorage.setItem('role', userData.role);
+        
         toast.success("User is logged in!");
         navigate('/dashboard');
       } else {

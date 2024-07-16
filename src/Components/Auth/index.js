@@ -1,7 +1,7 @@
 // src/isLoggedIn.js
 
 export function isLoggedIn() {
-  let data = localStorage.getItem("role");
+  let data = localStorage.getItem("userData");
   if (data === null) return false;
   else return true;
 }
@@ -18,12 +18,13 @@ export function doLogout(next) {
   next();
 }
 
-// getCurrentUser - get current user from localStorage
+// src/Auth/index.js
 export function getCurrentUser() {
   if (isLoggedIn()) {
-    return localStorage.getItem("role");
+    return JSON.parse(localStorage.getItem("userData"));
   } else return undefined;
 }
+
 
 // getToken - get token from localStorage
 export function getToken() {

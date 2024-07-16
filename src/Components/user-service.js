@@ -1,6 +1,7 @@
 // src/user-service.js
 import axios from "axios";
 import { BASE_URL } from "./helper";
+import { getCurrentUser } from '../Components/Auth/index';
 
 export const myAxios = axios.create({
   baseURL: BASE_URL
@@ -32,3 +33,41 @@ export const loginUser = (loginDetails) => {
 export const addTask = (task) => {
   return privateAxios.post("/adminuser/task/add", task).then((res) => res.data);
 };
+
+export const getTasks = async () => {
+  try {
+    const token = localStorage.getItem("token"); // Get token as a string
+    const response = await myAxios.get("/adminuser/task/tasks", {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+    throw error;
+  }
+};
+
+export const updateTask = async (taskId, updatedTaskData) => {
+  try {
+    const response = await privateAxios.put(`/adminuser/task/update/${taskId}`, updatedTaskData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteTask = async (taskId) => {
+  try {
+    const response = await privateAxios.delete(`/adminuser/task/delete/${taskId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+
+

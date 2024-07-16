@@ -1,10 +1,9 @@
-// src/components/AddTaskForm.js
-import React, { useState } from 'react';
-import '../CSS Files/AddTaskForm.css'; // Create a CSS file for styling the form
-import { addTask } from '../user-service.js'; // Import the addTask function from user-service
+import React, { useState, useEffect } from 'react';
+import '../CSS Files/AddTaskForm.css';
+import { addTask, updateTask } from '../user-service.js'; // Import updateTask function from user-service
 import { toast } from "react-toastify";
 
-const AddTaskForm = ({ toggleForm }) => {
+const AddTaskForm = ({ toggleForm, editTask }) => {
   const [taskData, setTaskData] = useState({
     name: "",
     description: "",
@@ -13,21 +12,39 @@ const AddTaskForm = ({ toggleForm }) => {
     category: ""
   });
 
+  useEffect(() => {
+    if (editTask) {
+      setTaskData(editTask);
+    }
+  }, [editTask]);
+
   const handleChange = (e, field) => {
     setTaskData({ ...taskData, [field]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTask(taskData)
-      .then((res) => {
-        toast.success("Task added successfully!");
-        toggleForm(); // Close the form after successful submission
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error("Failed to add task!");
-      });
+    if (editTask) {
+      updateTask(taskData.id, taskData)
+        .then((res) => {
+          toast.success("Task updated successfully!");
+          toggleForm();
+        })
+        .catch((err) => {
+          console.error(err);
+          toast.error("Failed to update task!");
+        });
+    } else {
+      addTask(taskData)
+        .then((res) => {
+          toast.success("Task added successfully!");
+          toggleForm();
+        })
+        .catch((err) => {
+          console.error(err);
+          toast.error("Failed to add task!");
+        });
+    }
   };
 
   return (
@@ -91,7 +108,7 @@ const AddTaskForm = ({ toggleForm }) => {
           />
         </div>
         <div className="form-buttons">
-          <button type="submit">Add Task</button>
+          <button type="submit">{editTask ? "Update Task" : "Add Task"}</button>
           <button type="button" onClick={toggleForm}>Cancel</button>
         </div>
       </form>

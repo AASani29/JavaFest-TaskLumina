@@ -1,63 +1,53 @@
-/* src/components/AddTaskForm.css */
 .add-task-form {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 600px;
   background-color: white;
   padding: 20px;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  width: 400px;
-  border-radius: 10px;
-  color: #34495e;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
-.add-task-form form .form-group {
-  margin-bottom: 15px;
-  padding: 10px;
-  
+.add-task-form .form-group {
+  margin-bottom: 20px;
 }
 
-.add-task-form form label {
+.add-task-form label {
   display: block;
-  margin-bottom: 5px;
-  color: #5B789F;
+  font-weight: bold;
 }
 
-.add-task-form form input,
-.add-task-form form textarea,
-.add-task-form form select {
+.add-task-form input,
+.add-task-form textarea,
+.add-task-form select {
   width: 100%;
-  /* padding: 10px; */
-  height: 36px;
+  padding: 10px;
+  font-size: 16px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  color: #34495e;
-  font-size: 14px;
+  border-radius: 5px;
 }
 
-.add-task-form form button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-right: 10px;
-  font-size: 14px;
-}
-
-.add-task-form form button[type="submit"] {
-  background-color: #28a745;
-  color: white;
-}
-
-.add-task-form form button[type="button"] {
-  background-color: #dc3545;
-  color: white;
-}
-
-.add-task-form form .form-buttons {
+.add-task-form .form-buttons {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+}
+
+.add-task-form button {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-task-form button:hover {
+  background-color: #2980b9;
+}
+
+.add-task-form button[type="button"] {
+  background-color: #e74c3c;
+}
+
+.add-task-form button[type="button"]:hover {
+  background-color: #c0392b;
 }

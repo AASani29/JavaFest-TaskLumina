@@ -1,28 +1,56 @@
-// src/components/Dashboard.js
 import React, { useState, useEffect } from 'react';
-import '../CSS Files/Dashboard.css'; // Create a CSS file for styling
+import '../CSS Files/Dashboard.css';
 import { useNavigate } from 'react-router-dom';
-import AddTaskForm from '../Features/AddTaskForm'; // Import the AddTaskForm component
+import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBell, faClock } from '@fortawesome/free-regular-svg-icons';
-import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faComment, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { getCurrentUser } from '../Auth/index';
+import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faComment, faPlus, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { getCurrentUser } from '../Auth';
+import { getTasks, deleteTask } from '../user-service';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [showAddTaskForm, setShowAddTaskForm] = useState(false); // State to control form visibility
+  const [showAddTaskForm, setShowAddTaskForm] = useState(false);
+  const [tasks, setTasks] = useState([]);
+  const [editTask, setEditTask] = useState(null);
 
   useEffect(() => {
     const user = getCurrentUser();
-    
     if (!user) {
       navigate("/login");
       console.log("Not logged in, userData missing");
+    } else {
+      fetchTasks();
     }
   }, [navigate]);
 
+  const fetchTasks = async () => {
+    try {
+      const data = await getTasks();
+      setTasks(data);
+    } catch (error) {
+      console.error("Failed to fetch tasks:", error);
+    }
+  };
+
+  const handleDeleteTask = async (taskId) => {
+    try {
+      await deleteTask(taskId);
+      setTasks(tasks.filter(task => task.id !== taskId));
+    } catch (error) {
+      console.error("Failed to delete task:", error);
+    }
+  };
+  
+  const handleEditTask = (task) => {
+    setEditTask(task);
+    setShowAddTaskForm(true);
+  };
+  
+
   const toggleAddTaskForm = () => {
+    setEditTask(null);
     setShowAddTaskForm(!showAddTaskForm);
   };
 
@@ -40,7 +68,7 @@ const Dashboard = () => {
             </div>
           </li>
           <li>
-            <div className="sidebar-button">
+            <div className="sidebar-button" onClick={fetchTasks}>
               <FontAwesomeIcon icon={faList} className="circle-icon" />
               <span>View Todo List</span>
             </div>
@@ -85,7 +113,17 @@ const Dashboard = () => {
           12 July-Friday
         </div>
         <div className='task_added'>
-          No task added yet
+          {tasks.length === 0 ? "No task added yet" : (
+            <ul>
+              {tasks.map(task => (
+                <li key={task.id}>
+                  {task.name} - {task.description}
+                  <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                  <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
         <div className="add-task-button" onClick={toggleAddTaskForm}>
           <FontAwesomeIcon icon={faPlus} className="add-task-icon" />
@@ -94,7 +132,7 @@ const Dashboard = () => {
         <div className="chat-button-container">
           <FontAwesomeIcon icon={faComment} className="chat-icon flip-horizontal" />
         </div>
-        {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} />} {/* Conditionally render the AddTaskForm */}
+        {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />} {/* Conditionally render the AddTaskForm */}
       </main>
     </div>
   );
