@@ -26,14 +26,4 @@ public class EventService {
         return eventRepository.findByUserId(userId);
     }
 
-    @Transactional
-    public ResponseEntity<String> deleteEvent(Long id, Authentication authentication) {
-        Integer userId = ((OurUsers) authentication.getPrincipal()).getId();
-        Optional<Event> eventOptional = eventRepository.findByIdAndUserId(id, userId);
-        if (eventOptional.isPresent()) {
-            eventRepository.deleteById(id);
-            return ResponseEntity.ok("Event deleted successfully.");
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized to delete this event.");
-    }
 }

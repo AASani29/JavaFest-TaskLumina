@@ -15,13 +15,11 @@ public class Event {
     private Long id;
 
     private String title;
-    private LocalDateTime dateTime;
     private String location;
+    private LocalDateTime dateTime;
     private String link;
-    private Boolean remindMe;
+    private boolean remindMe;
 
     // Add user ID field
     private Integer userId;
-
-    // Getters and Setters
 }
