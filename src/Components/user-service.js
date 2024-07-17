@@ -1,7 +1,5 @@
-// src/user-service.js
 import axios from "axios";
 import { BASE_URL } from "./helper";
-import { getCurrentUser } from '../Components/Auth/index';
 
 export const myAxios = axios.create({
   baseURL: BASE_URL
@@ -38,7 +36,7 @@ export const getTasks = async (date = null) => {
   try {
     const token = localStorage.getItem("token");
     const url = date ? `/adminuser/task/tasks?date=${date}` : `/adminuser/task/tasks`;
-    const response = await myAxios.get(url, {
+    const response = await privateAxios.get(url, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -67,8 +65,3 @@ export const deleteTask = async (taskId) => {
     throw error;
   }
 };
-
-
-
-
-

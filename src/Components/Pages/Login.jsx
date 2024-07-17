@@ -19,13 +19,16 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const userData = await loginUser({ email, password });
       console.log(userData);
       if (userData.token) {
-        localStorage.setItem('userData', JSON.stringify(userData)); // Store complete user data
-        
+        // Store token in localStorage
+        localStorage.setItem('token', userData.token);
+        // Store complete user data in localStorage
+        localStorage.setItem('userData', JSON.stringify(userData));
+  
         toast.success("User is logged in!");
         navigate('/dashboard');
       } else {
@@ -40,6 +43,7 @@ const Login = () => {
       }, 5000);
     }
   };
+  
 
   return (
     <>
