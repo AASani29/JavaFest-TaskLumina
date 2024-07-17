@@ -1,4 +1,4 @@
-package Event;
+package com.phegondev.usersmanagementsystem.Event;
 
 import com.phegondev.usersmanagementsystem.entity.OurUsers;
 import org.springframework.beans.factory.annotation.Autowired;

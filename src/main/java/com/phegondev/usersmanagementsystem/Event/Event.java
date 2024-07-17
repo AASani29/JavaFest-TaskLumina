@@ -1,4 +1,4 @@
-package Event;
+package com.phegondev.usersmanagementsystem.Event;
 
 import jakarta.persistence.*;
 import lombok.Getter;

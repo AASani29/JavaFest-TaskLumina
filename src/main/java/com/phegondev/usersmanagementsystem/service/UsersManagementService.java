@@ -28,6 +28,8 @@ public class UsersManagementService {
     private PasswordEncoder passwordEncoder;
 
 
+
+
     public ReqRes register(ReqRes registrationRequest){
         ReqRes resp = new ReqRes();
 
@@ -193,24 +195,22 @@ public class UsersManagementService {
     }
 
 
-    public ReqRes getMyInfo(String email){
+    public ReqRes getMyInfo(String email) {
         ReqRes reqRes = new ReqRes();
         try {
             Optional<OurUsers> userOptional = usersRepo.findByEmail(email);
             if (userOptional.isPresent()) {
                 reqRes.setOurUsers(userOptional.get());
                 reqRes.setStatusCode(200);
-                reqRes.setMessage("successful");
+                reqRes.setMessage("User found successfully");
             } else {
                 reqRes.setStatusCode(404);
-                reqRes.setMessage("User not found for update");
+                reqRes.setMessage("User not found");
             }
-
-        }catch (Exception e){
+        } catch (Exception e) {
             reqRes.setStatusCode(500);
-            reqRes.setMessage("Error occurred while getting user info: " + e.getMessage());
+            reqRes.setMessage("Error occurred while fetching user info: " + e.getMessage());
         }
         return reqRes;
-
     }
 }

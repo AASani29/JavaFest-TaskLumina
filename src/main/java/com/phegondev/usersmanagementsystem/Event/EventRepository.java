@@ -1,4 +1,4 @@
-package Event;
+package com.phegondev.usersmanagementsystem.Event;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
