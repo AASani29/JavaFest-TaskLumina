@@ -65,3 +65,23 @@ export const deleteTask = async (taskId) => {
     throw error;
   }
 };
+
+export const getMyProfile = async () => {
+  try {
+    const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
+    if (!token) {
+      throw new Error('User is not authenticated'); // Handle unauthenticated scenario
+    }
+
+    const response = await axios.get(`${BASE_URL}/adminuser/task/profile`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Pass JWT token in the Authorization header
+      }
+    });
+    
+    return response.data; // Assuming your backend returns data in a structured format
+
+  } catch (error) {
+    throw error; // Rethrow the error to handle it in the calling component
+  }
+};

@@ -19,12 +19,21 @@ const ScheduleAnEvent = () => {
     time: "",
     location: "",
     link: "",
-    remindMe: false
+    remindMe: false,
+    dateTime: "",
+    userId: null,
   });
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
     fetchEvents();
+  }, []);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    if (userData) {
+      setEventData((prevData) => ({ ...prevData, userId: userData.id }));
+    }
   }, []);
 
   const onChange = (date) => {
@@ -42,8 +51,10 @@ const ScheduleAnEvent = () => {
 
   const handleScheduleEvent = async () => {
     try {
-      await addEvent(eventData);
+      const combinedDateTime = new Date(`${date.toDateString()} ${eventData.time}`);
+      await addEvent({ ...eventData, dateTime: combinedDateTime });
       fetchEvents(); // Refresh events after adding
+      setShowEventForm(false); // Close form after scheduling
     } catch (error) {
       console.error('Error scheduling event:', error);
     }
@@ -54,7 +65,8 @@ const ScheduleAnEvent = () => {
   };
 
   const handleDateClick = (value) => {
-    setEventData({ ...eventData, date: value });
+    setDate(value);
+    setEventData({ ...eventData, dateTime: value }); // Use dateTime for consistency with backend
     setShowEventForm(true);
   };
 
@@ -69,7 +81,6 @@ const ScheduleAnEvent = () => {
   const handleSetEvent = (e) => {
     e.preventDefault();
     handleScheduleEvent();
-    setShowEventForm(false); // Close the form after setting event
   };
 
   return (
@@ -205,7 +216,7 @@ const ScheduleAnEvent = () => {
               <thead>
                 <tr>
                   <th>Title</th>
-                  <th>Time</th>
+                  <th>Date & Time</th>
                   <th>Location</th>
                   <th>Link</th>
                   <th>Remind Me</th>
@@ -215,9 +226,9 @@ const ScheduleAnEvent = () => {
                 {events.map((event, index) => (
                   <tr key={index}>
                     <td>{event.title}</td>
-                    <td>{event.time}</td>
+                    <td>{new Date(event.dateTime).toLocaleString()}</td>
                     <td>{event.location}</td>
-                    <td>{event.link}</td>
+                    <td><a href={event.link} target="_blank" rel="noopener noreferrer">{event.link}</a></td>
                     <td>{event.remindMe ? 'Yes' : 'No'}</td>
                   </tr>
                 ))}

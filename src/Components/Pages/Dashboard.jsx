@@ -1,5 +1,3 @@
-// Dashboard.jsx
-
 import React, { useState, useEffect } from 'react';
 import '../CSS Files/Dashboard.css';
 import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
@@ -10,6 +8,7 @@ import { faUser, faBell, faClock } from '@fortawesome/free-regular-svg-icons';
 import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faComment, faPlus, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getCurrentUser } from '../Auth';
 import { getTasks, deleteTask } from '../user-service';
+import { getMyProfile } from '../user-service'; // Import getMyProfile function from userService
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -18,6 +17,7 @@ const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [editTask, setEditTask] = useState(null);
   const [todayDate, setTodayDate] = useState('');
+  const [userProfile, setUserProfile] = useState(null); // State to store user profile
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -26,6 +26,7 @@ const Dashboard = () => {
       console.log("Not logged in, userData missing");
     } else {
       fetchTodayTasks();
+      fetchUserProfile(); // Fetch user profile on component mount
     }
   }, [navigate]);
 
@@ -61,6 +62,19 @@ const Dashboard = () => {
     }
   };
 
+  const fetchUserProfile = async () => {
+    try {
+      const response = await getMyProfile(); // Fetch user profile using userService function
+      if (response.statusCode === 200) {
+        setUserProfile(response.ourUsers); // Set user profile in state
+      } else {
+        console.error('Failed to fetch user profile:', response.message);
+      }
+    } catch (error) {
+      console.error('Error occurred while fetching user profile:', error.message);
+    }
+  };
+
   const handleDeleteTask = async (taskId) => {
     try {
       await deleteTask(taskId);
@@ -78,6 +92,11 @@ const Dashboard = () => {
   const toggleAddTaskForm = () => {
     setEditTask(null);
     setShowAddTaskForm(!showAddTaskForm);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Remove token from localStorage on logout
+    navigate('/login'); // Navigate to login page
   };
 
   return (
@@ -123,7 +142,7 @@ const Dashboard = () => {
             </div>
           </li>
           <li>
-            <div className={`sidebar-button ${location.pathname === '/dashboard' ? 'active' : ''}`}>
+            <div className={`sidebar-button ${location.pathname === '/dashboard' ? 'active' : ''}`} >
               <FontAwesomeIcon icon={faGamepad} className="circle-icon" />
               <span>Play a Game</span>
               {location.pathname === '/dashboard' && <span className="arrow-sign">{'>'}</span>} {/* Indicator */}
@@ -135,7 +154,16 @@ const Dashboard = () => {
         <header className="topbar">
           <div className="icon-container">
             <FontAwesomeIcon icon={faBell} className="bell-icon" />
-            <FontAwesomeIcon icon={faUser} className="user-icon" />
+            <div className="profile-info">
+              {userProfile ? (
+                <span className="user-name" onClick={() => navigate('/profile')} style={{ cursor: 'pointer' }}>
+                  {userProfile.name}
+                </span>
+              ) : (
+                <span>Loading...</span>
+              )}
+            </div>
+            <FontAwesomeIcon icon={faUser} className="user-icon" onClick={handleLogout} style={{ cursor: 'pointer' }} />
           </div>
         </header>
         <div className='time'>

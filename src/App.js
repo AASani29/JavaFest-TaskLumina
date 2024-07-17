@@ -8,6 +8,8 @@ import Register from './Components/Pages/Register.jsx'
 import Dashboard from './Components/Pages//Dashboard.jsx';
 import ViewTodoList from './Components/Pages/ViewTodoList .jsx';
 import ScheduleAnEvent from './Components/Pages/ScheduleAnEvent.jsx';
+import ProfilePage from './Components/Pages/ProfilePage.jsx';
+
 const App = () => {
   return (
     <Router>
@@ -17,6 +19,8 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/viewtodolist" element={<ViewTodoList />} />
         <Route path="/scheduleanevent" element={<ScheduleAnEvent />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        
       </Routes>
     </Router>
   );
