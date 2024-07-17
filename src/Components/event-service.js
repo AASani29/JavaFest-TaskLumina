@@ -1,30 +1,52 @@
-// event-service.js
-
 import axios from 'axios';
+import { BASE_URL } from './helper';
 
-const BASE_URL = 'http://localhost:8080'; // Replace with your backend API base URL
+export const myAxios = axios.create({
+  baseURL: BASE_URL,
+});
 
+export const privateAxios = axios.create({
+  baseURL: BASE_URL,
+});
+
+privateAxios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (err) => Promise.reject(err)
+);
+
+// In getEvents function
 export const getEvents = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/adminuser/event/events`);
-    return response.data;
-  } catch (error) {
-    throw new Error(`Failed to fetch events: ${error.message}`);
-  }
-};
-
-export const addEvent = async (eventData) => {
-  try {
-    const token = localStorage.getItem('token'); // Retrieve JWT token from local storage
-    const response = await axios.post(`${BASE_URL}/adminuser/event/add`, eventData, {
+    const token = localStorage.getItem('token');
+    const response = await myAxios.get('/adminuser/event/events', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log('Events fetched:', response.data); // Log fetched events
     return response.data;
   } catch (error) {
-    throw new Error(`Failed to add event: ${error.message}`);
+    console.error('Error fetching events:', error);
+    throw error;
   }
 };
 
-// Add more methods as needed (e.g., updateEvent, deleteEvent)
+// In addEvent function
+export const addEvent = async (eventData) => {
+  try {
+    const response = await privateAxios.post('/adminuser/event/add', eventData);
+    console.log('Event added:', response.data); // Log added event response
+    return response.data;
+  } catch (error) {
+    console.error('Error adding event:', error);
+    throw error;
+  }
+};
+
+

@@ -1,4 +1,3 @@
-// src/components/Login.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../CSS Files/LoginSignup.css';
@@ -25,8 +24,7 @@ const Login = () => {
       const userData = await loginUser({ email, password });
       console.log(userData);
       if (userData.token) {
-        localStorage.setItem('token', userData.token);
-        localStorage.setItem('role', userData.role);
+        localStorage.setItem('userData', JSON.stringify(userData)); // Store complete user data
         
         toast.success("User is logged in!");
         navigate('/dashboard');

@@ -1,5 +1,3 @@
-// src/isLoggedIn.js
-
 export function isLoggedIn() {
   let data = localStorage.getItem("userData");
   if (data === null) return false;
@@ -8,27 +6,26 @@ export function isLoggedIn() {
 
 // doLogin - set JWT to localStorage
 export function doLogin(data, next) {
-  localStorage.setItem("data", JSON.stringify(data));
+  localStorage.setItem("userData", JSON.stringify(data));
   next();
 }
 
 // doLogout - remove JWT from localStorage
 export function doLogout(next) {
-  localStorage.removeItem("data");
+  localStorage.removeItem("userData");
   next();
 }
 
-// src/Auth/index.js
+// getCurrentUser - get user data from localStorage
 export function getCurrentUser() {
   if (isLoggedIn()) {
     return JSON.parse(localStorage.getItem("userData"));
   } else return undefined;
 }
 
-
 // getToken - get token from localStorage
 export function getToken() {
   if (isLoggedIn()) {
-    return JSON.parse(localStorage.getItem("data")).token;
+    return JSON.parse(localStorage.getItem("userData")).token;
   } else return undefined;
 }

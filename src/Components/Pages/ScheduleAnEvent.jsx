@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Calendar from 'react-calendar'; // Assuming you are using a calendar library
-import 'react-calendar/dist/Calendar.css'; // Styles for the calendar
-import axios from 'axios';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faBell, faClock } from '@fortawesome/free-regular-svg-icons';
-import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faComment } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faBell, faClock, faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faComment } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import Logo from "../Assets/Logo.png";
-import '../CSS Files/ScheduleAnEvent.css'; // Custom CSS for styling
-import { myAxios } from '../helper';
+import '../CSS Files/ScheduleAnEvent.css';
 import AddEventForm from '../Features/AddEventForm';
+import { getEvents, addEvent } from '../event-service';
 
 const ScheduleAnEvent = () => {
   const [showAddEventForm, setShowAddEventForm] = useState(false);
@@ -31,18 +29,12 @@ const ScheduleAnEvent = () => {
 
   const onChange = (date) => {
     setDate(date);
-    // Handle date change logic here if needed
   };
 
   const fetchEvents = async () => {
     try {
-      const token = localStorage.getItem('token'); // Retrieve JWT token from local storage
-      const response = await myAxios.get('/adminuser/event/events', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setEvents(response.data);
+      const eventsData = await getEvents();
+      setEvents(eventsData);
     } catch (error) {
       console.error('Error fetching events:', error);
     }
@@ -50,13 +42,7 @@ const ScheduleAnEvent = () => {
 
   const handleScheduleEvent = async () => {
     try {
-      const token = localStorage.getItem('token'); // Retrieve JWT token from local storage
-      const response = await myAxios.post('/adminuser/event/add', eventData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log('Event scheduled:', response.data);
+      await addEvent(eventData);
       fetchEvents(); // Refresh events after adding
     } catch (error) {
       console.error('Error scheduling event:', error);

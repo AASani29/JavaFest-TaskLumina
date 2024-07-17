@@ -1,5 +1,3 @@
-// AddEventForm.jsx
-
 import React, { useState } from 'react';
 import '../CSS Files/AddEventForm.css'; // Import CSS file
 import { addEvent } from '../event-service'; // Import event service methods
