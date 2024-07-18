@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faBell, faClock, faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faComment } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faBell, faClock, faCirclePlus, faPlus, faList, faCalendarDays, faAward, faGamepad, faComment } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import Logo from "../Assets/Logo.png";
 import '../CSS Files/ScheduleAnEvent.css';
-import AddEventForm from '../Features/AddEventForm';
 import { getEvents, addEvent } from '../event-service';
+import AddEventForm from '../Features/AddEventForm';
 
 const ScheduleAnEvent = () => {
-  const [showAddEventForm, setShowAddEventForm] = useState(false);
+  const [showEventForm, setShowEventForm] = useState(false);
+  const [editEvent, setEditEvent] = useState(null);
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
-  const [showEventForm, setShowEventForm] = useState(false);
   const [eventData, setEventData] = useState({
     title: "",
     time: "",
@@ -82,6 +82,14 @@ const ScheduleAnEvent = () => {
     e.preventDefault();
     handleScheduleEvent();
   };
+  const handleChange = (e, field) => {
+    setEventData({ ...eventData, [field]: e.target.value });
+  };
+  const toggleAddEventForm = () => {
+    setEditEvent(null);
+    setShowEventForm(!showEventForm);
+  };
+
 
   return (
     <div className="dashboard">
@@ -135,83 +143,13 @@ const ScheduleAnEvent = () => {
             <FontAwesomeIcon icon={faUser} className="user-icon" />
           </div>
         </header>
-        <div className='time'>
+        
+
+          <div className='time'>
           Events
-        </div>
-        <div className='present_time'>
-          {date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-        </div>
-        <div className='main'>
-          <div className="schedule-an-event">
-            <div className="event-calendar">
-              <Calendar
-                onChange={onChange}
-                onClickDay={handleDateClick}
-                value={date}
-              />
-              <button className="schedule-button" onClick={() => setShowEventForm(true)}>
-                Schedule Event
-              </button>
-            </div>
-            {showEventForm && (
-              <div className="event-form">
-                <h2>Add Event Details</h2>
-                <form onSubmit={handleSetEvent}>
-                  <div className="form-group">
-                    <label htmlFor="title">Title</label>
-                    <input
-                      type="text"
-                      id="title"
-                      value={eventData.title}
-                      onChange={(e) => handleInputChange(e, "title")}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="time">Time</label>
-                    <input
-                      type="time"
-                      id="time"
-                      value={eventData.time}
-                      onChange={(e) => handleInputChange(e, "time")}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="location">Location</label>
-                    <input
-                      type="text"
-                      id="location"
-                      value={eventData.location}
-                      onChange={(e) => handleInputChange(e, "location")}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="link">Link</label>
-                    <input
-                      type="text"
-                      id="link"
-                      value={eventData.link}
-                      onChange={(e) => handleInputChange(e, "link")}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={eventData.remindMe}
-                        onChange={handleRemindMeChange}
-                      />
-                      &nbsp; Remind Me
-                    </label>
-                  </div>
-                  <button type="submit" className="set-button">Set Event</button>
-                </form>
-              </div>
-            )}
           </div>
-          <div className="event-list">
-            <h2>Events</h2>
+          <div className="task_added">
+        
             <table>
               <thead>
                 <tr>
@@ -235,14 +173,26 @@ const ScheduleAnEvent = () => {
               </tbody>
             </table>
           </div>
+        
+        <div className='present_time'>
+          {date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
         </div>
+        <button className="add-task-button" onClick={() => setShowEventForm(true)}>
+              Schedule Event
+            </button>
+        
+        
+          <div className="add-task-button" onClick={toggleAddEventForm}>
+          <FontAwesomeIcon icon={faPlus} className="add-task-icon" />
+          <span>Add Event</span>
+        </div>
+          
+        
         <div className="chat-button-container">
           <FontAwesomeIcon icon={faComment} className="chat-icon flip-horizontal" />
         </div>
+        {showEventForm && <AddEventForm toggleForm={toggleAddEventForm} editEvent={editEvent} />}
       </main>
-
-      {/* Modal for Add Event Form */}
-      {showAddEventForm && <AddEventForm toggleForm={() => setShowAddEventForm(false)} />}
     </div>
   );
 };

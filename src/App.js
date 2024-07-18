@@ -21,6 +21,7 @@ const App = () => {
         <Route path="/scheduleanevent" element={<ScheduleAnEvent />} />
         <Route path="/profile" element={<ProfilePage />} />
         
+        
       </Routes>
     </Router>
   );

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import '../CSS Files/AddEventForm.css'; // Import CSS file
 import { addEvent } from '../event-service'; // Import event service methods
+import { toast } from 'react-toastify';
 
 const AddEventForm = ({ toggleForm }) => {
   const [eventData, setEventData] = useState({
     title: '',
-    time: '',
+    dateTime: '', // Corrected to match your field names
     location: '',
     link: '',
     remindMe: false,
@@ -23,9 +24,11 @@ const AddEventForm = ({ toggleForm }) => {
     e.preventDefault();
     try {
       await addEvent(eventData);
+      toast.success('Event added successfully!');
       toggleForm(); // Close the form after adding event
     } catch (error) {
       console.error('Failed to add event:', error);
+      toast.error('Failed to add event!');
       // Handle error state or display error message to user
     }
   };
@@ -45,12 +48,13 @@ const AddEventForm = ({ toggleForm }) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="time">Time</label>
+          <label htmlFor="dateTime">Date and Time</label>
           <input
-            type="time"
-            id="time"
-            value={eventData.time}
-            onChange={(e) => handleInputChange(e, 'time')}
+            type="datetime-local"
+            id="dateTime"
+            name="dateTime"
+            value={eventData.dateTime}
+            onChange={(e) => handleInputChange(e, 'dateTime')}
             required
           />
         </div>

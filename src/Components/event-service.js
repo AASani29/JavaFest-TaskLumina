@@ -20,7 +20,6 @@ privateAxios.interceptors.request.use(
   (err) => Promise.reject(err)
 );
 
-// In getEvents function
 export const getEvents = async () => {
   try {
     const token = localStorage.getItem('token');
@@ -37,16 +36,6 @@ export const getEvents = async () => {
   }
 };
 
-// In addEvent function
-export const addEvent = async (eventData) => {
-  try {
-    const response = await privateAxios.post('/adminuser/event/add', eventData);
-    console.log('Event added:', response.data); // Log added event response
-    return response.data;
-  } catch (error) {
-    console.error('Error adding event:', error);
-    throw error;
-  }
+export const addEvent = (eventData) => {
+  return privateAxios.post("/adminuser/event/add", eventData).then((res) => res.data);
 };
-
-
