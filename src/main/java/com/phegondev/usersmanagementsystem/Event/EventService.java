@@ -26,4 +26,33 @@ public class EventService {
         return eventRepository.findByUserId(userId);
     }
 
+    @Transactional
+    public ResponseEntity<String> updateEvent(Long id, Event updatedEvent, Integer userId) {
+        Optional<Event> eventOptional = eventRepository.findByIdAndUserId(id, userId);
+        if (eventOptional.isPresent()) {
+            Event event = eventOptional.get();
+            event.setTitle(updatedEvent.getTitle());
+            event.setLocation(updatedEvent.getLocation());
+            event.setDateTime(updatedEvent.getDateTime());
+            event.setLink(updatedEvent.getLink());
+            event.setRemindMe(updatedEvent.isRemindMe());
+            eventRepository.save(event);
+            return new ResponseEntity<>("Event updated successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Event not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Transactional
+    public ResponseEntity<String> deleteEvent(Long id, Integer userId) {
+        Optional<Event> eventOptional = eventRepository.findByIdAndUserId(id, userId);
+        if (eventOptional.isPresent()) {
+            eventRepository.deleteById(id);
+            return new ResponseEntity<>("Event deleted successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Event not found", HttpStatus.NOT_FOUND);
+        }
+
+    }
+
 }
