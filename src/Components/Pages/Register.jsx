@@ -4,7 +4,6 @@ import '../CSS Files/LoginSignup.css';
 import user_icon from '../Assets/person.png';
 import email_icon from '../Assets/email.png';
 import password_icon from '../Assets/Password.png';
-import role_icon from '../Assets/role.png'; // Assume you have icons for role and city
 import city_icon from '../Assets/city.png';
 import google_icon from '../Assets/google-logo.png';
 import facebook_icon from '../Assets/facebook-logo.png';

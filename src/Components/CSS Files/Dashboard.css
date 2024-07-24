@@ -77,14 +77,16 @@
 }
 
 .icon-container {
-  display: flex;
+  display: inline-flex;
+  flex-direction: row;
   align-items: center;
+  gap: 40px;
 }
 
 .bell-icon {
   font-size: 24px;
   color: #2c3e50;
-  margin-right: 50px;
+  
   cursor: pointer;
 }
 
@@ -101,8 +103,11 @@
 }
 
 .user-icon {
-  font-size: 24px;
-  color: #2c3e50;
+  padding-top: 60px;
+  font-size: 30px;
+  color: red;
+  font-weight: 600;
+  
   cursor: pointer;
 }
 
@@ -152,7 +157,7 @@
 .time {
   position: absolute;
   top: 140px;
-  left: 70px;
+  left: 50px;
   font-size: 50px;
   color: #5B789F;
 }
@@ -182,10 +187,51 @@
   cursor: pointer;
   position: relative; /* Ensure relative positioning for absolute child */
 }
+.sidebar-features{
+  margin-left: 15px;
+}
 
 .arrow-sign {
   position: absolute;
   right: 10px; /* Adjust as needed */
   font-size: 14px; /* Adjust size */
   color: #3498db; /* Adjust color */
+}
+
+.profile-info{
+  font-size: 16px;
+  margin-right: 50px;
+}
+.details{
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 15px;
+}
+
+.hightask{
+  color: green;
+  padding-right: 15px;
+}
+.lowtask{
+  color: rgb(0, 0, 0);
+  padding-right: 15px;
+}
+.mediumtask{
+  color: purple;
+  padding-right: 15px;
+}
+
+.description{
+  color:#34495e;
+  font-size: 18px;
+}
+.eachtask{
+    
+  border-style:unset;
+  border-radius: 10px;
+      
+}
+.task-icon{
+  font-size: 2px;
 }

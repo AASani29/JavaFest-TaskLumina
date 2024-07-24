@@ -36,11 +36,12 @@ export const getTasks = async (date = null) => {
   try {
     const token = localStorage.getItem("token");
     const url = date ? `/adminuser/task/tasks?date=${date}` : `/adminuser/task/tasks`;
-    const response = await privateAxios.get(url, {
+    const response = await myAxios.get(url, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
+    console.log('Tasks fetched:', response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching tasks:", error);

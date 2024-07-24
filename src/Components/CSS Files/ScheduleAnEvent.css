@@ -91,3 +91,44 @@
     background-color: #56799D;
   }
   
+  .thread{
+    display: inline-flex;
+    flex-direction: row;
+    align-items: auto;
+    gap: 100px;
+  }
+  .eventname{
+    font-size: 25px;
+   
+    color: #000000;
+  }
+  .locationandtime{
+    display: inline-flex;
+    flex-direction: row;
+    font-size: 12px;
+    font-weight: 500;
+    color: #9c9c9c;
+    gap: 40px;
+  }
+  .links{
+    font-size: 15px;
+    font-weight: 500;
+    color: #6D87A9;
+  }
+
+  .span{
+    
+    display: inline-flex;
+    flex-direction: row;
+    gap: 20px;
+
+  }
+  .task-icon{
+    font-size: 20px;
+    padding-left: 15px;
+  }
+  .location-icon{
+    font-size: 12px;
+    padding-right: 3px;
+  }
+  

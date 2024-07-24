@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import '../CSS Files/Dashboard.css';
+import '../CSS Files/ScheduleAnEvent.css'
 import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
 import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faBell, faClock } from '@fortawesome/free-regular-svg-icons';
-import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faComment, faPlus, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faClock, faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faList, faCalendarDays, faAward,faTag, faLocationDot, faGamepad, faRobot, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getCurrentUser } from '../Auth';
 import { getTasks, deleteTask } from '../user-service';
 import { getMyProfile } from '../user-service'; // Import getMyProfile function from userService
@@ -94,58 +95,54 @@ const Dashboard = () => {
     setShowAddTaskForm(!showAddTaskForm);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token'); // Remove token from localStorage on logout
-    navigate('/login'); // Navigate to login page
-  };
+  
 
   return (
     <div className="dashboard">
       <nav className="sidebar">
-        <div className="logo-container">
+        <div className="logo-container" onClick={() => navigate('/dashboard')}>
           <img src={Logo} alt="Logo" className="logo1" />
         </div>
-        <ul>
+        <ul className="sidebar-features">
           <li>
-            <div className={`sidebar-button ${location.pathname === '/dashboard' ? 'active' : ''}`} onClick={toggleAddTaskForm}>
+            <div className="sidebar-button"  onClick={toggleAddTaskForm}>
               <FontAwesomeIcon icon={faCirclePlus} className="circle-icon" />
               <span>Add Task</span>
-              {location.pathname === '/dashboard' && <span className="arrow-sign">{'>'}</span>} {/* Indicator */}
+              
             </div>
           </li>
           <li>
-            <div className={`sidebar-button ${location.pathname === '/viewtodolist' ? 'active' : ''}`} onClick={() => navigate('/viewtodolist')}>
+            <div className="sidebar-button" onClick={() => navigate('/viewtodolist')}>
               <FontAwesomeIcon icon={faList} className="circle-icon" />
               <span>View Todo List</span>
-              {location.pathname === '/viewtodolist' && <span className="arrow-sign">{'>'}</span>} {/* Indicator */}
+              
             </div>
           </li>
           <li>
-            <div className={`sidebar-button ${location.pathname === '/dashboard' ? 'active' : ''}`} >
+            <div className="sidebar-button" >
               <FontAwesomeIcon icon={faClock} className="circle-icon" />
               <span>Make Me a Routine</span>
-              {location.pathname === '/dashboard' && <span className="arrow-sign">{'>'}</span>} {/* Indicator */}
+              
             </div>
           </li>
           <li>
-            <div className={`sidebar-button ${location.pathname === '/scheduleanevent' ? 'active' : ''}`} onClick={() => navigate('/scheduleanevent')}>
+            <div className="sidebar-button" onClick= {() => navigate('/scheduleanevent')}>
               <FontAwesomeIcon icon={faCalendarDays} className="circle-icon" />
               <span>Schedule an Event</span>
-              {location.pathname === '/scheduleanevent' && <span className="arrow-sign">{'>'}</span>} {/* Indicator */}
+              
             </div>
           </li>
           <li>
-            <div className={`sidebar-button ${location.pathname === '/dashboard' ? 'active' : ''}`}>
+            <div className="sidebar-button">
               <FontAwesomeIcon icon={faAward} className="circle-icon" />
               <span>View Achievements</span>
-              {location.pathname === '/dashboard' && <span className="arrow-sign">{'>'}</span>} {/* Indicator */}
             </div>
           </li>
           <li>
-            <div className={`sidebar-button ${location.pathname === '/dashboard' ? 'active' : ''}`} >
+            <div className="sidebar-button" >
               <FontAwesomeIcon icon={faGamepad} className="circle-icon" />
               <span>Play a Game</span>
-              {location.pathname === '/dashboard' && <span className="arrow-sign">{'>'}</span>} {/* Indicator */}
+              
             </div>
           </li>
         </ul>
@@ -153,7 +150,7 @@ const Dashboard = () => {
       <main className="content">
         <header className="topbar">
           <div className="icon-container">
-            <FontAwesomeIcon icon={faBell} className="bell-icon" />
+          <FontAwesomeIcon icon={faBell} className="bell-icon" />
             <div className="profile-info">
               {userProfile ? (
                 <span className="user-name" onClick={() => navigate('/profile')} style={{ cursor: 'pointer' }}>
@@ -163,7 +160,9 @@ const Dashboard = () => {
                 <span>Loading...</span>
               )}
             </div>
-            <FontAwesomeIcon icon={faUser} className="user-icon" onClick={handleLogout} style={{ cursor: 'pointer' }} />
+            
+           
+            {/* <FontAwesomeIcon icon={faUser} className="user-icon" onClick={handleLogout} style={{ cursor: 'pointer' }} /> */}
           </div>
         </header>
         <div className='time'>
@@ -172,25 +171,117 @@ const Dashboard = () => {
         <div className='present_time'>
           {todayDate}
         </div>
-        <div className='task_added'>
+        {/* <div className='task_added'>
           {tasks.length === 0 ? "No task added yet" : (
             <ul>
               {tasks.map(task => (
                 <li key={task.id}>
-                  {task.name} - {task.description}
+                  {task.name} - {task.description} - {task.dateTime} - {task.category} - {task.priority}
                   <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
                   <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
                 </li>
               ))}
             </ul>
           )}
+        </div> */}
+         {/* <div className='task_added'>
+        <div className="profile-details">
+        {tasks.map((task) => (
+          <div >
+            <div className='eventname'>
+              <span className='span'>  {task.name} 
+              <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+              <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+              </span>
+              
+            </div>
+            <div className='loactionandtime'>
+              <span> {task.description}</span>
+            </div>
+            <div className='locationandtime'>
+              <span className='span'>
+                <FontAwesomeIcon icon={faTag} className='location-icon'/> 
+                {task.category}</span>
+              <span className='span'>
+                <FontAwesomeIcon icon={faClock} className='location-icon'/> 
+                {new Date(task.dateTime).toLocaleString()} </span>
+              <span className='span'>
+                <FontAwesomeIcon icon={faFilter} className='location-icon'/> 
+                {task.priority} </span>
+            </div>
+            
+
+          </div>
+          
+        ))}
         </div>
-        <div className="add-task-button" onClick={toggleAddTaskForm}>
+
+          
+        </div> */}
+
+<div className='task_added'>
+        <div className="profile-details">
+        {tasks.map((task) => (
+          <div className='eachtask' >
+            <div className='eventname'>
+              {(task.priority ==="HIGH")? (
+                <span className='span'> <label className='hightask'> {task.name} </label> 
+                <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+                </span>
+
+              ) : ( (task.priority ==="MEDIUM")?
+              
+              (
+                <span className='span'> <label className='mediumtask'> {task.name} </label> 
+                <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+                </span>
+
+              ) : (
+                <span className='span'> <label className='lowtask'> {task.name} </label> 
+                <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+                </span>
+
+              ))
+            }
+          
+              
+            </div>
+            <div className='description'>
+               {task.description}
+            </div>
+            <div className='locationandtime'>
+              <span className='span'>
+                <FontAwesomeIcon icon={faTag} className='location-icon'/> 
+                {task.category} </span>
+              <span className='span'>
+                <FontAwesomeIcon icon={faClock} className='location-icon'/> 
+                {new Date(task.dateTime).toLocaleString()} </span>
+              <span className='span'>
+                <FontAwesomeIcon icon={faFilter} className='location-icon'/> 
+                {task.priority} </span>
+            </div>
+            
+
+          </div>
+          
+        ))}
+        </div>
+
+          
+        </div>
+
+
+
+
+        {/* <div className="add-task-button" onClick={toggleAddTaskForm}>
           <FontAwesomeIcon icon={faPlus} className="add-task-icon" />
           <span>Add Task</span>
-        </div>
+        </div> */}
         <div className="chat-button-container">
-          <FontAwesomeIcon icon={faComment} className="chat-icon flip-horizontal" />
+          <FontAwesomeIcon icon={faRobot} className="chat-icon flip-horizontal" />
         </div>
         {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />} {/* Conditionally render the AddTaskForm */}
       </main>

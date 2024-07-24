@@ -28,7 +28,7 @@ export const getEvents = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log('Events fetched:', response.data); // Log fetched events
+    console.log('Events fetched:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching events:', error);
@@ -36,6 +36,32 @@ export const getEvents = async () => {
   }
 };
 
-export const addEvent = (eventData) => {
-  return privateAxios.post("/adminuser/event/add", eventData).then((res) => res.data);
+export const addEvent = async (eventData) => {
+  try {
+    const response = await privateAxios.post('/adminuser/event/add', eventData);
+    return response.data;
+  } catch (error) {
+    console.error('Error adding event:', error);
+    throw error;
+  }
+};
+
+export const updateEvent = async (eventId, eventData) => {
+  try {
+    const response = await privateAxios.put(`/adminuser/event/update/${eventId}`, eventData);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating event:', error);
+    throw error;
+  }
+};
+
+export const deleteEvent = async (eventId) => {
+  try {
+    const response = await privateAxios.delete(`/adminuser/event/delete/${eventId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting event:', error);
+    throw error;
+  }
 };

@@ -2,18 +2,20 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faBell, faClock, faCirclePlus, faPlus, faList, faCalendarDays, faAward, faGamepad, faComment } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faEdit, faCheck, faClock, faCirclePlus, faPlus, faList, faCalendarDays, faAward, faGamepad, faLocationDot, faRobot} from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import Logo from "../Assets/Logo.png";
 import '../CSS Files/ScheduleAnEvent.css';
-import { getEvents, addEvent } from '../event-service';
+import { getEvents, addEvent, deleteEvent, updateEvent } from '../event-service';
 import AddEventForm from '../Features/AddEventForm';
-
+import { getMyProfile } from '../user-service';
+import { getCurrentUser } from '../Auth';
 const ScheduleAnEvent = () => {
   const [showEventForm, setShowEventForm] = useState(false);
   const [editEvent, setEditEvent] = useState(null);
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
+  const [userProfile, setUserProfile] = useState(null); 
   const [eventData, setEventData] = useState({
     title: "",
     time: "",
@@ -26,8 +28,16 @@ const ScheduleAnEvent = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    const user = getCurrentUser();
+    if (!user) {
+      navigate("/login");
+      console.log("Not logged in, userData missing");
+    } else {
+      fetchEvents();
+      fetchUserProfile();
+    }
+  }, [navigate]);
+  
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('userData'));
@@ -60,6 +70,30 @@ const ScheduleAnEvent = () => {
     }
   };
 
+  const handleUpdateEvent = async () => {
+    try {
+      const combinedDateTime = new Date(`${date.toDateString()} ${eventData.time}`);
+      await updateEvent(editEvent.id, { ...eventData, dateTime: combinedDateTime });
+      fetchEvents(); // Refresh events after updating
+      setShowEventForm(false); // Close form after updating
+      setEditEvent(null); // Clear editEvent state
+    } catch (error) {
+      console.error('Error updating event:', error);
+    }
+  };
+  const fetchUserProfile = async () => {
+    try {
+      const response = await getMyProfile(); // Fetch user profile using userService function
+      if (response.statusCode === 200) {
+        setUserProfile(response.ourUsers); // Set user profile in state
+      } else {
+        console.error('Failed to fetch user profile:', response.message);
+      }
+    } catch (error) {
+      console.error('Error occurred while fetching user profile:', error.message);
+    }
+  };
+
   const toggleAddTaskForm = () => {
     navigate('/dashboard');
   };
@@ -80,24 +114,49 @@ const ScheduleAnEvent = () => {
 
   const handleSetEvent = (e) => {
     e.preventDefault();
-    handleScheduleEvent();
+    if (editEvent) {
+      handleUpdateEvent();
+    } else {
+      handleScheduleEvent();
+    }
   };
-  const handleChange = (e, field) => {
-    setEventData({ ...eventData, [field]: e.target.value });
-  };
+
   const toggleAddEventForm = () => {
     setEditEvent(null);
     setShowEventForm(!showEventForm);
   };
 
+  const handleEditEvent = (event) => {
+    setEditEvent(event);
+    setEventData({
+      title: event.title,
+      time: new Date(event.dateTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+      location: event.location,
+      link: event.link,
+      remindMe: event.remindMe,
+      dateTime: event.dateTime,
+      userId: event.userId,
+    });
+    setDate(new Date(event.dateTime));
+    setShowEventForm(true);
+  };
+
+  const handleDeleteEvent = async (eventId) => {
+    try {
+      await deleteEvent(eventId);
+      setEvents(events.filter(event => event.id !== eventId));
+    } catch (error) {
+      console.error("Failed to delete event:", error);
+    }
+  };
 
   return (
     <div className="dashboard">
       <nav className="sidebar">
-        <div className="logo-container">
+        <div className="logo-container" onClick={() => navigate('/dashboard')}>
           <img src={Logo} alt="Logo" className="logo1" />
         </div>
-        <ul>
+        <ul className="sidebar-features">
           <li>
             <div className="sidebar-button" onClick={toggleAddTaskForm}>
               <FontAwesomeIcon icon={faCirclePlus} className="circle-icon" />
@@ -137,59 +196,68 @@ const ScheduleAnEvent = () => {
         </ul>
       </nav>
       <main className="content">
-        <header className="topbar">
+      <header className="topbar">
           <div className="icon-container">
-            <FontAwesomeIcon icon={faBell} className="bell-icon" />
-            <FontAwesomeIcon icon={faUser} className="user-icon" />
+          <FontAwesomeIcon icon={faBell} className="bell-icon" />
+            <div className="profile-info">
+              {userProfile ? (
+                <span className="user-name" onClick={() => navigate('/profile')} style={{ cursor: 'pointer' }}>
+                  {userProfile.name}
+                </span>
+              ) : (
+                <span>Loading...</span>
+              )}
+            </div>
+            
+           
+            {/* <FontAwesomeIcon icon={faUser} className="user-icon" onClick={handleLogout} style={{ cursor: 'pointer' }} /> */}
           </div>
         </header>
-        
-
-          <div className='time'>
+        <div className='time'>
           Events
+        </div>
+        <div className='task_added'>
+        <div className="profile-details">
+        {events.map((event) => (
+          <div >
+            <div className='eventname'>
+              <span className='span'> {event.title} 
+              <FontAwesomeIcon icon={faEdit} className="task-icon"  onClick={() => handleEditEvent(event)} />
+              <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteEvent(event.id)} />
+              </span>
+              
+            </div>
+            <div className='locationandtime'>
+              <span className='span'>
+                <FontAwesomeIcon icon={faLocationDot} className='location-icon'/> 
+                {event.location}</span>
+              <span className='span'>
+                <FontAwesomeIcon icon={faClock} className='location-icon'/> 
+                {new Date(event.dateTime).toLocaleString()} </span>
+            </div>
+            <div className='links'>
+              <span> <a href={event.link} target="_blank" rel="noopener noreferrer">{event.link}</a></span>
+            </div>
+
           </div>
-          <div className="task_added">
-        
-            <table>
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Date & Time</th>
-                  <th>Location</th>
-                  <th>Link</th>
-                  <th>Remind Me</th>
-                </tr>
-              </thead>
-              <tbody>
-                {events.map((event, index) => (
-                  <tr key={index}>
-                    <td>{event.title}</td>
-                    <td>{new Date(event.dateTime).toLocaleString()}</td>
-                    <td>{event.location}</td>
-                    <td><a href={event.link} target="_blank" rel="noopener noreferrer">{event.link}</a></td>
-                    <td>{event.remindMe ? 'Yes' : 'No'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        
+          
+        ))}
+        </div>
+
+          
+        </div>
         <div className='present_time'>
           {date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
         </div>
         <button className="add-task-button" onClick={() => setShowEventForm(true)}>
-              Schedule Event
-            </button>
-        
-        
-          <div className="add-task-button" onClick={toggleAddEventForm}>
+          Schedule Event
+        </button>
+        <div className="add-task-button" onClick={toggleAddEventForm}>
           <FontAwesomeIcon icon={faPlus} className="add-task-icon" />
           <span>Add Event</span>
         </div>
-          
-        
         <div className="chat-button-container">
-          <FontAwesomeIcon icon={faComment} className="chat-icon flip-horizontal" />
+          <FontAwesomeIcon icon={faRobot} className="chat-icon flip-horizontal" />
         </div>
         {showEventForm && <AddEventForm toggleForm={toggleAddEventForm} editEvent={editEvent} />}
       </main>
@@ -198,3 +266,4 @@ const ScheduleAnEvent = () => {
 };
 
 export default ScheduleAnEvent;
+  
