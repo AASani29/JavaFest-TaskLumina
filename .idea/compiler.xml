@@ -10,10 +10,15 @@
         <module name="usersmanagementsystem" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="usersmanagementsystem (1)" target="1.5" />
+      <module name="usersmanagementsystem (2)" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="usersmanagementsystem" options="-parameters" />
+      <module name="usersmanagementsystem (2)" options="-parameters" />
     </option>
   </component>
 </project>

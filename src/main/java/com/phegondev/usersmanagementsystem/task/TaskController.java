@@ -1,6 +1,7 @@
 package com.phegondev.usersmanagementsystem.task;
 
 
+import com.phegondev.usersmanagementsystem.Reward.Reward;
 import com.phegondev.usersmanagementsystem.dto.ReqRes;
 import com.phegondev.usersmanagementsystem.entity.OurUsers;
 import com.phegondev.usersmanagementsystem.service.SecurityService;
@@ -63,6 +64,21 @@ public class TaskController {
         ReqRes response = usersManagementService.getMyInfo(email);
         return  ResponseEntity.status(response.getStatusCode()).body(response);
     }
+    @PutMapping("/complete/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    public ResponseEntity<String> completeTask(@PathVariable Long id, Authentication authentication) {
+        Integer userId = ((OurUsers) authentication.getPrincipal()).getId();
+        return taskService.completeTask(id, userId);
+    }
+    @GetMapping("/achievements")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<Reward>> getAchievements(Authentication authentication) {
+        Integer userId = ((OurUsers) authentication.getPrincipal()).getId();
+        List<Reward> achievements = taskService.getAchievements(userId);
+        return new ResponseEntity<>(achievements, HttpStatus.OK);
+    }
+
+
 
 
 }

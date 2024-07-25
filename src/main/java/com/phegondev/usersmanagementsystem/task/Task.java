@@ -26,6 +26,8 @@ public class Task {
     // Add user ID field
     private Integer userId;
 
+    private boolean completed;
+
     // Getters and Setters
 }
 

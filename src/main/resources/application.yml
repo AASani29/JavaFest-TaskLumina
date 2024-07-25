@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/tasks
+    url: jdbc:postgresql://localhost:5433/tasks
     username: postgres
-    password: sani9999
+    password: 123456789
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -14,3 +14,5 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: 8090
