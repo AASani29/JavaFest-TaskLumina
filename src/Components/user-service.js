@@ -86,3 +86,27 @@ export const getMyProfile = async () => {
     throw error; // Rethrow the error to handle it in the calling component
   }
 };
+
+export const completeTask = async (taskId) => {
+  try {
+    const response = await privateAxios.put(`/adminuser/task/complete/${taskId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+export const getAchievements = async () => {
+    const token = localStorage.getItem('token'); // Ensure the token is stored correctly
+    const response = await axios.get('/adminuser/task/achievements', {
+        headers: {
+            'Authorization': `Bearer ${token}` // Add the token to the Authorization header
+        }
+    });
+    return response.data;
+};
+
+
+

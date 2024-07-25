@@ -2,7 +2,7 @@ import axios from "axios";
 import { getToken } from "./Auth";
 import Cookies from "universal-cookie";
 
-export const BASE_URL='http://localhost:8080';
+export const BASE_URL='http://localhost:8090';
 
 
 export const myAxios=axios.create({

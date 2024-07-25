@@ -11,6 +11,8 @@ import { getCurrentUser } from '../Auth';
 import { getTasks, deleteTask } from '../user-service';
 import { getMyProfile } from '../user-service'; // Import getMyProfile function from userService
 
+import { completeTask } from '../user-service';
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Hook to get current location
@@ -38,30 +40,61 @@ const Dashboard = () => {
     setTodayDate(formattedDate);
   }, []);
 
+  // const fetchTodayTasks = async () => {
+  //   try {
+  //     const today = new Date().toISOString().split('T')[0];
+  //     console.log("Today's date:", today); // Debugging line
+  //     const data = await getTasks();
+  //     console.log("Fetched tasks:", data); // Debugging line
+  
+  //     // Filter tasks for today's date
+  //     const todayTasks = data.filter(task => {
+  //       const taskDate = new Date(task.dateTime);
+  //       if (isNaN(taskDate)) {
+  //         console.log(`Invalid date for task: ${task.name}, Task Date: ${task.dateTime}`); // Debugging line
+  //         return false;
+  //       }
+  //       const taskDateFormatted = taskDate.toISOString().split('T')[0];
+  //       console.log(`Task: ${task.name}, Task Date: ${taskDateFormatted}, Is Today: ${taskDateFormatted === today}`); // Debugging line
+  //       return taskDateFormatted === today;
+  //     });
+  
+  //     setTasks(todayTasks);
+  //   } catch (error) {
+  //     console.error("Failed to fetch tasks:", error);
+  //   }
+  // };
+
   const fetchTodayTasks = async () => {
     try {
-      const today = new Date().toISOString().split('T')[0];
-      console.log("Today's date:", today); // Debugging line
-      const data = await getTasks();
-      console.log("Fetched tasks:", data); // Debugging line
-  
-      // Filter tasks for today's date
-      const todayTasks = data.filter(task => {
-        const taskDate = new Date(task.dateTime);
-        if (isNaN(taskDate)) {
-          console.log(`Invalid date for task: ${task.name}, Task Date: ${task.dateTime}`); // Debugging line
-          return false;
-        }
-        const taskDateFormatted = taskDate.toISOString().split('T')[0];
-        console.log(`Task: ${task.name}, Task Date: ${taskDateFormatted}, Is Today: ${taskDateFormatted === today}`); // Debugging line
-        return taskDateFormatted === today;
-      });
-  
-      setTasks(todayTasks);
+        const today = new Date().toISOString().split('T')[0];
+        console.log("Today's date:", today); // Debugging line
+        const data = await getTasks();
+        console.log("Fetched tasks:", data); // Debugging line
+
+        // Filter tasks for today's date
+        const todayTasks = data.filter(task => {
+            // Parse the task date and ensure it's a valid date
+            const taskDate = new Date(task.dateTime);
+            if (isNaN(taskDate.getTime())) {
+                console.log(`Invalid date for task: ${task.name}, Task Date: ${task.dateTime}`); // Debugging line
+                return false;
+            }
+
+            // Format the task date for comparison
+            const taskDateFormatted = taskDate.toISOString().split('T')[0];
+            console.log(`Task: ${task.name}, Task Date: ${taskDateFormatted}, Is Today: ${taskDateFormatted === today}`); // Debugging line
+
+            // Check if the task date is today
+            return taskDateFormatted === today && !task.completed; // Exclude completed tasks
+        });
+
+        setTasks(todayTasks);
     } catch (error) {
-      console.error("Failed to fetch tasks:", error);
+        console.error("Failed to fetch tasks:", error);
     }
-  };
+};
+
 
   const fetchUserProfile = async () => {
     try {
@@ -76,12 +109,21 @@ const Dashboard = () => {
     }
   };
 
-  const handleDeleteTask = async (taskId) => {
+  // const handleDeleteTask = async (taskId) => {
+  //   try {
+  //     await deleteTask(taskId);
+  //     setTasks(tasks.filter(task => task.id !== taskId));
+  //   } catch (error) {
+  //     console.error("Failed to delete task:", error);
+  //   }
+  // };
+
+  const handleCompleteTask = async (taskId) => {
     try {
-      await deleteTask(taskId);
+      await completeTask(taskId);
       setTasks(tasks.filter(task => task.id !== taskId));
     } catch (error) {
-      console.error("Failed to delete task:", error);
+      console.error("Failed to complete task:", error);
     }
   };
 
@@ -133,7 +175,7 @@ const Dashboard = () => {
             </div>
           </li>
           <li>
-            <div className="sidebar-button">
+            <div className="sidebar-button" onClick= {() => navigate('/achievements')}>
               <FontAwesomeIcon icon={faAward} className="circle-icon" />
               <span>View Achievements</span>
             </div>
@@ -227,7 +269,7 @@ const Dashboard = () => {
               {(task.priority ==="HIGH")? (
                 <span className='span'> <label className='hightask'> {task.name} </label> 
                 <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
                 </span>
 
               ) : ( (task.priority ==="MEDIUM")?
@@ -235,13 +277,13 @@ const Dashboard = () => {
               (
                 <span className='span'> <label className='mediumtask'> {task.name} </label> 
                 <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
                 </span>
 
               ) : (
                 <span className='span'> <label className='lowtask'> {task.name} </label> 
                 <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
                 </span>
 
               ))

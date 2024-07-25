@@ -9,7 +9,7 @@ import Dashboard from './Components/Pages//Dashboard.jsx';
 import ViewTodoList from './Components/Pages/ViewTodoList .jsx';
 import ScheduleAnEvent from './Components/Pages/ScheduleAnEvent.jsx';
 import ProfilePage from './Components/Pages/ProfilePage.jsx';
-
+import Achievement from './Components/Pages/Achievements.jsx'
 
 
 const App = () => {
@@ -22,7 +22,7 @@ const App = () => {
         <Route path="/viewtodolist" element={<ViewTodoList />} />
         <Route path="/scheduleanevent" element={<ScheduleAnEvent />} />
         <Route path="/profile" element={<ProfilePage />} />
-        
+        <Route path="/achievements" element={<Achievement />} />
        
         
       </Routes>
