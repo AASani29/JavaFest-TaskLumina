@@ -181,7 +181,7 @@ const Dashboard = () => {
             </div>
           </li>
           <li>
-            <div className="sidebar-button" >
+            <div className="sidebar-button"onClick= {() => navigate('/games')} >
               <FontAwesomeIcon icon={faGamepad} className="circle-icon" />
               <span>Play a Game</span>
               
