@@ -11,27 +11,25 @@
 }
 
 .sidebar {
-  width: 250px; /* Default width */
+  width: 250px;
   background-color: white;
   color: #34495e;
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: width 0.3s ease; /* Smooth transition */
+  transition: width 0.3s ease;
 }
-
 
 @media (max-width: 768px) {
   .sidebar {
-    width: 200px; 
+      width: 200px;
   }
 }
 
-
 @media (max-width: 480px) {
   .sidebar {
-    width: 150px; 
+      width: 150px;
   }
 }
 
@@ -43,10 +41,8 @@
   margin-bottom: 20px;
   cursor: pointer;
   padding-top: 10px;
-  
   height: 60px;
 }
-
 
 .logo1 {
   max-width: 100%;
@@ -84,11 +80,12 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Adjusted to start from top */
+  justify-content: flex-start;
   align-items: center;
   background-color: #ecf0f1;
+  background-position: fixed;
   position: relative;
-  padding-top: 120px; /* Added padding-top to push content below topbar */
+ 
 }
 
 .icon-container {
@@ -101,7 +98,6 @@
 .bell-icon {
   font-size: 24px;
   color: #285581;
-  
   cursor: pointer;
 }
 
@@ -112,9 +108,8 @@
   padding: 30px 50px;
   background-color: #ecf0f1;
   box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1);
-  position: fixed; /* Changed to fixed for persistent topbar */
+  position: fixed;
   top: 0;
-  
 }
 
 .user-icon {
@@ -122,7 +117,6 @@
   font-size: 30px;
   color: red;
   font-weight: 600;
-  
   cursor: pointer;
 }
 
@@ -133,10 +127,10 @@
 }
 
 .add-task-button {
-  position: absolute; /* Changed to absolute positioning */
-  bottom: 20px; /* Adjusted to position at the bottom */
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%); /* Center horizontally */
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -154,7 +148,7 @@
 }
 
 .chat-button-container {
-  position: fixed; /* Changed to fixed positioning */
+  position: fixed;
   bottom: 35px;
   right: 50px;
 }
@@ -169,11 +163,12 @@
   transform: scaleX(-1);
 }
 
-.time {
+.achievements {
   position: absolute;
-  top: 140px;
-  left: 50px;
-  font-size: 50px;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3vw;
   color: #5B789F;
 }
 
@@ -193,60 +188,134 @@
   color: #8996A2;
 }
 
-/* Dashboard.css */
-
 .sidebar-button {
   display: flex;
   align-items: center;
   padding: 10px;
   cursor: pointer;
-  position: relative; /* Ensure relative positioning for absolute child */
+  position: relative;
 }
-.sidebar-features{
+
+.sidebar-features {
   margin-left: 15px;
 }
 
 .arrow-sign {
   position: absolute;
-  right: 10px; /* Adjust as needed */
-  font-size: 14px; /* Adjust size */
-  color: #3498db; /* Adjust color */
+  right: 10px;
+  font-size: 14px;
+  color: #3498db;
 }
 
-.profile-info{
+.profile-info {
   font-size: 16px;
   margin-right: 50px;
 }
-.details{
+
+.details {
   display: flex;
   flex-direction: row;
   align-items: baseline;
   gap: 15px;
 }
 
-.hightask{
+.hightask {
   color: green;
   padding-right: 15px;
 }
-.lowtask{
+
+.lowtask {
   color: rgb(0, 0, 0);
   padding-right: 15px;
 }
-.mediumtask{
+
+.mediumtask {
   color: purple;
   padding-right: 15px;
 }
 
-.description{
-  color:#34495e;
+.description {
+  color: #34495e;
   font-size: 18px;
 }
-.eachtask{
-    
-  border-style:unset;
+
+.eachtask {
+  border-style: unset;
   border-radius: 10px;
-      
 }
-.task-icon{
+
+.task-icon {
   font-size: 2px;
+}
+.achievements-container {
+  display: flex;
+  flex-direction: row;
+  gap: 80px; /* Space between columns */
+  justify-content: space-around;
+  margin-top: 15px;
+  width:800px;
+  max-width: 100%; /* Prevent container from growing beyond viewport */
+  
+}
+
+/* Ensure columns do not grow larger than their parent */
+.column {
+  flex: 1; /* Each column takes equal space */
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Space between items in a column */
+  max-width: 100%; /* Prevent columns from growing too large */
+}
+
+.achievement-item {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  background-color: #f9f9f9;
+  width: 100%; /* Full width of the column */
+}
+
+.achievement-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Align items with space between */
+  margin-bottom: 10px;
+}
+.medal-icon {
+  font-size: 55px;
+  color: #A8ADB1;
+  margin-top: 10px;
+  margin-left: 15px;
+  padding-top: 10px;
+}
+.achievement-name {
+  font-size: 21px;
+  color: #A8ADB1;
+  flex: 1;
+  margin-left: 27px;
+  margin-bottom: 15px; /* Adjust this value to decrease space between name and description */
+}
+.achievement-description {
+  font-size: 10px;
+  color: #A8ADB1;
+  margin-left: 100px; /* Align with the name's margin-left */
+  margin-bottom: 10px; /* Adjust this value to control the bottom space */
+  margin-top: 0; /* Remove any extra space above */
+}
+
+.progress-container {
+  background-color: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 8px;
+  margin-top: 10px;
+  margin-left: 100px
+}
+
+.progress-bar {
+  background-color: #285581;
+  height: 100%;
+  transition: width 0.5s ease;
 }

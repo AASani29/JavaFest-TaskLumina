@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import '../CSS Files/Dashboard.css'; // Import the same CSS file to use the same styling
+import '../CSS Files/Achievements.css'; // Import the same CSS file to use the same styling
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAward, faCalendarDays, faClock, faTag, faList, faCirclePlus, faBell, faGamepad } from '@fortawesome/free-solid-svg-icons';
+import { faAward, faCalendarDays, faClock, faList, faCirclePlus, faBell, faGamepad, faMedal } from '@fortawesome/free-solid-svg-icons';
 import { getAchievements } from '../user-service'; // Adjust import path if necessary
 import Logo from "../Assets/Logo.png";
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +12,6 @@ const Achievements = () => {
     const navigate = useNavigate();
     const [userProfile, setUserProfile] = useState(null);
     const [achievements, setAchievements] = useState([]);
-    const [error, setError] = useState('');
     const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
@@ -34,7 +33,6 @@ const Achievements = () => {
             setAchievements(data || []); // Ensure data is an array
         } catch (error) {
             console.error("Failed to fetch achievements:", error);
-            setError("Failed to fetch achievements");
         }
     };
 
@@ -74,6 +72,22 @@ const Achievements = () => {
             console.error("Failed to fetch tasks:", error);
         }
     };
+
+    const badgeDescriptions = {
+        'Rookie Starter': 'Earned by completing first task of the month',
+        'Daily Achiever': 'Earned by completing all tasks in a single day.',
+        'Weekly Warrior': 'Earned by completing all tasks every day for a full week.',
+        'Monthly Master': 'Earned by completing all tasks every day for a full month.'
+    };
+
+    const badgeProgress = {
+        'Rookie Starter': 30, // Example progress percentage
+        'Daily Achiever': 60, // Example progress percentage
+        'Weekly Warrior': 80, // Example progress percentage
+        'Monthly Master': 50  // Example progress percentage
+    };
+
+    const badgeNames = ['Rookie Starter', 'Daily Achiever', 'Weekly Warrior', 'Monthly Master'];
 
     return (
         <div className="dashboard">
@@ -135,37 +149,47 @@ const Achievements = () => {
                         </div>
                     </div>
                 </header>
-                <div className='time'>
+                <div className='achievements'>
                     Achievements
                 </div>
-                <div className='task_added'>
-                    <div className="profile-details">
-                        {achievements.length > 0 ? (
-                            achievements.map((achievement, index) => (
-                                <div className='eachtask' key={index}>
-                                    <div className='eventname'>
-                                        <span className='span'>
-                                            <label className='achievement-task'>{achievement.badge}</label>
-                                        </span>
-                                    </div>
-                                    <div className='description'>
-                                        {achievement.date}
-                                    </div>
-                                    <div className='locationandtime'>
-                                        <span className='span'>
-                                            <FontAwesomeIcon icon={faTag} className='location-icon' />
-                                            {achievement.badge}
-                                        </span>
-                                        <span className='span'>
-                                            <FontAwesomeIcon icon={faClock} className='location-icon' />
-                                            {new Date(achievement.date).toLocaleString()}
-                                        </span>
-                                    </div>
+                <div className='achievements-container'>
+                    <div className='column'>
+                        {badgeNames.slice(0, 2).map((badge, index) => (
+                            <div className='achievement-item' key={index}>
+                                <div className='achievement-header'>
+                                    <FontAwesomeIcon icon={faMedal} className='medal-icon' />
+                                    <span className='achievement-name'>{badge}</span>
                                 </div>
-                            ))
-                        ) : (
-                            <p>No achievements found.</p>
-                        )}
+                                <div className='achievement-description'>
+                                    {badgeDescriptions[badge]}
+                                </div>
+                                <div className='progress-container'>
+                                    <div
+                                        className='progress-bar'
+                                        style={{ width: `${badgeProgress[badge]}%` }} // Dynamically set width
+                                    ></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className='column'>
+                        {badgeNames.slice(2).map((badge, index) => (
+                            <div className='achievement-item' key={index}>
+                                <div className='achievement-header'>
+                                    <FontAwesomeIcon icon={faMedal} className='medal-icon' />
+                                    <span className='achievement-name'>{badge}</span>
+                                </div>
+                                <div className='achievement-description'>
+                                    {badgeDescriptions[badge]}
+                                </div>
+                                <div className='progress-container'>
+                                    <div
+                                        className='progress-bar'
+                                        style={{ width: `${badgeProgress[badge]}%` }} // Dynamically set width
+                                    ></div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </main>
