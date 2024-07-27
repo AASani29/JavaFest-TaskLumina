@@ -13,6 +13,18 @@ import { getMyProfile } from '../user-service'; // Import getMyProfile function 
 
 import { completeTask } from '../user-service';
 
+const loadScript = (src, async = true, defer = true) => {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = async;
+    script.defer = defer;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
+};
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Hook to get current location
@@ -40,30 +52,7 @@ const Dashboard = () => {
     setTodayDate(formattedDate);
   }, []);
 
-  // const fetchTodayTasks = async () => {
-  //   try {
-  //     const today = new Date().toISOString().split('T')[0];
-  //     console.log("Today's date:", today); // Debugging line
-  //     const data = await getTasks();
-  //     console.log("Fetched tasks:", data); // Debugging line
-  
-  //     // Filter tasks for today's date
-  //     const todayTasks = data.filter(task => {
-  //       const taskDate = new Date(task.dateTime);
-  //       if (isNaN(taskDate)) {
-  //         console.log(`Invalid date for task: ${task.name}, Task Date: ${task.dateTime}`); // Debugging line
-  //         return false;
-  //       }
-  //       const taskDateFormatted = taskDate.toISOString().split('T')[0];
-  //       console.log(`Task: ${task.name}, Task Date: ${taskDateFormatted}, Is Today: ${taskDateFormatted === today}`); // Debugging line
-  //       return taskDateFormatted === today;
-  //     });
-  
-  //     setTasks(todayTasks);
-  //   } catch (error) {
-  //     console.error("Failed to fetch tasks:", error);
-  //   }
-  // };
+
 
   const fetchTodayTasks = async () => {
     try {
@@ -136,6 +125,19 @@ const Dashboard = () => {
     setEditTask(null);
     setShowAddTaskForm(!showAddTaskForm);
   };
+  useEffect(() => {
+    const loadBotpressScripts = async () => {
+      try {
+        
+        await loadScript("https://cdn.botpress.cloud/webchat/v1/inject.js");
+        await loadScript("https://mediafiles.botpress.cloud/6f06300e-840b-4711-b2ac-8e9d5f7d4bf5/webchat/config.js");
+      } catch (error) {
+        console.error("Failed to load Botpress scripts:", error);
+      }
+    };
+
+    loadBotpressScripts();
+  }, []);
 
   
 
@@ -213,53 +215,7 @@ const Dashboard = () => {
         <div className='present_time'>
           {todayDate}
         </div>
-        {/* <div className='task_added'>
-          {tasks.length === 0 ? "No task added yet" : (
-            <ul>
-              {tasks.map(task => (
-                <li key={task.id}>
-                  {task.name} - {task.description} - {task.dateTime} - {task.category} - {task.priority}
-                  <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                  <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
-                </li>
-              ))}
-            </ul>
-          )}
-        </div> */}
-         {/* <div className='task_added'>
-        <div className="profile-details">
-        {tasks.map((task) => (
-          <div >
-            <div className='eventname'>
-              <span className='span'>  {task.name} 
-              <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-              <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
-              </span>
-              
-            </div>
-            <div className='loactionandtime'>
-              <span> {task.description}</span>
-            </div>
-            <div className='locationandtime'>
-              <span className='span'>
-                <FontAwesomeIcon icon={faTag} className='location-icon'/> 
-                {task.category}</span>
-              <span className='span'>
-                <FontAwesomeIcon icon={faClock} className='location-icon'/> 
-                {new Date(task.dateTime).toLocaleString()} </span>
-              <span className='span'>
-                <FontAwesomeIcon icon={faFilter} className='location-icon'/> 
-                {task.priority} </span>
-            </div>
-            
-
-          </div>
-          
-        ))}
-        </div>
-
-          
-        </div> */}
+       
 
 <div className='task_added'>
         <div className="profile-details">
@@ -318,13 +274,8 @@ const Dashboard = () => {
 
 
 
-        {/* <div className="add-task-button" onClick={toggleAddTaskForm}>
-          <FontAwesomeIcon icon={faPlus} className="add-task-icon" />
-          <span>Add Task</span>
-        </div> */}
-        <div className="chat-button-container">
-          <FontAwesomeIcon icon={faRobot} className="chat-icon flip-horizontal" />
-        </div>
+        
+        
         {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />} {/* Conditionally render the AddTaskForm */}
       </main>
     </div>

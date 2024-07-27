@@ -10,6 +10,18 @@ import { getEvents, addEvent, deleteEvent, updateEvent } from '../event-service'
 import AddEventForm from '../Features/AddEventForm';
 import { getMyProfile } from '../user-service';
 import { getCurrentUser } from '../Auth';
+
+const loadScript = (src, async = true, defer = true) => {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = async;
+    script.defer = defer;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
+};
 const ScheduleAnEvent = () => {
   const [showEventForm, setShowEventForm] = useState(false);
   const [editEvent, setEditEvent] = useState(null);
@@ -69,6 +81,19 @@ const ScheduleAnEvent = () => {
       console.error('Error scheduling event:', error);
     }
   };
+  useEffect(() => {
+    const loadBotpressScripts = async () => {
+      try {
+        
+        await loadScript("https://cdn.botpress.cloud/webchat/v1/inject.js");
+        await loadScript("https://mediafiles.botpress.cloud/6f06300e-840b-4711-b2ac-8e9d5f7d4bf5/webchat/config.js");
+      } catch (error) {
+        console.error("Failed to load Botpress scripts:", error);
+      }
+    };
+
+    loadBotpressScripts();
+  }, []);
 
   const handleUpdateEvent = async () => {
     try {
@@ -256,9 +281,7 @@ const ScheduleAnEvent = () => {
           <FontAwesomeIcon icon={faPlus} className="add-task-icon" />
           <span>Add Event</span>
         </div>
-        <div className="chat-button-container">
-          <FontAwesomeIcon icon={faRobot} className="chat-icon flip-horizontal" />
-        </div>
+        
         {showEventForm && <AddEventForm toggleForm={toggleAddEventForm} editEvent={editEvent} />}
       </main>
     </div>

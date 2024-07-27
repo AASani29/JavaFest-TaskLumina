@@ -8,7 +8,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faClock } from '@fortawesome/free-regular-svg-icons';
 import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad} from '@fortawesome/free-solid-svg-icons';
 
-
+const loadScript = (src, async = true, defer = true) => {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = async;
+    script.defer = defer;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
+};
 const ProfilePage = () => {
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState(null);
@@ -23,6 +33,19 @@ const ProfilePage = () => {
   };
   useEffect(() => {
     fetchUserProfile(); // Fetch user profile on component mount
+  }, []);
+  useEffect(() => {
+    const loadBotpressScripts = async () => {
+      try {
+        
+        await loadScript("https://cdn.botpress.cloud/webchat/v1/inject.js");
+        await loadScript("https://mediafiles.botpress.cloud/6f06300e-840b-4711-b2ac-8e9d5f7d4bf5/webchat/config.js");
+      } catch (error) {
+        console.error("Failed to load Botpress scripts:", error);
+      }
+    };
+
+    loadBotpressScripts();
   }, []);
 
   

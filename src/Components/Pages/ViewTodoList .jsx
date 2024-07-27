@@ -9,6 +9,18 @@ import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faEdit, faChe
 import { getCurrentUser } from '../Auth';
 import { getTasks, deleteTask } from '../user-service';
 import { getMyProfile } from '../user-service';
+
+const loadScript = (src, async = true, defer = true) => {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = async;
+    script.defer = defer;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
+};
 const ViewTodoList = () => {
   const navigate = useNavigate();
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
@@ -65,6 +77,19 @@ const ViewTodoList = () => {
       console.error("Failed to delete task:", error);
     }
   };
+  useEffect(() => {
+    const loadBotpressScripts = async () => {
+      try {
+        
+        await loadScript("https://cdn.botpress.cloud/webchat/v1/inject.js");
+        await loadScript("https://mediafiles.botpress.cloud/6f06300e-840b-4711-b2ac-8e9d5f7d4bf5/webchat/config.js");
+      } catch (error) {
+        console.error("Failed to load Botpress scripts:", error);
+      }
+    };
+
+    loadBotpressScripts();
+  }, []);
 
   const handleEditTask = (task) => {
     setEditTask(task);
@@ -92,18 +117,7 @@ const ViewTodoList = () => {
       <>
         {dueTasks.length > 0 && (
 
-          // <div className="task-section">
-          //   <h3>Due Tasks</h3>
-          //   <ul>
-          //     {dueTasks.map(task => (
-          //       <li key={task.id}>
-          //         {task.name} - {task.description} - {task.dateTime} - {task.category} - {task.priority}
-          //         <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-          //         <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
-          //       </li>
-          //     ))}
-          //   </ul>
-          // </div>
+         
 
           <div className='task-section'>
         <div className="profile-details">
@@ -161,18 +175,7 @@ const ViewTodoList = () => {
         </div>
         )}
 
-        {/* <div className="task-section">
-          <h3>Upcoming Tasks</h3>
-          <ul>
-            {futureTasks.map(task => (
-              <li key={task.id}>
-                {task.name} - {task.description}
-                <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
-              </li>
-            ))}
-          </ul>
-        </div> */}
+       
 
 <div className='task-section'>
         <div className="profile-details">
@@ -306,13 +309,8 @@ const ViewTodoList = () => {
         <div className='task_added'>
           {tasks.length === 0 ? "No task added yet" : renderTasks()}
         </div>
-        {/* <div className="add-task-button" onClick={toggleAddTaskForm}>
-          <FontAwesomeIcon icon={faPlus} className="add-task-icon" />
-          <span>Add Task</span>
-        </div> */}
-        <div className="chat-button-container">
-          <FontAwesomeIcon icon={faRobot} className="chat-icon flip-horizontal" />
-        </div>
+        
+        
         {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />} {/* Conditionally render the AddTaskForm */}
       </main>
     </div>

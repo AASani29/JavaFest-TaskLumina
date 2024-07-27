@@ -8,6 +8,18 @@ import { useNavigate } from 'react-router-dom';
 import { getMyProfile, getTasks } from '../user-service';
 import { getCurrentUser } from '../Auth';
 
+const loadScript = (src, async = true, defer = true) => {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = async;
+      script.defer = defer;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.body.appendChild(script);
+    });
+  };
+
 const Achievements = () => {
     const navigate = useNavigate();
     const [userProfile, setUserProfile] = useState(null);
@@ -35,6 +47,19 @@ const Achievements = () => {
             console.error("Failed to fetch achievements:", error);
         }
     };
+    useEffect(() => {
+        const loadBotpressScripts = async () => {
+          try {
+            
+            await loadScript("https://cdn.botpress.cloud/webchat/v1/inject.js");
+            await loadScript("https://mediafiles.botpress.cloud/6f06300e-840b-4711-b2ac-8e9d5f7d4bf5/webchat/config.js");
+          } catch (error) {
+            console.error("Failed to load Botpress scripts:", error);
+          }
+        };
+    
+        loadBotpressScripts();
+      }, []);
 
     const fetchUserProfile = async () => {
         try {
