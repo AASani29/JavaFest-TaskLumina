@@ -93,12 +93,51 @@ public class TaskService {
                 rewardRepository.save(dailyAchieverReward);
             }
 
+            // Check and award "Weekly Warrior" badge
+            boolean weeklyWarrior = true;
+            for (int i = 0; i < 7; i++) {
+                LocalDate date = today.minusDays(i);
+                List<Task> dayTasks = taskRepository.findByUserIdAndDateTimeBetween(
+                        userId, date.atStartOfDay(), date.plusDays(1).atStartOfDay());
+                if (dayTasks.isEmpty() || dayTasks.stream().anyMatch(daytask -> !daytask.isCompleted())) {
+                    weeklyWarrior = false;
+                    break;
+                }
+            }
+            if (weeklyWarrior) {
+                Reward weeklyWarriorReward = new Reward();
+                weeklyWarriorReward.setUserId(userId);
+                weeklyWarriorReward.setDate(today);
+                weeklyWarriorReward.setBadge("Weekly Warrior");
+                weeklyWarriorReward.setNotified(false);
+                rewardRepository.save(weeklyWarriorReward);
+            }
+
+            // Check and award "Monthly Master" badge
+            boolean monthlyMaster = true;
+            for (int i = 0; i < 30; i++) {
+                LocalDate date = today.minusDays(i);
+                List<Task> dayTasks = taskRepository.findByUserIdAndDateTimeBetween(
+                        userId, date.atStartOfDay(), date.plusDays(1).atStartOfDay());
+                if (dayTasks.isEmpty() || dayTasks.stream().anyMatch(daytask -> !daytask.isCompleted())) {
+                    monthlyMaster = false;
+                    break;
+                }
+            }
+            if (monthlyMaster) {
+                Reward monthlyMasterReward = new Reward();
+                monthlyMasterReward.setUserId(userId);
+                monthlyMasterReward.setDate(today);
+                monthlyMasterReward.setBadge("Monthly Master");
+                monthlyMasterReward.setNotified(false);
+                rewardRepository.save(monthlyMasterReward);
+            }
+
             return new ResponseEntity<>("Task completed successfully", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Task not found", HttpStatus.NOT_FOUND);
         }
     }
-
     public List<Reward> getAchievements(Integer userId) {
         return rewardRepository.findByUserId(userId);
     }
