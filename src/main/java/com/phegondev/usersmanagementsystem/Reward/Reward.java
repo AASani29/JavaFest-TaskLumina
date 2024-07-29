@@ -15,4 +15,5 @@ public class Reward {
     private Integer userId;
     private LocalDate date;
     private String badge; // e.g., "Daily Achiever"
+    private boolean notified; // New field
 }

@@ -58,6 +58,7 @@ public class TaskService {
             return new ResponseEntity<>("Task not found", HttpStatus.NOT_FOUND);
         }
     }
+
     @Transactional
     public ResponseEntity<String> completeTask(Long id, Integer userId) {
         Optional<Task> taskOptional = taskRepository.findByIdAndUserId(id, userId);
@@ -71,19 +72,25 @@ public class TaskService {
             List<Task> todayTasks = taskRepository.findByUserIdAndDateTimeBetween(
                     userId, today.atStartOfDay(), today.plusDays(1).atStartOfDay());
 
-            // Check if user has already earned the badge
-            List<Reward> existingRewards = rewardRepository.findByUserIdAndBadgeAndDate(userId, "Daily Achiever", today);
-            if (existingRewards.isEmpty()) {
-                boolean allCompleted = todayTasks.stream().allMatch(Task::isCompleted);
-                long completedTasksCount = todayTasks.stream().filter(Task::isCompleted).count();
+            // Check and award "Rookie Starter" badge if first task is completed
+            long completedTasksCount = todayTasks.stream().filter(Task::isCompleted).count();
+            if (completedTasksCount == 1) {
+                Reward rookieStarterReward = new Reward();
+                rookieStarterReward.setUserId(userId);
+                rookieStarterReward.setDate(today);
+                rookieStarterReward.setBadge("Rookie Starter");
+                rookieStarterReward.setNotified(false); // Set notified to false
+                rewardRepository.save(rookieStarterReward);
+            }
 
-                if (allCompleted && completedTasksCount >= 5) {
-                    Reward reward = new Reward();
-                    reward.setUserId(userId);
-                    reward.setDate(today);
-                    reward.setBadge("Daily Achiever");
-                    rewardRepository.save(reward);
-                }
+            // Check and award "Daily Achiever" badge if 5 tasks are completed
+            if (completedTasksCount == 5) {
+                Reward dailyAchieverReward = new Reward();
+                dailyAchieverReward.setUserId(userId);
+                dailyAchieverReward.setDate(today);
+                dailyAchieverReward.setBadge("Daily Achiever");
+                dailyAchieverReward.setNotified(false); // Set notified to false
+                rewardRepository.save(dailyAchieverReward);
             }
 
             return new ResponseEntity<>("Task completed successfully", HttpStatus.OK);
@@ -93,8 +100,19 @@ public class TaskService {
     }
 
     public List<Reward> getAchievements(Integer userId) {
-        return rewardRepository.findByUserIdAndBadge(userId, "Daily Achiever");
+        return rewardRepository.findByUserId(userId);
     }
 
+    public Progress getTaskProgress(Integer userId) {
+        LocalDate today = LocalDate.now();
+        List<Task> todayTasks = taskRepository.findByUserIdAndDateTimeBetween(
+                userId, today.atStartOfDay(), today.plusDays(1).atStartOfDay());
+        long completedTasksCount = todayTasks.stream().filter(Task::isCompleted).count();
 
+        Progress progress = new Progress();
+        progress.setTotalTasks(todayTasks.size());
+        progress.setCompletedTasks(completedTasksCount);
+
+        return progress;
+    }
 }

@@ -70,12 +70,22 @@ public class TaskController {
         Integer userId = ((OurUsers) authentication.getPrincipal()).getId();
         return taskService.completeTask(id, userId);
     }
+
     @GetMapping("/achievements")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<Reward>> getAchievements(Authentication authentication) {
         Integer userId = ((OurUsers) authentication.getPrincipal()).getId();
         List<Reward> achievements = taskService.getAchievements(userId);
         return new ResponseEntity<>(achievements, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/progress")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Progress> getTaskProgress(Authentication authentication) {
+        Integer userId = ((OurUsers) authentication.getPrincipal()).getId();
+        Progress progress = taskService.getTaskProgress(userId);
+        return new ResponseEntity<>(progress, HttpStatus.OK);
     }
 
 
