@@ -229,6 +229,8 @@
   padding-right: 15px;
 }
 
+
+
 .mediumtask {
   color: purple;
   padding-right: 15px;
@@ -245,14 +247,17 @@
 }
 
 .task-icon {
-  font-size: 2px;
+  font-size: 20px;
 }
 .achievements-container {
   display: flex;
   flex-direction: row;
   gap: 80px; /* Space between columns */
   justify-content: space-around;
-  margin-top: 15px;
+  margin-top: 150px;
+  margin-right: 700px;
+  margin-bottom: 800px;
+  padding-bottom: 200px;
   width:800px;
   max-width: 100%; /* Prevent container from growing beyond viewport */
   
@@ -265,6 +270,12 @@
   flex-direction: column;
   gap: 20px; /* Space between items in a column */
   max-width: 100%; /* Prevent columns from growing too large */
+}
+
+
+.achievement-item.earned {
+  border-color: gold;
+  background-color: #f9f9c1;
 }
 
 .achievement-item {
@@ -290,19 +301,46 @@
   margin-left: 15px;
   padding-top: 10px;
 }
+.medal-icon.earned {
+  font-size: 55px;
+  color: #5B789F;
+  margin-top: 10px;
+  margin-left: 15px;
+  padding-top: 10px;
+}
 .achievement-name {
   font-size: 21px;
+  font-weight: 600;
   color: #A8ADB1;
   flex: 1;
   margin-left: 27px;
   margin-bottom: 15px; /* Adjust this value to decrease space between name and description */
 }
+.achievement-name.earned {
+  font-size: 21px;
+  color: #000000;
+  flex: 1;
+  margin-left: 27px;
+  margin-bottom: 15px; /* Adjust this value to decrease space between name and description */
+}
 .achievement-description {
-  font-size: 10px;
+  font-size: 15px;
   color: #A8ADB1;
   margin-left: 100px; /* Align with the name's margin-left */
   margin-bottom: 10px; /* Adjust this value to control the bottom space */
   margin-top: 0; /* Remove any extra space above */
+}
+.achievement-description.earned {
+  font-size: 15px;
+  color: #000000;
+  margin-left: 100px; /* Align with the name's margin-left */
+  margin-bottom: 10px; /* Adjust this value to control the bottom space */
+  margin-top: 0; /* Remove any extra space above */
+}
+.badge-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .progress-container {

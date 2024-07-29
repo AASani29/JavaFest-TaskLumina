@@ -96,17 +96,70 @@ export const completeTask = async (taskId) => {
   }
 };
 
-
-
-export const getAchievements = async () => {
-    const token = localStorage.getItem('token'); // Ensure the token is stored correctly
+export const getAchievements = async (userId) => {
+  try {
+    const token = localStorage.getItem('token');
     const response = await axios.get('/adminuser/task/achievements', {
-        headers: {
-            'Authorization': `Bearer ${token}` // Add the token to the Authorization header
-        }
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
     });
     return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
+
+export const getTaskProgress = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get('/adminuser/task/progress', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateProgress = async (progressData) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.put('/adminuser/task/progress', progressData, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getMyRewards = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await privateAxios.get('/adminuser/task/reward/name');
+    console.log('Fetched rewards:', response.data); // Debugging log
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch rewards:', error);
+    throw error;
+  }
+};
+
+export const markRewardAsNotified = async (rewardId) => {
+  try {
+    const token = localStorage.getItem('token');
+    await privateAxios.put(`/adminuser/task/reward/${rewardId}/notified`);
+  } catch (error) {
+    console.error('Failed to mark reward as notified:', error);
+    throw error;
+  }
+};
+
 
 
 

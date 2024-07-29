@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import '../CSS Files/Dashboard.css';
-import '../CSS Files/ScheduleAnEvent.css'
-import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
+import '../CSS Files/ScheduleAnEvent.css';
+import Notification from '../Pages/Notification';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faClock, faFilter } from '@fortawesome/free-solid-svg-icons';
-import { faCirclePlus, faList, faCalendarDays, faAward,faTag, faLocationDot, faGamepad, faRobot, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faClock, faFilter, faCirclePlus, faList, faCalendarDays, faAward, faTag, faGamepad, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getCurrentUser } from '../Auth';
-import { getTasks, deleteTask } from '../user-service';
-import { getMyProfile } from '../user-service'; // Import getMyProfile function from userService
-
-import { completeTask } from '../user-service';
+import { getTasks, completeTask, getTaskProgress, updateProgress, getMyProfile, getMyRewards, markRewardAsNotified } from '../user-service';
 
 const loadScript = (src, async = true, defer = true) => {
   return new Promise((resolve, reject) => {
@@ -27,21 +24,25 @@ const loadScript = (src, async = true, defer = true) => {
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // Hook to get current location
+  const location = useLocation();
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [editTask, setEditTask] = useState(null);
   const [todayDate, setTodayDate] = useState('');
-  const [userProfile, setUserProfile] = useState(null); // State to store user profile
+  const [userProfile, setUserProfile] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [notifications, setNotifications] = useState([]);
+  const [hasNotified, setHasNotified] = useState(false); // State to check if notification has been shown
 
   useEffect(() => {
     const user = getCurrentUser();
     if (!user) {
       navigate("/login");
-      console.log("Not logged in, userData missing");
     } else {
       fetchTodayTasks();
-      fetchUserProfile(); // Fetch user profile on component mount
+      fetchUserProfile();
+      fetchTaskProgress();
+      fetchAndCheckRewards(); // Fetch and check rewards for notifications
     }
   }, [navigate]);
 
@@ -52,44 +53,27 @@ const Dashboard = () => {
     setTodayDate(formattedDate);
   }, []);
 
-
-
   const fetchTodayTasks = async () => {
     try {
-        const today = new Date().toISOString().split('T')[0];
-        console.log("Today's date:", today); // Debugging line
-        const data = await getTasks();
-        console.log("Fetched tasks:", data); // Debugging line
-
-        // Filter tasks for today's date
-        const todayTasks = data.filter(task => {
-            // Parse the task date and ensure it's a valid date
-            const taskDate = new Date(task.dateTime);
-            if (isNaN(taskDate.getTime())) {
-                console.log(`Invalid date for task: ${task.name}, Task Date: ${task.dateTime}`); // Debugging line
-                return false;
-            }
-
-            // Format the task date for comparison
-            const taskDateFormatted = taskDate.toISOString().split('T')[0];
-            console.log(`Task: ${task.name}, Task Date: ${taskDateFormatted}, Is Today: ${taskDateFormatted === today}`); // Debugging line
-
-            // Check if the task date is today
-            return taskDateFormatted === today && !task.completed; // Exclude completed tasks
-        });
-
-        setTasks(todayTasks);
+      const today = new Date().toISOString().split('T')[0];
+      const data = await getTasks();
+      const todayTasks = data.filter(task => {
+        const taskDate = new Date(task.dateTime);
+        if (isNaN(taskDate.getTime())) return false;
+        const taskDateFormatted = taskDate.toISOString().split('T')[0];
+        return taskDateFormatted === today && !task.completed;
+      });
+      setTasks(todayTasks);
     } catch (error) {
-        console.error("Failed to fetch tasks:", error);
+      console.error("Failed to fetch tasks:", error);
     }
-};
-
+  };
 
   const fetchUserProfile = async () => {
     try {
-      const response = await getMyProfile(); // Fetch user profile using userService function
+      const response = await getMyProfile();
       if (response.statusCode === 200) {
-        setUserProfile(response.ourUsers); // Set user profile in state
+        setUserProfile(response.ourUsers);
       } else {
         console.error('Failed to fetch user profile:', response.message);
       }
@@ -98,19 +82,43 @@ const Dashboard = () => {
     }
   };
 
-  // const handleDeleteTask = async (taskId) => {
-  //   try {
-  //     await deleteTask(taskId);
-  //     setTasks(tasks.filter(task => task.id !== taskId));
-  //   } catch (error) {
-  //     console.error("Failed to delete task:", error);
-  //   }
-  // };
+  const fetchTaskProgress = async () => {
+    try {
+      const progressData = await getTaskProgress();
+      setProgress((progressData.completedTasks / progressData.totalTasks) * 100);
+    } catch (error) {
+      console.error('Failed to fetch task progress:', error);
+    }
+  };
+
+  const fetchAndCheckRewards = async () => {
+    try {
+      const rewards = await getMyRewards(); // Fetch rewards for the logged-in user
+      const newRewards = rewards.filter(reward => !reward.notified); // Filter out rewards that have already been notified
+
+      if (newRewards.length > 0 && !hasNotified) {
+        const notificationMessages = newRewards.map(reward => `You have earned the ${reward.badge} reward!`);
+        setNotifications(notificationMessages);
+        setHasNotified(true);
+
+        // Mark rewards as notified
+        for (const reward of newRewards) {
+          // Make a request to the backend to mark this reward as notified
+          await markRewardAsNotified(reward.id);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to fetch rewards:", error);
+    }
+  };
 
   const handleCompleteTask = async (taskId) => {
     try {
       await completeTask(taskId);
       setTasks(tasks.filter(task => task.id !== taskId));
+      const progressData = await fetchTaskProgress();
+      await updateProgress(progressData);
+      setProgress((progressData.completedTasks / progressData.totalTasks) * 100);
     } catch (error) {
       console.error("Failed to complete task:", error);
     }
@@ -125,10 +133,10 @@ const Dashboard = () => {
     setEditTask(null);
     setShowAddTaskForm(!showAddTaskForm);
   };
+
   useEffect(() => {
     const loadBotpressScripts = async () => {
       try {
-        
         await loadScript("https://cdn.botpress.cloud/webchat/v1/inject.js");
         await loadScript("https://mediafiles.botpress.cloud/6f06300e-840b-4711-b2ac-8e9d5f7d4bf5/webchat/config.js");
       } catch (error) {
@@ -139,8 +147,6 @@ const Dashboard = () => {
     loadBotpressScripts();
   }, []);
 
-  
-
   return (
     <div className="dashboard">
       <nav className="sidebar">
@@ -149,44 +155,39 @@ const Dashboard = () => {
         </div>
         <ul className="sidebar-features">
           <li>
-            <div className="sidebar-button"  onClick={toggleAddTaskForm}>
+            <div className="sidebar-button" onClick={toggleAddTaskForm}>
               <FontAwesomeIcon icon={faCirclePlus} className="circle-icon" />
               <span>Add Task</span>
-              
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/viewtodolist')}>
               <FontAwesomeIcon icon={faList} className="circle-icon" />
               <span>View Todo List</span>
-              
             </div>
           </li>
           <li>
-            <div className="sidebar-button" >
+            <div className="sidebar-button">
               <FontAwesomeIcon icon={faClock} className="circle-icon" />
               <span>Make Me a Routine</span>
-              
             </div>
           </li>
           <li>
-            <div className="sidebar-button" onClick= {() => navigate('/scheduleanevent')}>
+            <div className="sidebar-button" onClick={() => navigate('/scheduleanevent')}>
               <FontAwesomeIcon icon={faCalendarDays} className="circle-icon" />
               <span>Schedule an Event</span>
-              
             </div>
           </li>
           <li>
-            <div className="sidebar-button" onClick= {() => navigate('/achievements')}>
+            <div className="sidebar-button" onClick={() => navigate('/achievements')}>
               <FontAwesomeIcon icon={faAward} className="circle-icon" />
-              <span>View Achievements</span>
+              <span>Achievements</span>
             </div>
           </li>
           <li>
-            <div className="sidebar-button"onClick= {() => navigate('/games')} >
+            <div className="sidebar-button" onClick={() => navigate('/games')}>
               <FontAwesomeIcon icon={faGamepad} className="circle-icon" />
-              <span>Play a Game</span>
-              
+              <span>Play A Game</span>
             </div>
           </li>
         </ul>
@@ -194,7 +195,7 @@ const Dashboard = () => {
       <main className="content">
         <header className="topbar">
           <div className="icon-container">
-          <FontAwesomeIcon icon={faBell} className="bell-icon" />
+            <FontAwesomeIcon icon={faBell} className="bell-icon" />
             <div className="profile-info">
               {userProfile ? (
                 <span className="user-name" onClick={() => navigate('/profile')} style={{ cursor: 'pointer' }}>
@@ -204,9 +205,6 @@ const Dashboard = () => {
                 <span>Loading...</span>
               )}
             </div>
-            
-           
-            {/* <FontAwesomeIcon icon={faUser} className="user-icon" onClick={handleLogout} style={{ cursor: 'pointer' }} /> */}
           </div>
         </header>
         <div className='time'>
@@ -215,14 +213,12 @@ const Dashboard = () => {
         <div className='present_time'>
           {todayDate}
         </div>
-       
-
-<div className='task_added'>
-        <div className="profile-details">
-        {tasks.map((task) => (
-          <div className='eachtask' >
-            <div className='eventname'>
-              {(task.priority ==="HIGH")? (
+        <div className='task_added'>
+          <div className="profile-details">
+            {tasks.map((task) => (
+              <div className='eachtask' key={task.id}>
+                <div className='eventname'>
+                {(task.priority ==="HIGH")? (
                 <span className='span'> <label className='hightask'> {task.name} </label> 
                 <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
                 <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
@@ -244,42 +240,36 @@ const Dashboard = () => {
 
               ))
             }
-          
-              
-            </div>
-            <div className='description'>
-               {task.description}
-            </div>
-            <div className='locationandtime'>
-              <span className='span'>
-                <FontAwesomeIcon icon={faTag} className='location-icon'/> 
-                {task.category} </span>
-              <span className='span'>
-                <FontAwesomeIcon icon={faClock} className='location-icon'/> 
-                {new Date(task.dateTime).toLocaleString()} </span>
-              <span className='span'>
-                <FontAwesomeIcon icon={faFilter} className='location-icon'/> 
-                {task.priority} </span>
-            </div>
-            
-
+                </div>
+                <div className='description'>
+                  {task.description}
+                </div>
+                <div className='locationandtime'>
+                  <span className='span'>
+                    <FontAwesomeIcon icon={faTag} className='location-icon' />
+                    {task.category}
+                  </span>
+                  <span className='span'>
+                    <FontAwesomeIcon icon={faClock} className='location-icon' />
+                    {new Date(task.dateTime).toLocaleString()}
+                  </span>
+                  <span className='span'>
+                    <FontAwesomeIcon icon={faFilter} className='location-icon' />
+                    {task.priority}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
-          
+        </div>
+        
+        {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />}
+        {notifications.map((message, index) => (
+          <Notification key={index} message={message} onClose={() => setNotifications(notifications.filter((_, i) => i !== index))} />
         ))}
-        </div>
-
-          
-        </div>
-
-
-
-
-        
-        
-        {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />} {/* Conditionally render the AddTaskForm */}
       </main>
     </div>
   );
-}
+};
 
 export default Dashboard;

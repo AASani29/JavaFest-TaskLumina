@@ -207,13 +207,13 @@ const ScheduleAnEvent = () => {
             </div>
           </li>
           <li>
-            <div className="sidebar-button">
+            <div className="sidebar-button" onClick={() => navigate('/achievements')}>
               <FontAwesomeIcon icon={faAward} className="circle-icon" />
               <span>View Achievements</span>
             </div>
           </li>
           <li>
-            <div className="sidebar-button">
+            <div className="sidebar-button" onClick={() => navigate('/games')}>
               <FontAwesomeIcon icon={faGamepad} className="circle-icon" />
               <span>Play a Game</span>
             </div>

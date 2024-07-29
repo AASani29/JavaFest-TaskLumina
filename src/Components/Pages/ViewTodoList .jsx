@@ -3,12 +3,13 @@ import '../CSS Files/Dashboard.css';
 import { useNavigate } from 'react-router-dom';
 import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
+import Notification from '../Pages/Notification';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faClock, faFilter, faRobot, faTag } from '@fortawesome/free-solid-svg-icons';
 import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getCurrentUser } from '../Auth';
 import { getTasks, deleteTask } from '../user-service';
-import { getMyProfile } from '../user-service';
+import { completeTask, getTaskProgress, updateProgress, getMyProfile, getMyRewards, markRewardAsNotified } from '../user-service';
 
 const loadScript = (src, async = true, defer = true) => {
   return new Promise((resolve, reject) => {
@@ -28,6 +29,10 @@ const ViewTodoList = () => {
   const [editTask, setEditTask] = useState(null);
   const [todayDate, setTodayDate] = useState('');
   const [userProfile, setUserProfile] = useState(null);
+  const [progress, setProgress] = useState(0);
+
+  const [notifications, setNotifications] = useState([]);
+  const [hasNotified, setHasNotified] = useState(false);
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -69,14 +74,7 @@ const ViewTodoList = () => {
     }
   };
 
-  const handleDeleteTask = async (taskId) => {
-    try {
-      await deleteTask(taskId);
-      setTasks(tasks.filter(task => task.id !== taskId));
-    } catch (error) {
-      console.error("Failed to delete task:", error);
-    }
-  };
+  
   useEffect(() => {
     const loadBotpressScripts = async () => {
       try {
@@ -100,18 +98,59 @@ const ViewTodoList = () => {
     setEditTask(null);
     setShowAddTaskForm(!showAddTaskForm);
   };
+  const fetchAndCheckRewards = async () => {
+    try {
+      const rewards = await getMyRewards(); // Fetch rewards for the logged-in user
+      const newRewards = rewards.filter(reward => !reward.notified); // Filter out rewards that have already been notified
+
+      if (newRewards.length > 0 && !hasNotified) {
+        const notificationMessages = newRewards.map(reward => `You have earned the ${reward.badge} reward!`);
+        setNotifications(notificationMessages);
+        setHasNotified(true);
+
+        // Mark rewards as notified
+        for (const reward of newRewards) {
+          // Make a request to the backend to mark this reward as notified
+          await markRewardAsNotified(reward.id);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to fetch rewards:", error);
+    }
+  };
 
   const renderTasks = () => {
     const today = new Date().toISOString().split('T')[0];
     const dueTasks = tasks.filter(task => {
       const taskDate = new Date(task.dateTime).toISOString().split('T')[0];
-      return taskDate < today;
+      return taskDate < today && !task.completed;
     });
 
     const futureTasks = tasks.filter(task => {
       const taskDate = new Date(task.dateTime).toISOString().split('T')[0];
-      return taskDate >= today;
+      return taskDate >= today && !task.completed;
     });
+    const fetchTaskProgress = async () => {
+      try {
+        const progressData = await getTaskProgress();
+        setProgress((progressData.completedTasks / progressData.totalTasks) * 100);
+      } catch (error) {
+        console.error('Failed to fetch task progress:', error);
+      }
+    };
+
+    const handleCompleteTask = async (taskId) => {
+      try {
+        await completeTask(taskId);
+        setTasks(tasks.filter(task => task.id !== taskId));
+        const progressData = await fetchTaskProgress();
+        await updateProgress(progressData);
+        setProgress((progressData.completedTasks / progressData.totalTasks) * 100);
+      } catch (error) {
+        console.error("Failed to complete task:", error);
+      }
+    };
+  
 
     return (
       <>
@@ -128,7 +167,7 @@ const ViewTodoList = () => {
               {(task.priority ==="HIGH")? (
                 <span className='span'> <label className='hightask'> {task.name} </label> 
                 <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
                 </span>
 
               ) : ( (task.priority ==="MEDIUM")?
@@ -136,13 +175,13 @@ const ViewTodoList = () => {
               (
                 <span className='span'> <label className='mediumtask'> {task.name} </label> 
                 <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
                 </span>
 
               ) : (
                 <span className='span'> <label className='lowtask'> {task.name} </label> 
                 <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
                 </span>
 
               ))
@@ -186,7 +225,7 @@ const ViewTodoList = () => {
               {(task.priority ==="HIGH")? (
                 <span className='span'> <label className='hightask'> {task.name} </label> 
                 <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
                 </span>
 
               ) : ( (task.priority ==="MEDIUM")?
@@ -194,13 +233,13 @@ const ViewTodoList = () => {
               (
                 <span className='span'> <label className='mediumtask'> {task.name} </label> 
                 <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
                 </span>
 
               ) : (
                 <span className='span'> <label className='lowtask'> {task.name} </label> 
                 <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteTask(task.id)} />
+                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
                 </span>
 
               ))
@@ -269,13 +308,13 @@ const ViewTodoList = () => {
             </div>
           </li>
           <li>
-            <div className="sidebar-button" >
+            <div className="sidebar-button" onClick={() => navigate('/achievements')}>
               <FontAwesomeIcon icon={faAward} className="circle-icon" />
               <span>View Achievements</span>
             </div>
           </li>
           <li>
-            <div className="sidebar-button">
+            <div className="sidebar-button" onClick={() => navigate('/games')}>
               <FontAwesomeIcon icon={faGamepad} className="circle-icon" />
               <span>Play a Game</span>
             </div>
@@ -312,6 +351,9 @@ const ViewTodoList = () => {
         
         
         {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />} {/* Conditionally render the AddTaskForm */}
+        {notifications.map((message, index) => (
+          <Notification key={index} message={message} onClose={() => setNotifications(notifications.filter((_, i) => i !== index))} />
+        ))}
       </main>
     </div>
   );
