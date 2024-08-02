@@ -34,6 +34,7 @@ const ViewTodoList = () => {
   const [notifications, setNotifications] = useState([]);
   const [hasNotified, setHasNotified] = useState(false);
   const [filterCriteria, setFilterCriteria] = useState('');
+  const [filterCategory, setFilterCategory] = useState('ALL');
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -126,6 +127,10 @@ const ViewTodoList = () => {
     applyFilter(event.target.value);
   };
 
+  const handleCategoryChange = (event) => {
+    setFilterCategory(event.target.value);
+  };
+
   const applyFilter = (criteria) => {
     let sortedTasks = [...tasks];
     if (criteria === 'priority') {
@@ -137,6 +142,13 @@ const ViewTodoList = () => {
       sortedTasks.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
     }
     setTasks(sortedTasks);
+  };
+
+  const getFilteredTasksByCategory = () => {
+    if (filterCategory === 'ALL') {
+      return tasks;
+    }
+    return tasks.filter(task => task.category === filterCategory);
   };
 
   const fetchTaskProgress = async () => {
@@ -161,13 +173,14 @@ const ViewTodoList = () => {
   };
 
   const renderTasks = () => {
+    const filteredTasks = getFilteredTasksByCategory();
     const today = new Date().toISOString().split('T')[0];
-    const dueTasks = tasks.filter(task => {
+    const dueTasks = filteredTasks.filter(task => {
       const taskDate = new Date(task.dateTime).toISOString().split('T')[0];
       return taskDate < today && !task.completed;
     });
 
-    const futureTasks = tasks.filter(task => {
+    const futureTasks = filteredTasks.filter(task => {
       const taskDate = new Date(task.dateTime).toISOString().split('T')[0];
       return taskDate >= today && !task.completed;
     });
@@ -180,6 +193,19 @@ const ViewTodoList = () => {
             <option value="">Select Filter</option>
             <option value="priority">Priority</option>
             <option value="time">Time</option>
+          </select>
+        </div>
+        <div className='category-filter'>
+          <label htmlFor="categoryFilter">Category: </label>
+          <select id="categoryFilter" value={filterCategory} onChange={handleCategoryChange}>
+            <option value="ALL">All</option>
+            <option value="EDUCATION">Education</option>
+            <option value="FOOD">Food</option>
+            <option value="HEALTH">Health</option>
+            <option value="JOB">Job</option>
+            <option value="ENTERTAINMENT">Entertainment</option>
+            <option value="HOUSEHOLD">Household</option>
+            <option value="OTHERS">Others</option>
           </select>
         </div>
 

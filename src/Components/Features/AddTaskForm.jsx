@@ -9,7 +9,7 @@ const AddTaskForm = ({ toggleForm, editTask }) => {
     description: "",
     dateTime: "",
     priority: "LOW",
-    category: ""
+    category: "OTHERS"
   });
 
   useEffect(() => {
@@ -110,14 +110,21 @@ const AddTaskForm = ({ toggleForm, editTask }) => {
         </div>
         <div className="form-group">
           <label htmlFor="category">Category</label>
-          <input
-            type="text"
+          <select
             id="category"
             name="category"
             value={taskData.category}
             onChange={(e) => handleChange(e, "category")}
             required
-          />
+          >
+            <option value="EDUCATION">Education</option>
+            <option value="FOOD">Food</option>
+            <option value="HEALTH">Health</option>
+            <option value="JOB">Job</option>
+            <option value="ENTERTAINMENT">Entertainment</option>
+            <option value="HOUSEHOLD">Household</option>
+            <option value="OTHERS">Others</option>
+          </select>
         </div>
         <div className="form-buttons">
           <button type="submit">{editTask ? "Update Task" : "Add Task"}</button>

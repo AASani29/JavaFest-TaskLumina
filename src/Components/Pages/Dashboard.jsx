@@ -34,6 +34,7 @@ const Dashboard = () => {
   const [notifications, setNotifications] = useState([]);
   const [hasNotified, setHasNotified] = useState(false); // State to check if notification has been shown
   const [filterCriteria, setFilterCriteria] = useState('');
+  const [filterCategory, setFilterCategory] = useState('ALL');
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -140,6 +141,10 @@ const Dashboard = () => {
     applyFilter(event.target.value);
   };
 
+  const handleCategoryChange = (event) => {
+    setFilterCategory(event.target.value);
+  };
+
   const applyFilter = (criteria) => {
     let sortedTasks = [...tasks];
     if (criteria === 'priority') {
@@ -151,6 +156,13 @@ const Dashboard = () => {
       sortedTasks.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
     }
     setTasks(sortedTasks);
+  };
+
+  const getFilteredTasksByCategory = () => {
+    if (filterCategory === 'ALL') {
+      return tasks;
+    }
+    return tasks.filter(task => task.category === filterCategory);
   };
 
   useEffect(() => {
@@ -240,9 +252,22 @@ const Dashboard = () => {
             <option value="time">Time</option>
           </select>
         </div>
+        <div className='category-filter'>
+          <label htmlFor="categoryFilter">Category: </label>
+          <select id="categoryFilter" value={filterCategory} onChange={handleCategoryChange}>
+            <option value="ALL">All</option>
+            <option value="EDUCATION">Education</option>
+            <option value="FOOD">Food</option>
+            <option value="HEALTH">Health</option>
+            <option value="JOB">Job</option>
+            <option value="ENTERTAINMENT">Entertainment</option>
+            <option value="HOUSEHOLD">Household</option>
+            <option value="OTHERS">Others</option>
+          </select>
+        </div>
         <div className='task_added'>
           <div className="profile-details">
-            {tasks.map((task) => (
+            {getFilteredTasksByCategory().map((task) => (
               <div className='eachtask' key={task.id}>
                 <div className='eventname'>
                   {(task.priority === "HIGH") ? (
