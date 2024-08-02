@@ -21,7 +21,8 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     // Add user ID field
     private Integer userId;
@@ -31,7 +32,10 @@ public class Task {
     // Getters and Setters
 }
 
-
 enum Priority {
     HIGH, MEDIUM, LOW
+}
+
+enum Category {
+    EDUCATION, FOOD, HEALTH, JOB, ENTERTAINMENT, HOUSEHOLD, OTHERS
 }
