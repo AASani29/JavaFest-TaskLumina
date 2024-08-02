@@ -5,7 +5,7 @@ import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
 import Notification from '../Pages/Notification';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faClock, faFilter, faRobot, faTag } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faClock, faFilter, faTag } from '@fortawesome/free-solid-svg-icons';
 import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getCurrentUser } from '../Auth';
 import { getTasks, deleteTask } from '../user-service';
@@ -22,6 +22,7 @@ const loadScript = (src, async = true, defer = true) => {
     document.body.appendChild(script);
   });
 };
+
 const ViewTodoList = () => {
   const navigate = useNavigate();
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
@@ -30,9 +31,9 @@ const ViewTodoList = () => {
   const [todayDate, setTodayDate] = useState('');
   const [userProfile, setUserProfile] = useState(null);
   const [progress, setProgress] = useState(0);
-
   const [notifications, setNotifications] = useState([]);
   const [hasNotified, setHasNotified] = useState(false);
+  const [filterCriteria, setFilterCriteria] = useState('');
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -42,6 +43,7 @@ const ViewTodoList = () => {
     } else {
       fetchAllTasks();
       fetchUserProfile();
+      fetchAndCheckRewards();
     }
   }, [navigate]);
 
@@ -61,6 +63,7 @@ const ViewTodoList = () => {
       console.error("Failed to fetch all tasks:", error);
     }
   };
+
   const fetchUserProfile = async () => {
     try {
       const response = await getMyProfile(); // Fetch user profile using userService function
@@ -74,11 +77,9 @@ const ViewTodoList = () => {
     }
   };
 
-  
   useEffect(() => {
     const loadBotpressScripts = async () => {
       try {
-        
         await loadScript("https://cdn.botpress.cloud/webchat/v1/inject.js");
         await loadScript("https://mediafiles.botpress.cloud/6f06300e-840b-4711-b2ac-8e9d5f7d4bf5/webchat/config.js");
       } catch (error) {
@@ -98,6 +99,7 @@ const ViewTodoList = () => {
     setEditTask(null);
     setShowAddTaskForm(!showAddTaskForm);
   };
+
   const fetchAndCheckRewards = async () => {
     try {
       const rewards = await getMyRewards(); // Fetch rewards for the logged-in user
@@ -119,6 +121,45 @@ const ViewTodoList = () => {
     }
   };
 
+  const handleFilterChange = (event) => {
+    setFilterCriteria(event.target.value);
+    applyFilter(event.target.value);
+  };
+
+  const applyFilter = (criteria) => {
+    let sortedTasks = [...tasks];
+    if (criteria === 'priority') {
+      sortedTasks.sort((a, b) => {
+        const priorityOrder = { 'HIGH': 1, 'MEDIUM': 2, 'LOW': 3 };
+        return priorityOrder[a.priority] - priorityOrder[b.priority];
+      });
+    } else if (criteria === 'time') {
+      sortedTasks.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
+    }
+    setTasks(sortedTasks);
+  };
+
+  const fetchTaskProgress = async () => {
+    try {
+      const progressData = await getTaskProgress();
+      setProgress((progressData.completedTasks / progressData.totalTasks) * 100);
+    } catch (error) {
+      console.error('Failed to fetch task progress:', error);
+    }
+  };
+
+  const handleCompleteTask = async (taskId) => {
+    try {
+      await completeTask(taskId);
+      setTasks(tasks.filter(task => task.id !== taskId));
+      const progressData = await fetchTaskProgress();
+      await updateProgress(progressData);
+      setProgress((progressData.completedTasks / progressData.totalTasks) * 100);
+    } catch (error) {
+      console.error("Failed to complete task:", error);
+    }
+  };
+
   const renderTasks = () => {
     const today = new Date().toISOString().split('T')[0];
     const dueTasks = tasks.filter(task => {
@@ -130,148 +171,107 @@ const ViewTodoList = () => {
       const taskDate = new Date(task.dateTime).toISOString().split('T')[0];
       return taskDate >= today && !task.completed;
     });
-    const fetchTaskProgress = async () => {
-      try {
-        const progressData = await getTaskProgress();
-        setProgress((progressData.completedTasks / progressData.totalTasks) * 100);
-      } catch (error) {
-        console.error('Failed to fetch task progress:', error);
-      }
-    };
-
-    const handleCompleteTask = async (taskId) => {
-      try {
-        await completeTask(taskId);
-        setTasks(tasks.filter(task => task.id !== taskId));
-        const progressData = await fetchTaskProgress();
-        await updateProgress(progressData);
-        setProgress((progressData.completedTasks / progressData.totalTasks) * 100);
-      } catch (error) {
-        console.error("Failed to complete task:", error);
-      }
-    };
-  
 
     return (
       <>
+        <div className='filter'>
+          <label htmlFor="filter">Filter: </label>
+          <select id="filter" value={filterCriteria} onChange={handleFilterChange}>
+            <option value="">Select Filter</option>
+            <option value="priority">Priority</option>
+            <option value="time">Time</option>
+          </select>
+        </div>
+
         {dueTasks.length > 0 && (
-
-         
-
           <div className='task-section'>
-        <div className="profile-details">
-        <h3>Due Tasks</h3>
-        {dueTasks.map((task) => (
-          <div className='eachtask' >
-            <div className='eventname'>
-              {(task.priority ==="HIGH")? (
-                <span className='span'> <label className='hightask'> {task.name} </label> 
-                <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                </span>
-
-              ) : ( (task.priority ==="MEDIUM")?
-              
-              (
-                <span className='span'> <label className='mediumtask'> {task.name} </label> 
-                <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                </span>
-
-              ) : (
-                <span className='span'> <label className='lowtask'> {task.name} </label> 
-                <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                </span>
-
-              ))
-            }
-          
-              
+            <div className="profile-details">
+              <h3>Due Tasks</h3>
+              {dueTasks.map((task) => (
+                <div className='eachtask' key={task.id}>
+                  <div className='eventname'>
+                    {(task.priority === "HIGH") ? (
+                      <span className='span'> <label className='hightask'> {task.name} </label>
+                        <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                        <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
+                      </span>
+                    ) : ((task.priority === "MEDIUM") ?
+                      (
+                        <span className='span'> <label className='mediumtask'> {task.name} </label>
+                          <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                          <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
+                        </span>
+                      ) : (
+                        <span className='span'> <label className='lowtask'> {task.name} </label>
+                          <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                          <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
+                        </span>
+                      ))
+                    }
+                  </div>
+                  <div className='description'>
+                    {task.description}
+                  </div>
+                  <div className='locationandtime'>
+                    <span className='span'>
+                      <FontAwesomeIcon icon={faTag} className='location-icon' />
+                      {task.category} </span>
+                    <span className='span'>
+                      <FontAwesomeIcon icon={faClock} className='location-icon' />
+                      {new Date(task.dateTime).toLocaleString()} </span>
+                    <span className='span'>
+                      <FontAwesomeIcon icon={faFilter} className='location-icon' />
+                      {task.priority} </span>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className='description'>
-               {task.description}
-            </div>
-            <div className='locationandtime'>
-              <span className='span'>
-                <FontAwesomeIcon icon={faTag} className='location-icon'/> 
-                {task.category} </span>
-              <span className='span'>
-                <FontAwesomeIcon icon={faClock} className='location-icon'/> 
-                {new Date(task.dateTime).toLocaleString()} </span>
-              <span className='span'>
-                <FontAwesomeIcon icon={faFilter} className='location-icon'/> 
-                {task.priority} </span>
-            </div>
-            
-
           </div>
-          
-        ))}
-        </div>
-
-          
-        </div>
         )}
 
-       
-
-<div className='task-section'>
-        <div className="profile-details">
-        <h3>Upcoming Tasks</h3>
-        {futureTasks.map((task) => (
-          <div className='eachtask' >
-            <div className='eventname'>
-              {(task.priority ==="HIGH")? (
-                <span className='span'> <label className='hightask'> {task.name} </label> 
-                <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                </span>
-
-              ) : ( (task.priority ==="MEDIUM")?
-              
-              (
-                <span className='span'> <label className='mediumtask'> {task.name} </label> 
-                <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                </span>
-
-              ) : (
-                <span className='span'> <label className='lowtask'> {task.name} </label> 
-                <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                </span>
-
-              ))
-            }
-          
-              
-            </div>
-            <div className='description'>
-               {task.description}
-            </div>
-            <div className='locationandtime'>
-              <span className='span'>
-                <FontAwesomeIcon icon={faTag} className='location-icon'/> 
-                {task.category} </span>
-              <span className='span'>
-                <FontAwesomeIcon icon={faClock} className='location-icon'/> 
-                {new Date(task.dateTime).toLocaleString()} </span>
-              <span className='span'>
-                <FontAwesomeIcon icon={faFilter} className='location-icon'/> 
-                {task.priority} </span>
-            </div>
-            
-
+        <div className='task-section'>
+          <div className="profile-details">
+            <h3>Upcoming Tasks</h3>
+            {futureTasks.map((task) => (
+              <div className='eachtask' key={task.id}>
+                <div className='eventname'>
+                  {(task.priority === "HIGH") ? (
+                    <span className='span'> <label className='hightask'> {task.name} </label>
+                      <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                      <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
+                    </span>
+                  ) : ((task.priority === "MEDIUM") ?
+                    (
+                      <span className='span'> <label className='mediumtask'> {task.name} </label>
+                        <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                        <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
+                      </span>
+                    ) : (
+                      <span className='span'> <label className='lowtask'> {task.name} </label>
+                        <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                        <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
+                      </span>
+                    ))
+                  }
+                </div>
+                <div className='description'>
+                  {task.description}
+                </div>
+                <div className='locationandtime'>
+                  <span className='span'>
+                    <FontAwesomeIcon icon={faTag} className='location-icon' />
+                    {task.category} </span>
+                  <span className='span'>
+                    <FontAwesomeIcon icon={faClock} className='location-icon' />
+                    {new Date(task.dateTime).toLocaleString()} </span>
+                  <span className='span'>
+                    <FontAwesomeIcon icon={faFilter} className='location-icon' />
+                    {task.priority} </span>
+                </div>
+              </div>
+            ))}
           </div>
-          
-        ))}
         </div>
-
-          
-        </div>
-
-        
       </>
     );
   };
@@ -292,7 +292,7 @@ const ViewTodoList = () => {
           <li>
             <div className="sidebar-button" onClick={() => navigate('/dashboard')}>
               <FontAwesomeIcon icon={faList} className="circle-icon" />
-              <span>Todays Tasks</span>
+              <span>Today's Tasks</span>
             </div>
           </li>
           <li>
@@ -322,9 +322,9 @@ const ViewTodoList = () => {
         </ul>
       </nav>
       <main className="content">
-      <header className="topbar">
+        <header className="topbar">
           <div className="icon-container">
-          <FontAwesomeIcon icon={faBell} className="bell-icon" />
+            <FontAwesomeIcon icon={faBell} className="bell-icon" />
             <div className="profile-info">
               {userProfile ? (
                 <span className="user-name" onClick={() => navigate('/profile')} style={{ cursor: 'pointer' }}>
@@ -334,29 +334,24 @@ const ViewTodoList = () => {
                 <span>Loading...</span>
               )}
             </div>
-            
-           
-            {/* <FontAwesomeIcon icon={faUser} className="user-icon" onClick={handleLogout} style={{ cursor: 'pointer' }} /> */}
           </div>
         </header>
         <div className='time'>
           All Tasks
         </div>
         <div className='present_time'>
-        {todayDate}
+          {todayDate}
         </div>
         <div className='task_added'>
           {tasks.length === 0 ? "No task added yet" : renderTasks()}
         </div>
-        
-        
-        {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />} {/* Conditionally render the AddTaskForm */}
+        {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />}
         {notifications.map((message, index) => (
           <Notification key={index} message={message} onClose={() => setNotifications(notifications.filter((_, i) => i !== index))} />
         ))}
       </main>
     </div>
   );
-}
+};
 
 export default ViewTodoList;

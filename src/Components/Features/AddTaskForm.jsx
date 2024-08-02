@@ -47,6 +47,17 @@ const AddTaskForm = ({ toggleForm, editTask }) => {
     }
   };
 
+  // Function to get today's date in the format YYYY-MM-DDTHH:MM
+  const getTodayDateTime = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const hours = String(today.getHours()).padStart(2, '0');
+    const minutes = String(today.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+
   return (
     <div className="add-task-form">
       <form onSubmit={handleSubmit}>
@@ -79,6 +90,7 @@ const AddTaskForm = ({ toggleForm, editTask }) => {
             name="dateTime"
             value={taskData.dateTime}
             onChange={(e) => handleChange(e, "dateTime")}
+            min={getTodayDateTime()} // Set the min attribute to today's date
             required
           />
         </div>

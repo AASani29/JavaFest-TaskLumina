@@ -33,6 +33,7 @@ const Dashboard = () => {
   const [progress, setProgress] = useState(0);
   const [notifications, setNotifications] = useState([]);
   const [hasNotified, setHasNotified] = useState(false); // State to check if notification has been shown
+  const [filterCriteria, setFilterCriteria] = useState('');
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -134,6 +135,24 @@ const Dashboard = () => {
     setShowAddTaskForm(!showAddTaskForm);
   };
 
+  const handleFilterChange = (event) => {
+    setFilterCriteria(event.target.value);
+    applyFilter(event.target.value);
+  };
+
+  const applyFilter = (criteria) => {
+    let sortedTasks = [...tasks];
+    if (criteria === 'priority') {
+      sortedTasks.sort((a, b) => {
+        const priorityOrder = { 'HIGH': 1, 'MEDIUM': 2, 'LOW': 3 };
+        return priorityOrder[a.priority] - priorityOrder[b.priority];
+      });
+    } else if (criteria === 'time') {
+      sortedTasks.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
+    }
+    setTasks(sortedTasks);
+  };
+
   useEffect(() => {
     const loadBotpressScripts = async () => {
       try {
@@ -213,33 +232,41 @@ const Dashboard = () => {
         <div className='present_time'>
           {todayDate}
         </div>
+        <div className='filter'>
+          <label htmlFor="filter">Filter: </label>
+          <select id="filter" value={filterCriteria} onChange={handleFilterChange}>
+            <option value="">Select Filter</option>
+            <option value="priority">Priority</option>
+            <option value="time">Time</option>
+          </select>
+        </div>
         <div className='task_added'>
           <div className="profile-details">
             {tasks.map((task) => (
               <div className='eachtask' key={task.id}>
                 <div className='eventname'>
-                {(task.priority ==="HIGH")? (
-                <span className='span'> <label className='hightask'> {task.name} </label> 
-                <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                </span>
+                  {(task.priority === "HIGH") ? (
+                    <span className='span'> <label className='hightask'> {task.name} </label>
+                      <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                      <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
+                    </span>
 
-              ) : ( (task.priority ==="MEDIUM")?
-              
-              (
-                <span className='span'> <label className='mediumtask'> {task.name} </label> 
-                <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                </span>
+                  ) : ((task.priority === "MEDIUM") ?
 
-              ) : (
-                <span className='span'> <label className='lowtask'> {task.name} </label> 
-                <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                </span>
+                    (
+                      <span className='span'> <label className='mediumtask'> {task.name} </label>
+                        <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                        <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
+                      </span>
 
-              ))
-            }
+                    ) : (
+                      <span className='span'> <label className='lowtask'> {task.name} </label>
+                        <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
+                        <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
+                      </span>
+
+                    ))
+                  }
                 </div>
                 <div className='description'>
                   {task.description}
@@ -262,7 +289,7 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
-        
+
         {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />}
         {notifications.map((message, index) => (
           <Notification key={index} message={message} onClose={() => setNotifications(notifications.filter((_, i) => i !== index))} />
