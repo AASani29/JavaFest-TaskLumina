@@ -262,6 +262,7 @@ const Dashboard = () => {
             <option value="JOB">Job</option>
             <option value="ENTERTAINMENT">Entertainment</option>
             <option value="HOUSEHOLD">Household</option>
+            <option value="HOUSEHOLD">Travel</option>
             <option value="OTHERS">Others</option>
           </select>
         </div>
