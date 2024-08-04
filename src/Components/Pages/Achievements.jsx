@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import '../CSS Files/Achievements.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAward, faCalendarDays, faClock, faList, faCirclePlus, faBell, faGamepad, faMedal } from '@fortawesome/free-solid-svg-icons';
-import { getAchievements, getMyProfile } from '../user-service';
+import { getAchievements, getMyProfile, getNotifications } from '../user-service';
 import { getCurrentUser } from '../Auth';
 import Logo from "../Assets/Logo.png";
 import { useNavigate } from 'react-router-dom';
+import NotificationDropdown from '../Features/NotificationDropdown';
 
 const loadScript = (src, async = true, defer = true) => {
   return new Promise((resolve, reject) => {
@@ -23,6 +24,8 @@ const Achievements = () => {
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState(null);
   const [achievements, setAchievements] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -31,6 +34,7 @@ const Achievements = () => {
     } else {
       fetchUserProfile();
       fetchAchievements(user.id);
+      fetchNotifications();
     }
   }, [navigate]);
 
@@ -54,8 +58,25 @@ const Achievements = () => {
     } catch (error) {
       console.error('Error occurred while fetching user profile:', error.message);
     }
-   
   };
+
+  const fetchNotifications = async () => {
+    try {
+      const storedNotifications = await getNotifications(); // Fetch stored notifications from the backend
+      setNotifications(storedNotifications.map(notification => notification.message));
+    } catch (error) {
+      console.error("Failed to fetch notifications:", error);
+    }
+  };
+
+  const handleBellClick = () => {
+    setShowNotifications(!showNotifications);
+  };
+
+  const handleCloseNotification = (index) => {
+    setNotifications(notifications.filter((_, i) => i !== index));
+  };
+
   useEffect(() => {
     const loadBotpressScripts = async () => {
       try {
@@ -130,7 +151,7 @@ const Achievements = () => {
       <main className="content">
         <header className="topbar">
           <div className="icon-container">
-            <FontAwesomeIcon icon={faBell} className="bell-icon" />
+            <FontAwesomeIcon icon={faBell} className="bell-icon" onClick={handleBellClick} />
             <div className="profile-info">
               {userProfile ? (
                 <span className="user-name" onClick={() => navigate('/profile')} style={{ cursor: 'pointer' }}>
@@ -140,6 +161,12 @@ const Achievements = () => {
                 <span>Loading...</span>
               )}
             </div>
+            {showNotifications && (
+              <NotificationDropdown
+                notifications={notifications}
+                onCloseNotification={handleCloseNotification}
+              />
+            )}
           </div>
         </header>
         <div className='time'>
@@ -153,7 +180,6 @@ const Achievements = () => {
                 key={index}
               >
                 <div className='achievement-header'>
-                
                   <FontAwesomeIcon icon={faMedal} className={`medal-icon ${isBadgeEarned(badge) ? 'earned' : ''}`} />
                   <span className={`achievement-name ${isBadgeEarned(badge) ? 'earned' : ''}`}>{badge}</span>
                 </div>

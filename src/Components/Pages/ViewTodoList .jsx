@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../CSS Files/Dashboard.css';
 import { useNavigate } from 'react-router-dom';
 import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
 import Notification from '../Pages/Notification';
+import NotificationDropdown from '../Features/NotificationDropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faClock, faFilter, faTag } from '@fortawesome/free-solid-svg-icons';
 import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getCurrentUser } from '../Auth';
-import { getTasks, deleteTask } from '../user-service';
-import { completeTask, getTaskProgress, updateProgress, getMyProfile, getMyRewards, markRewardAsNotified } from '../user-service';
+import { getTasks, completeTask, getTaskProgress, updateProgress, getMyProfile, getMyRewards, markRewardAsNotified, getNotifications } from '../user-service';
 
 const loadScript = (src, async = true, defer = true) => {
   return new Promise((resolve, reject) => {
@@ -32,19 +32,26 @@ const ViewTodoList = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false); // State to control dropdown visibility
+  const [popupNotifications, setPopupNotifications] = useState([]);
   const [hasNotified, setHasNotified] = useState(false);
   const [filterCriteria, setFilterCriteria] = useState('');
   const [filterCategory, setFilterCategory] = useState('ALL');
+  const notificationsFetchedRef = useRef(false);
 
   useEffect(() => {
     const user = getCurrentUser();
     if (!user) {
       navigate("/login");
-      console.log("Not logged in, userData missing");
     } else {
       fetchAllTasks();
       fetchUserProfile();
-      fetchAndCheckRewards();
+      fetchTaskProgress();
+      if (!notificationsFetchedRef.current) {
+        fetchAndCheckRewards();
+        fetchStoredNotifications();
+        notificationsFetchedRef.current = true;
+      }
     }
   }, [navigate]);
 
@@ -59,7 +66,6 @@ const ViewTodoList = () => {
     try {
       const data = await getTasks();
       setTasks(data);
-      console.log("Fetched all tasks:", data);
     } catch (error) {
       console.error("Failed to fetch all tasks:", error);
     }
@@ -67,9 +73,9 @@ const ViewTodoList = () => {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await getMyProfile(); // Fetch user profile using userService function
+      const response = await getMyProfile();
       if (response.statusCode === 200) {
-        setUserProfile(response.ourUsers); // Set user profile in state
+        setUserProfile(response.ourUsers);
       } else {
         console.error('Failed to fetch user profile:', response.message);
       }
@@ -78,18 +84,55 @@ const ViewTodoList = () => {
     }
   };
 
-  useEffect(() => {
-    const loadBotpressScripts = async () => {
-      try {
-        await loadScript("https://cdn.botpress.cloud/webchat/v1/inject.js");
-        await loadScript("https://mediafiles.botpress.cloud/6f06300e-840b-4711-b2ac-8e9d5f7d4bf5/webchat/config.js");
-      } catch (error) {
-        console.error("Failed to load Botpress scripts:", error);
-      }
-    };
+  const fetchTaskProgress = async () => {
+    try {
+      const progressData = await getTaskProgress();
+      setProgress((progressData.completedTasks / progressData.totalTasks) * 100);
+    } catch (error) {
+      console.error('Failed to fetch task progress:', error);
+    }
+  };
 
-    loadBotpressScripts();
-  }, []);
+  const fetchAndCheckRewards = async () => {
+    try {
+      const rewards = await getMyRewards();
+      const newRewards = rewards.filter(reward => !reward.notified);
+
+      if (newRewards.length > 0 && !hasNotified) {
+        const notificationMessages = newRewards.map(reward => `You have earned the ${reward.badge} reward!`);
+        setNotifications(notificationMessages);
+        setPopupNotifications(notificationMessages);
+        setHasNotified(true);
+
+        for (const reward of newRewards) {
+          await markRewardAsNotified(reward.id);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to fetch rewards:", error);
+    }
+  };
+
+  const fetchStoredNotifications = async () => {
+    try {
+      const storedNotifications = await getNotifications();
+      setNotifications(storedNotifications.map(notification => notification.message));
+    } catch (error) {
+      console.error("Failed to fetch notifications:", error);
+    }
+  };
+
+  const handleCompleteTask = async (taskId) => {
+    try {
+      await completeTask(taskId);
+      setTasks(tasks.filter(task => task.id !== taskId));
+      const progressData = await fetchTaskProgress();
+      await updateProgress(progressData);
+      setProgress((progressData.completedTasks / progressData.totalTasks) * 100);
+    } catch (error) {
+      console.error("Failed to complete task:", error);
+    }
+  };
 
   const handleEditTask = (task) => {
     setEditTask(task);
@@ -99,27 +142,6 @@ const ViewTodoList = () => {
   const toggleAddTaskForm = () => {
     setEditTask(null);
     setShowAddTaskForm(!showAddTaskForm);
-  };
-
-  const fetchAndCheckRewards = async () => {
-    try {
-      const rewards = await getMyRewards(); // Fetch rewards for the logged-in user
-      const newRewards = rewards.filter(reward => !reward.notified); // Filter out rewards that have already been notified
-
-      if (newRewards.length > 0 && !hasNotified) {
-        const notificationMessages = newRewards.map(reward => `You have earned the ${reward.badge} reward!`);
-        setNotifications(notificationMessages);
-        setHasNotified(true);
-
-        // Mark rewards as notified
-        for (const reward of newRewards) {
-          // Make a request to the backend to mark this reward as notified
-          await markRewardAsNotified(reward.id);
-        }
-      }
-    } catch (error) {
-      console.error("Failed to fetch rewards:", error);
-    }
   };
 
   const handleFilterChange = (event) => {
@@ -151,26 +173,30 @@ const ViewTodoList = () => {
     return tasks.filter(task => task.category === filterCategory);
   };
 
-  const fetchTaskProgress = async () => {
-    try {
-      const progressData = await getTaskProgress();
-      setProgress((progressData.completedTasks / progressData.totalTasks) * 100);
-    } catch (error) {
-      console.error('Failed to fetch task progress:', error);
-    }
+  const handleBellClick = () => {
+    setShowNotifications(!showNotifications);
   };
 
-  const handleCompleteTask = async (taskId) => {
-    try {
-      await completeTask(taskId);
-      setTasks(tasks.filter(task => task.id !== taskId));
-      const progressData = await fetchTaskProgress();
-      await updateProgress(progressData);
-      setProgress((progressData.completedTasks / progressData.totalTasks) * 100);
-    } catch (error) {
-      console.error("Failed to complete task:", error);
-    }
+  const handleCloseNotification = (index) => {
+    setNotifications(notifications.filter((_, i) => i !== index));
   };
+
+  const handlePopupClose = (index) => {
+    setPopupNotifications(popupNotifications.filter((_, i) => i !== index));
+  };
+
+  useEffect(() => {
+    const loadBotpressScripts = async () => {
+      try {
+        await loadScript("https://cdn.botpress.cloud/webchat/v1/inject.js");
+        await loadScript("https://mediafiles.botpress.cloud/6f06300e-840b-4711-b2ac-8e9d5f7d4bf5/webchat/config.js");
+      } catch (error) {
+        console.error("Failed to load Botpress scripts:", error);
+      }
+    };
+
+    loadBotpressScripts();
+  }, []);
 
   const renderTasks = () => {
     const filteredTasks = getFilteredTasksByCategory();
@@ -350,7 +376,7 @@ const ViewTodoList = () => {
       <main className="content">
         <header className="topbar">
           <div className="icon-container">
-            <FontAwesomeIcon icon={faBell} className="bell-icon" />
+            <FontAwesomeIcon icon={faBell} className="bell-icon" onClick={handleBellClick} />
             <div className="profile-info">
               {userProfile ? (
                 <span className="user-name" onClick={() => navigate('/profile')} style={{ cursor: 'pointer' }}>
@@ -361,6 +387,12 @@ const ViewTodoList = () => {
               )}
             </div>
           </div>
+          {showNotifications && (
+            <NotificationDropdown
+              notifications={notifications}
+              onCloseNotification={handleCloseNotification}
+            />
+          )}
         </header>
         <div className='time'>
           All Tasks
@@ -372,8 +404,8 @@ const ViewTodoList = () => {
           {tasks.length === 0 ? "No task added yet" : renderTasks()}
         </div>
         {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />}
-        {notifications.map((message, index) => (
-          <Notification key={index} message={message} onClose={() => setNotifications(notifications.filter((_, i) => i !== index))} />
+        {popupNotifications.map((message, index) => (
+          <Notification key={index} message={message} onClose={() => handlePopupClose(index)} />
         ))}
       </main>
     </div>

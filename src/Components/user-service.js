@@ -160,6 +160,16 @@ export const markRewardAsNotified = async (rewardId) => {
   }
 };
 
+export const getNotifications = async () => {
+  try {
+    const response = await privateAxios.get(`/adminuser/task/reward/notifications`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to load notifications', error);
+    throw error;
+  }
+};
+
 
 
 

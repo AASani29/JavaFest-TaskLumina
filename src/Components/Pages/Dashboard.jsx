@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../CSS Files/Dashboard.css';
 import '../CSS Files/ScheduleAnEvent.css';
 import Notification from '../Pages/Notification';
-import { useNavigate, useLocation } from 'react-router-dom';
+import NotificationDropdown from '../Features/NotificationDropdown';
+import { useNavigate } from 'react-router-dom';
 import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faClock, faFilter, faCirclePlus, faList, faCalendarDays, faAward, faTag, faGamepad, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getCurrentUser } from '../Auth';
-import { getTasks, completeTask, getTaskProgress, updateProgress, getMyProfile, getMyRewards, markRewardAsNotified } from '../user-service';
+import { getTasks, completeTask, getTaskProgress, updateProgress, getMyProfile, getMyRewards, markRewardAsNotified, getNotifications } from '../user-service';
 
 const loadScript = (src, async = true, defer = true) => {
   return new Promise((resolve, reject) => {
@@ -24,7 +25,6 @@ const loadScript = (src, async = true, defer = true) => {
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [editTask, setEditTask] = useState(null);
@@ -32,9 +32,12 @@ const Dashboard = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [notifications, setNotifications] = useState([]);
-  const [hasNotified, setHasNotified] = useState(false); // State to check if notification has been shown
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [popupNotifications, setPopupNotifications] = useState([]);
+  const [hasNotified, setHasNotified] = useState(false);
   const [filterCriteria, setFilterCriteria] = useState('');
   const [filterCategory, setFilterCategory] = useState('ALL');
+  const notificationsFetchedRef = useRef(false);
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -44,7 +47,11 @@ const Dashboard = () => {
       fetchTodayTasks();
       fetchUserProfile();
       fetchTaskProgress();
-      fetchAndCheckRewards(); // Fetch and check rewards for notifications
+      if (!notificationsFetchedRef.current) {
+        fetchAndCheckRewards();
+        fetchStoredNotifications();
+        notificationsFetchedRef.current = true;
+      }
     }
   }, [navigate]);
 
@@ -95,22 +102,30 @@ const Dashboard = () => {
 
   const fetchAndCheckRewards = async () => {
     try {
-      const rewards = await getMyRewards(); // Fetch rewards for the logged-in user
-      const newRewards = rewards.filter(reward => !reward.notified); // Filter out rewards that have already been notified
+      const rewards = await getMyRewards();
+      const newRewards = rewards.filter(reward => !reward.notified);
 
       if (newRewards.length > 0 && !hasNotified) {
         const notificationMessages = newRewards.map(reward => `You have earned the ${reward.badge} reward!`);
         setNotifications(notificationMessages);
+        setPopupNotifications(notificationMessages);
         setHasNotified(true);
 
-        // Mark rewards as notified
         for (const reward of newRewards) {
-          // Make a request to the backend to mark this reward as notified
           await markRewardAsNotified(reward.id);
         }
       }
     } catch (error) {
       console.error("Failed to fetch rewards:", error);
+    }
+  };
+
+  const fetchStoredNotifications = async () => {
+    try {
+      const storedNotifications = await getNotifications();
+      setNotifications(storedNotifications.map(notification => notification.message));
+    } catch (error) {
+      console.error("Failed to fetch notifications:", error);
     }
   };
 
@@ -163,6 +178,18 @@ const Dashboard = () => {
       return tasks;
     }
     return tasks.filter(task => task.category === filterCategory);
+  };
+
+  const handleBellClick = () => {
+    setShowNotifications(!showNotifications);
+  };
+
+  const handleCloseNotification = (index) => {
+    setNotifications(notifications.filter((_, i) => i !== index));
+  };
+
+  const handlePopupClose = (index) => {
+    setPopupNotifications(popupNotifications.filter((_, i) => i !== index));
   };
 
   useEffect(() => {
@@ -226,7 +253,7 @@ const Dashboard = () => {
       <main className="content">
         <header className="topbar">
           <div className="icon-container">
-            <FontAwesomeIcon icon={faBell} className="bell-icon" />
+            <FontAwesomeIcon icon={faBell} className="bell-icon" onClick={handleBellClick} />
             <div className="profile-info">
               {userProfile ? (
                 <span className="user-name" onClick={() => navigate('/profile')} style={{ cursor: 'pointer' }}>
@@ -237,6 +264,12 @@ const Dashboard = () => {
               )}
             </div>
           </div>
+          {showNotifications && (
+            <NotificationDropdown
+              notifications={notifications}
+              onCloseNotification={handleCloseNotification}
+            />
+          )}
         </header>
         <div className='time'>
           Today
@@ -262,7 +295,7 @@ const Dashboard = () => {
             <option value="JOB">Job</option>
             <option value="ENTERTAINMENT">Entertainment</option>
             <option value="HOUSEHOLD">Household</option>
-            <option value="HOUSEHOLD">Travel</option>
+            <option value="TRAVEL">Travel</option>
             <option value="OTHERS">Others</option>
           </select>
         </div>
@@ -317,8 +350,8 @@ const Dashboard = () => {
         </div>
 
         {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />}
-        {notifications.map((message, index) => (
-          <Notification key={index} message={message} onClose={() => setNotifications(notifications.filter((_, i) => i !== index))} />
+        {popupNotifications.map((message, index) => (
+          <Notification key={index} message={message} onClose={() => handlePopupClose(index)} />
         ))}
       </main>
     </div>

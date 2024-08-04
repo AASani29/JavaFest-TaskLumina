@@ -18,3 +18,30 @@
   margin-left: 10px;
   cursor: pointer;
 }
+
+/* src/CSS Files/Notification.css */
+.notification-dropdown {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.notification-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notification-empty {
+  padding: 10px;
+  text-align: center;
+}

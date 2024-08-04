@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faEdit, faCheck, faClock, faCirclePlus, faPlus, faList, faCalendarDays, faAward, faGamepad, faLocationDot, faRobot} from '@fortawesome/free-solid-svg-icons';
+import { faBell, faEdit, faCheck, faClock, faCirclePlus, faPlus, faList, faCalendarDays, faAward, faGamepad, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import Logo from "../Assets/Logo.png";
 import '../CSS Files/ScheduleAnEvent.css';
 import { getEvents, addEvent, deleteEvent, updateEvent } from '../event-service';
 import AddEventForm from '../Features/AddEventForm';
-import { getMyProfile } from '../user-service';
+import { getMyProfile, getNotifications } from '../user-service';
 import { getCurrentUser } from '../Auth';
+import NotificationDropdown from '../Features/NotificationDropdown';
 
 const loadScript = (src, async = true, defer = true) => {
   return new Promise((resolve, reject) => {
@@ -22,6 +23,7 @@ const loadScript = (src, async = true, defer = true) => {
     document.body.appendChild(script);
   });
 };
+
 const ScheduleAnEvent = () => {
   const [showEventForm, setShowEventForm] = useState(false);
   const [editEvent, setEditEvent] = useState(null);
@@ -38,6 +40,8 @@ const ScheduleAnEvent = () => {
     userId: null,
   });
   const [events, setEvents] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -47,9 +51,9 @@ const ScheduleAnEvent = () => {
     } else {
       fetchEvents();
       fetchUserProfile();
+      fetchNotifications();
     }
   }, [navigate]);
-  
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('userData'));
@@ -81,19 +85,6 @@ const ScheduleAnEvent = () => {
       console.error('Error scheduling event:', error);
     }
   };
-  useEffect(() => {
-    const loadBotpressScripts = async () => {
-      try {
-        
-        await loadScript("https://cdn.botpress.cloud/webchat/v1/inject.js");
-        await loadScript("https://mediafiles.botpress.cloud/6f06300e-840b-4711-b2ac-8e9d5f7d4bf5/webchat/config.js");
-      } catch (error) {
-        console.error("Failed to load Botpress scripts:", error);
-      }
-    };
-
-    loadBotpressScripts();
-  }, []);
 
   const handleUpdateEvent = async () => {
     try {
@@ -106,6 +97,7 @@ const ScheduleAnEvent = () => {
       console.error('Error updating event:', error);
     }
   };
+
   const fetchUserProfile = async () => {
     try {
       const response = await getMyProfile(); // Fetch user profile using userService function
@@ -116,6 +108,15 @@ const ScheduleAnEvent = () => {
       }
     } catch (error) {
       console.error('Error occurred while fetching user profile:', error.message);
+    }
+  };
+
+  const fetchNotifications = async () => {
+    try {
+      const storedNotifications = await getNotifications(); // Fetch stored notifications from the backend
+      setNotifications(storedNotifications.map(notification => notification.message));
+    } catch (error) {
+      console.error("Failed to fetch notifications:", error);
     }
   };
 
@@ -175,6 +176,14 @@ const ScheduleAnEvent = () => {
     }
   };
 
+  const handleBellClick = () => {
+    setShowNotifications(!showNotifications);
+  };
+
+  const handleCloseNotification = (index) => {
+    setNotifications(notifications.filter((_, i) => i !== index));
+  };
+
   return (
     <div className="dashboard">
       <nav className="sidebar">
@@ -221,9 +230,9 @@ const ScheduleAnEvent = () => {
         </ul>
       </nav>
       <main className="content">
-      <header className="topbar">
+        <header className="topbar">
           <div className="icon-container">
-          <FontAwesomeIcon icon={faBell} className="bell-icon" />
+            <FontAwesomeIcon icon={faBell} className="bell-icon" onClick={handleBellClick} />
             <div className="profile-info">
               {userProfile ? (
                 <span className="user-name" onClick={() => navigate('/profile')} style={{ cursor: 'pointer' }}>
@@ -233,43 +242,43 @@ const ScheduleAnEvent = () => {
                 <span>Loading...</span>
               )}
             </div>
-            
-           
-            {/* <FontAwesomeIcon icon={faUser} className="user-icon" onClick={handleLogout} style={{ cursor: 'pointer' }} /> */}
+            {showNotifications && (
+              <NotificationDropdown
+                notifications={notifications}
+                onCloseNotification={handleCloseNotification}
+              />
+            )}
           </div>
         </header>
         <div className='time'>
           Events
         </div>
         <div className='task_added'>
-        <div className="profile-details">
-        {events.map((event) => (
-          <div >
-            <div className='eventname'>
-              <span className='span'> {event.title} 
-              <FontAwesomeIcon icon={faEdit} className="task-icon"  onClick={() => handleEditEvent(event)} />
-              <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteEvent(event.id)} />
-              </span>
-              
-            </div>
-            <div className='locationandtime'>
-              <span className='span'>
-                <FontAwesomeIcon icon={faLocationDot} className='location-icon'/> 
-                {event.location}</span>
-              <span className='span'>
-                <FontAwesomeIcon icon={faClock} className='location-icon'/> 
-                {new Date(event.dateTime).toLocaleString()} </span>
-            </div>
-            <div className='links'>
-              <span> <a href={event.link} target="_blank" rel="noopener noreferrer">{event.link}</a></span>
-            </div>
-
+          <div className="profile-details">
+            {events.map((event) => (
+              <div key={event.id}>
+                <div className='eventname'>
+                  <span className='span'> {event.title} 
+                    <FontAwesomeIcon icon={faEdit} className="task-icon"  onClick={() => handleEditEvent(event)} />
+                    <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteEvent(event.id)} />
+                  </span>
+                </div>
+                <div className='locationandtime'>
+                  <span className='span'>
+                    <FontAwesomeIcon icon={faLocationDot} className='location-icon'/> 
+                    {event.location}
+                  </span>
+                  <span className='span'>
+                    <FontAwesomeIcon icon={faClock} className='location-icon'/> 
+                    {new Date(event.dateTime).toLocaleString()} 
+                  </span>
+                </div>
+                <div className='links'>
+                  <span> <a href={event.link} target="_blank" rel="noopener noreferrer">{event.link}</a></span>
+                </div>
+              </div>
+            ))}
           </div>
-          
-        ))}
-        </div>
-
-          
         </div>
         <div className='present_time'>
           {date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
@@ -289,4 +298,3 @@ const ScheduleAnEvent = () => {
 };
 
 export default ScheduleAnEvent;
-  
