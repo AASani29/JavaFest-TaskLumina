@@ -1,5 +1,7 @@
 package com.phegondev.usersmanagementsystem.Reward;
 
+import com.phegondev.usersmanagementsystem.Notifications.Notification;
+import com.phegondev.usersmanagementsystem.Notifications.NotificationRepository;
 import com.phegondev.usersmanagementsystem.entity.OurUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,8 @@ public class RewardController {
 
     @Autowired
     private RewardRepository rewardRepository;
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @GetMapping("/name")
     public ResponseEntity<List<Reward>> getMyRewards(Authentication authentication) {
@@ -30,8 +34,30 @@ public class RewardController {
         if (reward == null) {
             return new ResponseEntity<>("Reward not found", HttpStatus.NOT_FOUND);
         }
-        reward.setNotified(true);
-        rewardRepository.save(reward);
+        if (!reward.isNotified()) {
+            reward.setNotified(true);
+            rewardRepository.save(reward);
+
+            // Save the notification
+            Notification notification = new Notification();
+            notification.setUserId(reward.getUserId());
+            notification.setMessage("You have earned the " + reward.getBadge() + " reward!");
+            notificationRepository.save(notification);
+        }
         return new ResponseEntity<>("Reward marked as notified", HttpStatus.OK);
     }
+
+    @GetMapping("/notifications")
+    public ResponseEntity<List<Notification>> getNotifications(Authentication authentication) {
+        Integer userId = ((OurUsers) authentication.getPrincipal()).getId();
+        List<Notification> notifications = notificationRepository.findByUserId(userId);
+        return new ResponseEntity<>(notifications, HttpStatus.OK);
+    }
+
+//    @PostMapping("/notifications/store")
+//    public ResponseEntity<String> saveNotification(@RequestBody Notification notification) {
+//        notificationRepository.save(notification);
+//        return new ResponseEntity<>("Notification saved", HttpStatus.CREATED);
+//    }
+
 }
