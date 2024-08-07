@@ -12,9 +12,7 @@ import ProfilePage from './Components/Pages/ProfilePage.jsx';
 import Achievement from './Components/Pages/Achievements.jsx';
 import Games from './Components/Games/Games.jsx';
 import TicTacToe from './Components/Games/tic-tac-toe.jsx';
-
-
-
+import Sudoku from './Components/Games/SudokuGame.jsx';
 
 const App = () => {
   return (
@@ -29,6 +27,7 @@ const App = () => {
         <Route path="/achievements" element={<Achievement />} />
         <Route path="/tictactoe" element={<TicTacToe />} />
         <Route path="/games" element={<Games />} />
+        <Route path="/sudoku" element={<Sudoku/>} />
        
         
       </Routes>

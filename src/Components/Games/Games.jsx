@@ -16,7 +16,7 @@ const Games = () => {
         <div className='games' onClick={() => navigate('/tictactoe')}>
         <span className="game-icon">Tic-Tac-Toe</span>
         </div>
-        <div className='games'>
+        <div className='games'onClick={() => navigate('/sudoku')}>
         <span className="sudoku-icon">Sudoku</span>
         </div>
         </nav>
