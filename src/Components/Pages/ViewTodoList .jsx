@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import '../CSS Files/Dashboard.css';
+import '../CSS Files/Viewtodolist.css';
 import { useNavigate } from 'react-router-dom';
 import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
+import Calendar from "../Assets/299092_calendar_icon.png";
 import Notification from '../Pages/Notification';
 import NotificationDropdown from '../Features/NotificationDropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faClock, faFilter, faTag } from '@fortawesome/free-solid-svg-icons';
-import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faEdit, faCheck, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { getCurrentUser } from '../Auth';
 import { getTasks, completeTask, getTaskProgress, updateProgress, getMyProfile, getMyRewards, markRewardAsNotified, getNotifications } from '../user-service';
 
@@ -32,11 +33,13 @@ const ViewTodoList = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [notifications, setNotifications] = useState([]);
-  const [showNotifications, setShowNotifications] = useState(false); // State to control dropdown visibility
+  const [showNotifications, setShowNotifications] = useState(false);
   const [popupNotifications, setPopupNotifications] = useState([]);
   const [hasNotified, setHasNotified] = useState(false);
   const [filterCriteria, setFilterCriteria] = useState('');
   const [filterCategory, setFilterCategory] = useState('ALL');
+  const [showDueTasks, setShowDueTasks] = useState(true); // State to toggle due tasks
+  const [showUpcomingTasks, setShowUpcomingTasks] = useState(true); // State to toggle upcoming tasks
   const notificationsFetchedRef = useRef(false);
 
   useEffect(() => {
@@ -185,20 +188,24 @@ const ViewTodoList = () => {
     setPopupNotifications(popupNotifications.filter((_, i) => i !== index));
   };
 
-  useEffect(() => {
-    const loadBotpressScripts = async () => {
-      try {
-        await loadScript("https://cdn.botpress.cloud/webchat/v1/inject.js");
-        await loadScript("https://mediafiles.botpress.cloud/6f06300e-840b-4711-b2ac-8e9d5f7d4bf5/webchat/config.js");
-      } catch (error) {
-        console.error("Failed to load Botpress scripts:", error);
+  const toggleDueTasks = () => {
+    setShowDueTasks(!showDueTasks);
+  };
+
+  const toggleUpcomingTasks = () => {
+    setShowUpcomingTasks(!showUpcomingTasks);
+  };
+
+  const renderTasks = () => {
+    const getPriorityColor = (priority) => {
+      switch (priority) {
+        case 'HIGH': return 'green';
+        case 'MEDIUM': return 'purple';
+        case 'LOW': return 'black';
+        default: return 'black';
       }
     };
 
-    loadBotpressScripts();
-  }, []);
-
-  const renderTasks = () => {
     const filteredTasks = getFilteredTasksByCategory();
     const today = new Date().toISOString().split('T')[0];
     const dueTasks = filteredTasks.filter(task => {
@@ -213,116 +220,86 @@ const ViewTodoList = () => {
 
     return (
       <>
-        <div className='filter'>
-          <label htmlFor="filter">Filter: </label>
-          <select id="filter" value={filterCriteria} onChange={handleFilterChange}>
-            <option value="">Select Filter</option>
-            <option value="priority">Priority</option>
-            <option value="time">Time</option>
-          </select>
-        </div>
-        <div className='category-filter'>
-          <label htmlFor="categoryFilter">Category: </label>
-          <select id="categoryFilter" value={filterCategory} onChange={handleCategoryChange}>
-            <option value="ALL">All</option>
-            <option value="EDUCATION">Education</option>
-            <option value="FOOD">Food</option>
-            <option value="HEALTH">Health</option>
-            <option value="JOB">Job</option>
-            <option value="ENTERTAINMENT">Entertainment</option>
-            <option value="HOUSEHOLD">Household</option>
-            <option value="OTHERS">Others</option>
-          </select>
-        </div>
-
-        {dueTasks.length > 0 && (
-          <div className='task-section'>
-            <div className="profile-details">
-              <h3>Due Tasks</h3>
-              {dueTasks.map((task) => (
-                <div className='eachtask' key={task.id}>
-                  <div className='eventname'>
-                    {(task.priority === "HIGH") ? (
-                      <span className='span'> <label className='hightask'> {task.name} </label>
-                        <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                        <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                      </span>
-                    ) : ((task.priority === "MEDIUM") ?
-                      (
-                        <span className='span'> <label className='mediumtask'> {task.name} </label>
-                          <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                          <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                        </span>
-                      ) : (
-                        <span className='span'> <label className='lowtask'> {task.name} </label>
-                          <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                          <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                        </span>
-                      ))
-                    }
-                  </div>
-                  <div className='description'>
-                    {task.description}
-                  </div>
-                  <div className='locationandtime'>
-                    <span className='span'>
-                      <FontAwesomeIcon icon={faTag} className='location-icon' />
-                      {task.category} </span>
-                    <span className='span'>
-                      <FontAwesomeIcon icon={faClock} className='location-icon' />
-                      {new Date(task.dateTime).toLocaleString()} </span>
-                    <span className='span'>
-                      <FontAwesomeIcon icon={faFilter} className='location-icon' />
-                      {task.priority} </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         <div className='task-section'>
-          <div className="profile-details">
-            <h3>Upcoming Tasks</h3>
-            {futureTasks.map((task) => (
-              <div className='eachtask' key={task.id}>
-                <div className='eventname'>
-                  {(task.priority === "HIGH") ? (
-                    <span className='span'> <label className='hightask'> {task.name} </label>
-                      <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                      <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                    </span>
-                  ) : ((task.priority === "MEDIUM") ?
-                    (
-                      <span className='span'> <label className='mediumtask'> {task.name} </label>
-                        <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                        <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                      </span>
-                    ) : (
-                      <span className='span'> <label className='lowtask'> {task.name} </label>
-                        <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                        <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                      </span>
-                    ))
-                  }
-                </div>
-                <div className='description'>
-                  {task.description}
-                </div>
-                <div className='locationandtime'>
-                  <span className='span'>
-                    <FontAwesomeIcon icon={faTag} className='location-icon' />
-                    {task.category} </span>
-                  <span className='span'>
-                    <FontAwesomeIcon icon={faClock} className='location-icon' />
-                    {new Date(task.dateTime).toLocaleString()} </span>
-                  <span className='span'>
-                    <FontAwesomeIcon icon={faFilter} className='location-icon' />
-                    {task.priority} </span>
+          <h3 onClick={toggleDueTasks}>
+            <FontAwesomeIcon icon={showDueTasks ? faChevronDown : faChevronRight} /> Due Tasks
+          </h3>
+          {showDueTasks && dueTasks.length > 0 && dueTasks.map((task) => (
+            <div className='task-card' key={task.id}>
+              <div className='task-header'>
+                <h3 style={{ color: getPriorityColor(task.priority) }}>{task.name}</h3>
+                <span className="task-datetime">
+                  {new Date(task.dateTime).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}
+                  {' '}
+                  {new Date(task.dateTime).toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                  })}
+                </span>
+                <div className="task-icons">
+                  <FontAwesomeIcon icon={faEdit} className="task-icon-edit" onClick={() => handleEditTask(task)} />
+                  <FontAwesomeIcon icon={faCheck} className="task-icon-done" onClick={() => handleCompleteTask(task.id)} />
                 </div>
               </div>
-            ))}
-          </div>
+              <div className='task-description'>
+                {task.description}
+              </div>
+              <div className='task-details'>
+                <span className="t-details">
+                  <FontAwesomeIcon icon={faTag} /> {task.category}
+                </span>
+                <span className="t-details">
+                  <FontAwesomeIcon icon={faFilter} /> {task.priority}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className='task-section'>
+          <h3 onClick={toggleUpcomingTasks}>
+            <FontAwesomeIcon icon={showUpcomingTasks ? faChevronDown : faChevronRight} /> Upcoming Tasks
+          </h3>
+          {showUpcomingTasks && futureTasks.length > 0 && futureTasks.map((task) => (
+            <div className='task-card' key={task.id}>
+              <div className='task-header'>
+                <h3 style={{ color: getPriorityColor(task.priority) }}>{task.name}</h3>
+                <span className="task-datetime">
+                  {new Date(task.dateTime).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}
+                  {' '}
+                  {new Date(task.dateTime).toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                  })}
+                </span>
+                <div className="task-icons">
+                  <FontAwesomeIcon icon={faEdit} className="task-icon-edit" onClick={() => handleEditTask(task)} />
+                  <FontAwesomeIcon icon={faCheck} className="task-icon-done" onClick={() => handleCompleteTask(task.id)} />
+                </div>
+              </div>
+              <div className='task-description'>
+                {task.description}
+              </div>
+              <div className='task-details'>
+                <span className="t-details">
+                  <FontAwesomeIcon icon={faTag} /> {task.category}
+                </span>
+                <span className="t-details">
+                  <FontAwesomeIcon icon={faFilter} /> {task.priority}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </>
     );
@@ -394,13 +371,46 @@ const ViewTodoList = () => {
             />
           )}
         </header>
-        <div className='time'>
-          All Tasks
+        <div className='Hero'>
+          <div className='hero-today'>
+            All Tasks
+          </div>
+          <div className='hero-date'>
+            <div className='calendar-icon'>
+              <img src={Calendar} alt="Calendar Icon" />
+            </div>
+            <div className='date-text'>
+              {todayDate}
+            </div>
+          </div>
         </div>
-        <div className='present_time'>
-          {todayDate}
+
+        <div className='filters'>
+          <div className='filter'>
+            <label htmlFor="filter">Filter:   </label>
+            <select id="filter" value={filterCriteria} onChange={handleFilterChange}>
+              <option value="">Select Filter&nbsp;&nbsp;&nbsp;   </option>
+              <option value="priority">Priority</option>
+              <option value="time">Time</option>
+            </select>
+          </div>
+          <div className='category-filter'>
+            <label htmlFor="categoryFilter">Category: </label>
+            <select id="categoryFilter" value={filterCategory} onChange={handleCategoryChange}>
+              <option value="ALL">All</option>
+              <option value="EDUCATION">Education</option>
+              <option value="FOOD">Food</option>
+              <option value="HEALTH">Health</option>
+              <option value="JOB">Job</option>
+              <option value="ENTERTAINMENT">Entertainment</option>
+              <option value="HOUSEHOLD">Household</option>
+              <option value="TRAVEL">Travel</option>
+              <option value="OTHERS">Others</option>
+            </select>
+          </div>
         </div>
-        <div className='task_added'>
+
+        <div className='task-list1'>
           {tasks.length === 0 ? "No task added yet" : renderTasks()}
         </div>
         {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />}

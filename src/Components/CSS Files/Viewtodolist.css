@@ -133,10 +133,11 @@
 }
 
 
-.task-list {
+.task-list1 {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 200px;
   font-family: 'Work Sans', sans-serif; /* Apply font family */
 }
 
@@ -267,15 +268,12 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for the date section */
 }
 
-
-
 .date-text {
   font-size: 18px; /* Font size for the date text */
   font-weight: 500; /* Semi-bold font weight */
   color: #34495e; /* Text color */
   font-family: 'Work Sans', sans-serif; /* Apply font family */
 }
-
 
 .body-dashboard {
   display: flex;
@@ -285,3 +283,7 @@
   padding: 20px; /* Optional: Add some padding for better spacing */
   width: 100%; /* Make sure the container takes full width */
 }
+.task-section{
+    color: #34495e;
+}
+

@@ -6,6 +6,7 @@ import NotificationDropdown from '../Features/NotificationDropdown';
 import { useNavigate } from 'react-router-dom';
 import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
+import Calendar from "../Assets/299092_calendar_icon.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faClock, faFilter, faCirclePlus, faList, faCalendarDays, faAward, faTag, faGamepad, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getCurrentUser } from '../Auth';
@@ -22,6 +23,54 @@ const loadScript = (src, async = true, defer = true) => {
     document.body.appendChild(script);
   });
 };
+
+const TaskCard = ({ task, onEdit, onComplete }) => {
+  const getPriorityColor = (priority) => {
+      switch (priority) {
+          case 'HIGH': return 'green';
+          case 'MEDIUM': return 'purple';
+          case 'LOW': return 'black';
+          default: return 'black';
+      }
+  };
+
+  return (
+      <div className="task-card">
+          <div className="task-header">
+              <h3 style={{ color: getPriorityColor(task.priority) }}>{task.name}</h3>
+              <span className="task-datetime"> 
+                {new Date(task.dateTime).toLocaleDateString('en-US', { 
+                  month: 'short', 
+                  day: 'numeric', 
+                  year: 'numeric' 
+                })} 
+                {' '}
+                {new Date(task.dateTime).toLocaleTimeString('en-US', { 
+                  hour: 'numeric', 
+                  minute: 'numeric', 
+                  hour12: true 
+                })}
+              </span>
+              <div className="task-icons">
+                  <FontAwesomeIcon icon={faEdit} className="task-icon-edit" onClick={() => onEdit(task)} />
+                  <FontAwesomeIcon icon={faCheck} className="task-icon-done" onClick={() => onComplete(task.id)} />
+              </div>
+          </div>
+          <div className="task-description">
+              <p>{task.description}</p>
+          </div>
+          <div className="task-body">
+              <div className="task-details">
+                  <span ><FontAwesomeIcon icon={faTag} /> {task.category}</span>
+                  <span ><FontAwesomeIcon icon={faFilter} /> {task.priority}</span>
+              </div>
+          </div>
+      </div>
+  );
+};
+
+
+
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -271,82 +320,55 @@ const Dashboard = () => {
             />
           )}
         </header>
-        <div className='time'>
-          Today
-        </div>
-        <div className='present_time'>
-          {todayDate}
-        </div>
-        <div className='filter'>
-          <label htmlFor="filter">Filter: </label>
-          <select id="filter" value={filterCriteria} onChange={handleFilterChange}>
-            <option value="">Select Filter</option>
-            <option value="priority">Priority</option>
-            <option value="time">Time</option>
-          </select>
-        </div>
-        <div className='category-filter'>
-          <label htmlFor="categoryFilter">Category: </label>
-          <select id="categoryFilter" value={filterCategory} onChange={handleCategoryChange}>
-            <option value="ALL">All</option>
-            <option value="EDUCATION">Education</option>
-            <option value="FOOD">Food</option>
-            <option value="HEALTH">Health</option>
-            <option value="JOB">Job</option>
-            <option value="ENTERTAINMENT">Entertainment</option>
-            <option value="HOUSEHOLD">Household</option>
-            <option value="TRAVEL">Travel</option>
-            <option value="OTHERS">Others</option>
-          </select>
-        </div>
-        <div className='task_added'>
-          <div className="profile-details">
-            {getFilteredTasksByCategory().map((task) => (
-              <div className='eachtask' key={task.id}>
-                <div className='eventname'>
-                  {(task.priority === "HIGH") ? (
-                    <span className='span'> <label className='hightask'> {task.name} </label>
-                      <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                      <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                    </span>
+        <div className='Hero'>
+  <div className='hero-today'>
+    Today
+  </div>
+  <div className='hero-date'>
+    <div className='calendar-icon'>
+      <img src={Calendar} alt="Calendar Icon" />
+    </div>
+    <div className='date-text'>
+      {todayDate}
+    </div>
+  </div>
+</div>
 
-                  ) : ((task.priority === "MEDIUM") ?
-
-                    (
-                      <span className='span'> <label className='mediumtask'> {task.name} </label>
-                        <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                        <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                      </span>
-
-                    ) : (
-                      <span className='span'> <label className='lowtask'> {task.name} </label>
-                        <FontAwesomeIcon icon={faEdit} className="task-icon" onClick={() => handleEditTask(task)} />
-                        <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleCompleteTask(task.id)} />
-                      </span>
-
-                    ))
-                  }
-                </div>
-                <div className='description'>
-                  {task.description}
-                </div>
-                <div className='locationandtime'>
-                  <span className='span'>
-                    <FontAwesomeIcon icon={faTag} className='location-icon' />
-                    {task.category}
-                  </span>
-                  <span className='span'>
-                    <FontAwesomeIcon icon={faClock} className='location-icon' />
-                    {new Date(task.dateTime).toLocaleString()}
-                  </span>
-                  <span className='span'>
-                    <FontAwesomeIcon icon={faFilter} className='location-icon' />
-                    {task.priority}
-                  </span>
-                </div>
-              </div>
-            ))}
+        <div className='body-dashboard'>
+        <div className='filters'>
+          <div className='filter'>
+            <label htmlFor="filter">Filter:   </label>
+            <select id="filter" value={filterCriteria} onChange={handleFilterChange}>
+              <option value="">Select Filter&nbsp;&nbsp;&nbsp;   </option>
+              <option value="priority">Priority</option>
+              <option value="time">Time</option>
+            </select>
           </div>
+          <div className='category-filter'>
+            <label htmlFor="categoryFilter">Category: </label>
+            <select id="categoryFilter" value={filterCategory} onChange={handleCategoryChange}>
+              <option value="ALL">All</option>
+              <option value="EDUCATION">Education</option>
+              <option value="FOOD">Food</option>
+              <option value="HEALTH">Health</option>
+              <option value="JOB">Job</option>
+              <option value="ENTERTAINMENT">Entertainment</option>
+              <option value="HOUSEHOLD">Household</option>
+              <option value="TRAVEL">Travel</option>
+              <option value="OTHERS">Others</option>
+            </select>
+          </div>
+        </div>
+        <div className='task-list'>
+          {getFilteredTasksByCategory().map((task) => (
+            <TaskCard 
+              key={task.id} 
+              task={task} 
+              onEdit={handleEditTask} 
+              onComplete={handleCompleteTask} 
+            />
+          ))}
+        </div>
         </div>
 
         {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />}
