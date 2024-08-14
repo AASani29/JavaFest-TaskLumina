@@ -54,6 +54,7 @@ public class RewardController {
         return new ResponseEntity<>(notifications, HttpStatus.OK);
     }
 
+
 //    @PostMapping("/notifications/store")
 //    public ResponseEntity<String> saveNotification(@RequestBody Notification notification) {
 //        notificationRepository.save(notification);
