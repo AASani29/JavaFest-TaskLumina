@@ -7,38 +7,18 @@
   font-family: 'Work Sans', sans-serif; /* Apply font family */
 }
 
-.sidebar {
-  width: 250px;
-  background-color: white;
-  color: #34495e;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: width 0.3s ease;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
+
 
 .content {
   flex: 1;
   padding: 20px;
-  background-color: #ecf0f1;
+  background-color: white;
   display: flex;
   flex-direction: column;
   font-family: 'Work Sans', sans-serif; /* Apply font family */
 }
 
-.topbar {
-  width: calc(100% - 390px);
-  display: flex;
-  justify-content: flex-end;
-  padding: 30px 50px;
-  background-color: #ecf0f1;
-  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  top: 0;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
+
 
 .icon-container {
   display: inline-flex;
@@ -48,14 +28,7 @@
   font-family: 'Work Sans', sans-serif; /* Apply font family */
 }
 
-.filters {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  margin-top: 50px; /* Adjusted for spacing under topbar */
-  gap: 20px; /* Space between the filter and category sections */
-  align-items: center;
-}
+
 
 .filter,
 .category-filter {
@@ -141,132 +114,10 @@
   font-family: 'Work Sans', sans-serif; /* Apply font family */
 }
 
-.task-card {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 20px;
-  background-color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
 
-.task-header {
-  font-size: 16px;
-  display: flex;
-  justify-content: left;
-  align-items: normal;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
 
-.task-header h3 {
-  text-align: left;
-  flex: 1;
-  margin: 0;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
 
-.task-datetime {
-  font-size: 15px;
-  background-color: #f0f0f0;
-  color: #3d658d;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-weight: 400;
-  margin-left: 20px;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
 
-.task-icons {
-  display: flex;
-  gap:15px;
-  margin-left: 80px;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
-
-.task-icons .task-icon-edit {
-  font-size: 16px;
-  color: rgb(177, 5, 5);
-  cursor: pointer;
-  text-align: right;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
-.task-icons .task-icon-done {
-  font-size: 16px;
-  color: rgb(3, 114, 3);
-  cursor: pointer;
-  text-align: right;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
-
-.task-description {
-  margin-bottom: 10px;
-  padding-top: 0px;
-  border-top: 1px solid #eee;
-  font-size: 14px;
-  color: #666;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
-
-.task-details {
-  font-size: 14px;
-  display: flex;
-  flex-direction: row;
-  color: #34495e;
-  gap: 20px;
-  align-items: center;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
-
-.task-body .task-details {
-  display: flex;
-  flex-direction: row;
-  gap: 40px;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
-
-.task-body .t-details {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  font-size: 15px;
-  color: #34495e;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
-
-.task-body .t-details .faTag,
-.task-body .t-details .faFilter {
-  color: #3d658d;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
-.Hero {
-  display: flex;
-  flex-direction: row;
-  align-items: center; /* Align 'Today' and 'Date' elements */
-  gap: 200px; /* Space between 'Today' and the date */
-  margin-top: 50px;
-  padding: 10px 20px; /* Padding for spacing */
-  background-color: #f7f9fc; /* Light background color to distinguish this section */
-  border-radius: 8px; /* Rounded corners */
-}
-
-.hero-today {
-  font-size: 30px; /* Larger font size for 'Today' */
-  font-weight: 600; /* Bold font for 'Today' */
-  color: #2d649b; /* Darker color for 'Today' */
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
-
-.hero-date {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Space between the calendar icon and date text */
-  background-color: #ffffff; /* White background for the date section */
-  padding: 10px 15px; /* Padding around the date section */
-  border-radius: 8px; /* Rounded corners for the date section */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for the date section */
-}
 
 .date-text {
   font-size: 18px; /* Font size for the date text */
@@ -275,14 +126,7 @@
   font-family: 'Work Sans', sans-serif; /* Apply font family */
 }
 
-.body-dashboard {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Align items to the left */
-  justify-content: flex-start; /* Align content to the top */
-  padding: 20px; /* Optional: Add some padding for better spacing */
-  width: 100%; /* Make sure the container takes full width */
-}
+
 .task-section{
     color: #34495e;
 }

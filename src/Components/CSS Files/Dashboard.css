@@ -8,36 +8,48 @@
 }
 
 .sidebar {
-  width: 250px;
-  background-color: white;
-  color: #34495e;
+  width: 16%;
+  background-color: #1C4D53; /* Dark teal background */
+  color: #ffffff; /* White text */
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: width 0.3s ease;
   font-family: 'Work Sans', sans-serif; /* Apply font family */
+ 
+  background-image: linear-gradient(to right, rgb(28, 76, 83), rgba(255, 255, 255, 0.1)); 
+}
+
+
+
+.sidebar ul li, .sidebar ul li .sidebar-button {
+  color: #ffffff; /* White icons and text */
+}
+
+.sidebar ul li .sidebar-button {
+  font-weight: 500;
 }
 
 .content {
   flex: 1;
   padding: 20px;
-  background-color: #ecf0f1;
+  background-color: #f4f9f9; /* Very light background color */
   display: flex;
   flex-direction: column;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-family: 'Work Sans', sans-serif;
 }
 
 .topbar {
-  width: calc(100% - 390px);
+  width: 84%;
   display: flex;
   justify-content: flex-end;
   padding: 30px 50px;
-  background-color: #ecf0f1;
+  background-color: #ffffff; /* White background */
   box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-family: 'Work Sans', sans-serif;
 }
 
 .icon-container {
@@ -51,104 +63,51 @@
 .filters {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
-  margin-top: 50px; /* Adjusted for spacing under topbar */
-  gap: 20px; /* Space between the filter and category sections */
+  margin-left: 15%;
+  margin-right: 15%;
+  margin-top: 12px;
+  gap: 20px;
   align-items: center;
 }
 
-.filter,
-.category-filter {
-  gap: 10px;
-  font-family: 'Work Sans', sans-serif;
-  margin-left: 10px;
-  
-}
-
-.filter label,
-.category-filter label {
-  font-size: 16px;
-  color: #34495e;
-  font-weight: 500;
-}
-
-.filter select,
-.category-filter select {
-  align-items: center;
-  padding: 8px 12px 8px 10px;
-  font-size: 14px;
-  font-family: 'Work Sans', sans-serif;
-  color: #34495e;
-  background-color: white;
+.filter select, .category-filter select {
+  background-color: #ffffff;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  outline: none;
-  appearance: none; /* Remove default arrow in some browsers */
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDE2IDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTEuMjM2IDIuMjE0QzAuODc5NyAxLjg1OCAwLjg3OTcgMS4yNjQgMS4yMzYgMC45MDc2QzEuNTkyIDAuNTUyMiAyLjE4NiAwLjU1MjIgMi41NDIgMC45MDc2TDggNi4zNjVMMTMuNDU4IDAuOTA3NkMxMy44MTQgMC41NTIyIDE0LjQxIDAuNTUyMiAxNC43NjYgMC45MDc2QzE1LjEyMSAxLjI2NCAxNS4xMjEgMS44NTggMTQuNzY2IDIuMjE0TDguNjE2IDguMzY0QzguMzI3IDguNjUyIDcuNjczIDguNjUyIDcuMzg0IDguMzY0TDEuMjM2IDIuMjE0WiIgZmlsbD0iIzQzNDk1RSIvPgo8L3N2Zz4='); /* Custom arrow */
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  
-  background-size: 12px;
-  
-}
-
-.filter select:hover,
-.category-filter select:hover {
-  border-color: #3d658d;
-}
-
-.filter select:focus,
-.category-filter select:focus {
-  border-color: #3d658d;
-  box-shadow: 0 0 5px rgba(61, 101, 141, 0.5);
-}
-
-.filter select option,
-.category-filter select option {
-  padding: 5px;
-  background-color: white;
+  font-size: 14px;
+  padding: 8px 12px;
   color: #34495e;
 }
 
-/* Additional styling for mobile responsiveness */
-@media (max-width: 768px) {
-  .filters {
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 20px; /* Reduce top margin on smaller screens */
-  }
-
-  .filter,
-  .category-filter {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .filter select,
-  .category-filter select {
-    width: 100%;
-  }
+.filter select:hover, .category-filter select:hover {
+  border-color: #2a9d8f; /* Light teal hover color */
 }
 
+.filter select:focus, .category-filter select:focus {
+  border-color: #2a9d8f;
+  box-shadow: 0 0 5px rgba(42, 157, 143, 0.5); /* Light teal shadow */
+}
 
 .task-list {
+  width: 75%;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-family: 'Work Sans', sans-serif;
 }
 
 .task-card {
+  margin-left: 22%;
+  width: 68%;
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 20px;
-  background-color: white;
+  background-color: #ffffff; /* White background for task cards */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-family: 'Work Sans', sans-serif;
 }
 
 .task-header {
@@ -158,130 +117,190 @@
   align-items: normal;
   font-family: 'Work Sans', sans-serif; /* Apply font family */
 }
-
-.task-header h3 {
-  text-align: left;
-  flex: 1;
-  margin: 0;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+.task-name{
+  width: 70%;
+  font-size: 20px;
+  font-weight: 600;
+  color: #34495e;
+  word-break: break-word; /* Allows long words to break to the next line */
+  overflow-wrap: anywhere; /* Breaks at any point if necessary */
+  white-space: normal; /* Ensures normal text wrapping */
+  box-sizing: border-box; /* Includes border in the width calculation */
+  flex-grow: 1; /* Allow task list to take up available space */
+  
 }
 
 .task-datetime {
-  font-size: 15px;
-  background-color: #f0f0f0;
-  color: #3d658d;
-  padding: 5px 10px;
+  width: 33%;
+  background-color: #ffffff;
+  color: #2a9d8f; /* Teal color matching the sidebar */
+  padding-top: 10px;
   border-radius: 5px;
-  font-weight: 400;
-  margin-left: 20px;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-weight: 500;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .task-icons {
   display: flex;
-  gap:15px;
-  margin-left: 80px;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  gap: 15px;
+  margin-left: 400px;
+  font-family: 'Work Sans', sans-serif;
 }
 
-.task-icons .task-icon-edit {
-  font-size: 16px;
-  color: rgb(177, 5, 5);
-  cursor: pointer;
-  text-align: right;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+.task-icon-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e9f5f4; /* Light teal background for the card */
+  border-radius: 8px; /* Rounded corners */
+  padding: 8px; /* Padding inside the card */
+  cursor: pointer; /* Change cursor to pointer */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
 }
-.task-icons .task-icon-done {
+
+.task-icon-card:hover {
+  background-color: #c4e2de; /* Slightly darker teal background on hover */
+}
+
+.task-icon-edit, .task-icon-done {
   font-size: 16px;
-  color: rgb(3, 114, 3);
-  cursor: pointer;
-  text-align: right;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  color: inherit; /* Inherit color from parent card */
+}
+
+.task-icon-edit {
+  color: #264653; /* Dark teal color for edit icon */
+}
+
+.task-icon-done {
+  color: #264653; /* Dark teal color for done icon */
 }
 
 .task-description {
-  margin-bottom: 10px;
-  padding-top: 0px;
-  border-top: 1px solid #eee;
-  font-size: 14px;
+  font-size: 15px;
   color: #666;
   font-family: 'Work Sans', sans-serif; /* Apply font family */
 }
 
-.task-details {
+.task-details, .task-body .task-details, .task-body .t-details {
+  display: flex;
+  align-items: flex-start; /* Align items vertically */
+  gap: 10px;
+  font-family: 'Work Sans', sans-serif;
   font-size: 14px;
-  display: flex;
-  flex-direction: row;
+  text-align: center;
   color: #34495e;
-  gap: 20px;
+  margin-top: 10px;
+  flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+.task-card-item {
+  display: inline-flex;
   align-items: center;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
-
-.task-body .task-details {
-  display: flex;
-  flex-direction: row;
-  gap: 40px;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
-
-.task-body .t-details {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  font-size: 15px;
-  color: #34495e;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
-
-.task-body .t-details .faTag,
-.task-body .t-details .faFilter {
-  color: #3d658d;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
-}
-.Hero {
-  display: flex;
-  flex-direction: row;
-  align-items: center; /* Align 'Today' and 'Date' elements */
-  gap: 200px; /* Space between 'Today' and the date */
-  margin-top: 50px;
-  padding: 10px 20px; /* Padding for spacing */
-  background-color: #f7f9fc; /* Light background color to distinguish this section */
+  background-color: #e9f5f4; /* Light background for the small card */
   border-radius: 8px; /* Rounded corners */
+  padding: 5px 10px; /* Padding inside the card */
+  font-size: 12px; /* Slightly smaller font size */
+  color: rgba(38, 70, 83, 0.7); /* Dark teal color with 70% opacity */
+  font-weight: 500; /* Slightly less bold to appear as descriptions */
+  white-space: nowrap; /* Prevent text from wrapping */
+  flex-shrink: 0; /* Prevent the card from shrinking */
+  flex-grow: 1; /* Allow the card to grow if necessary */
+}
+
+.task-card-item svg {
+  margin-right: 5px; /* Space between icon and text */
+  color: rgba(38, 70, 83, 0.7); /* Icon color matching the text */
+}
+
+.task-done-button {
+  background-color: #6a9c9e; /* Button color similar to the image */
+  color: #ffffff; /* White text color */
+  border: none; /* Remove default border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 8px 8px; /* Padding inside the button */
+  font-size: 14px; /* Font size */
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400; /* Slightly bold text */
+  cursor: pointer; /* Pointer cursor on hover */
+  white-space: nowrap; /* Prevent text from wrapping */
+  align-self: flex-end; /* Align the button to the bottom of the container */
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+  margin-left: 300px;
+}
+
+
+
+.task-done-button:hover {
+  background-color: #5b898c; /* Slightly darker shade on hover */
+}
+
+
+
+.Hero {
+  width: 70%;
+  display: flex;
+  align-items: flex-start;
+  gap: 80px;
+  margin-top: 50px;
+  padding: 10px 20px;
+  background-color: #ffffff; /* Light background */
+  border-radius: 8px;
 }
 
 .hero-today {
-  font-size: 30px; /* Larger font size for 'Today' */
-  font-weight: 600; /* Bold font for 'Today' */
-  color: #2d649b; /* Darker color for 'Today' */
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  margin-left: 1%;
+  font-size: 3em;
+  font-weight: 600;
+  color: #264653; /* Darker teal color */
+  font-family: 'Work Sans', sans-serif;
 }
 
 .hero-date {
   display: flex;
-  align-items: center;
-  gap: 10px; /* Space between the calendar icon and date text */
-  background-color: #ffffff; /* White background for the date section */
-  padding: 10px 15px; /* Padding around the date section */
-  border-radius: 8px; /* Rounded corners for the date section */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for the date section */
+  align-items: flex-start;
+  gap: 10px;
+  background-color: #ffffff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
-
 
 .date-text {
-  font-size: 18px; /* Font size for the date text */
-  font-weight: 500; /* Semi-bold font weight */
-  color: #34495e; /* Text color */
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-size: 18px;
+  font-weight: 500;
+  color: #34495e;
+  font-family: 'Work Sans', sans-serif;
 }
-
 
 .body-dashboard {
   display: flex;
-  flex-direction: column;
-  align-items: center; /* Align items to the left */
-  justify-content: flex-start; /* Align content to the top */
-  padding: 20px; /* Optional: Add some padding for better spacing */
-  width: 100%; /* Make sure the container takes full width */
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  width: 100%;
+}
+
+#calendar {
+  width: 20%;
+  flex-shrink: 0;
+  background-color: #ffffff; /* Match background color */
+  color: #264653; /* Match text color */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 10px;
+  text-align: center;
+}
+
+#calendar #month {
+  background-color: #2a9d8f; /* Teal background for month */
+  color: #ffffff; /* White text */
+  padding: 10px;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+
+#calendar #date, #calendar #weekday, #calendar #year {
+  color: #264653; /* Darker teal text color */
+  margin-top: 10px;
 }

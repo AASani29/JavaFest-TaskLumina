@@ -8,10 +8,16 @@ import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
 import Calendar from "../Assets/299092_calendar_icon.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faClock, faFilter, faCirclePlus, faList, faCalendarDays, faAward, faTag, faGamepad, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faClock, faFilter, faCirclePlus, faList, faCalendarDays, faAward, faTag, faGamepad, faEdit, faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FaPlusCircle } from "react-icons/fa";
 import { getCurrentUser } from '../Auth';
+import { SlBadge } from "react-icons/sl";
+import { FiPlusCircle , FiClock, FiCalendar } from "react-icons/fi";
 import { getTasks, completeTask, getTaskProgress, updateProgress, getMyProfile, getMyRewards, markRewardAsNotified, getNotifications } from '../user-service';
+import MiniCalendar from '../Features/MiniCalendar';
+import { IoGameControllerOutline } from "react-icons/io5";
 
+import { CgGames } from "react-icons/cg";
 const loadScript = (src, async = true, defer = true) => {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -37,34 +43,40 @@ const TaskCard = ({ task, onEdit, onComplete }) => {
   return (
       <div className="task-card">
           <div className="task-header">
-              <h3 style={{ color: getPriorityColor(task.priority) }}>{task.name}</h3>
-              <span className="task-datetime"> 
-                {new Date(task.dateTime).toLocaleDateString('en-US', { 
-                  month: 'short', 
-                  day: 'numeric', 
-                  year: 'numeric' 
-                })} 
-                {' '}
-                {new Date(task.dateTime).toLocaleTimeString('en-US', { 
-                  hour: 'numeric', 
-                  minute: 'numeric', 
-                  hour12: true 
-                })}
-              </span>
-              <div className="task-icons">
-                  <FontAwesomeIcon icon={faEdit} className="task-icon-edit" onClick={() => onEdit(task)} />
-                  <FontAwesomeIcon icon={faCheck} className="task-icon-done" onClick={() => onComplete(task.id)} />
-              </div>
+          <div className="task-name" style={{ color: getPriorityColor(task.priority) }}>
+  {task.name}
+</div>
+
+              
+<div className="task-icons">
+  <div className="task-icon-card" onClick={() => onEdit(task)}>
+    <FontAwesomeIcon icon={faEdit} className="task-icon-edit" />
+  </div>
+  <div className="task-icon-card" onClick={() => onComplete(task.id)}>
+    <FontAwesomeIcon icon={faTrash} className="task-icon-done" />
+  </div>
+</div>
+
           </div>
           <div className="task-description">
               <p>{task.description}</p>
           </div>
           <div className="task-body">
-              <div className="task-details">
-                  <span ><FontAwesomeIcon icon={faTag} /> {task.category}</span>
-                  <span ><FontAwesomeIcon icon={faFilter} /> {task.priority}</span>
-              </div>
-          </div>
+  <div className="task-details">
+    <span className="task-card-item">
+      {new Date(task.dateTime).toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+      })}
+    </span>
+    <span className="task-card-item">{task.category}</span>
+    <span className="task-card-item">{task.priority}</span>
+    <button className="task-done-button" onClick={() => onComplete(task.id)}>
+      Mark as completed
+    </button>
+  </div>
+</div>
       </div>
   );
 };
@@ -250,7 +262,7 @@ const Dashboard = () => {
         console.error("Failed to load Botpress scripts:", error);
       }
     };
-
+    
     loadBotpressScripts();
   }, []);
 
@@ -263,37 +275,37 @@ const Dashboard = () => {
         <ul className="sidebar-features">
           <li>
             <div className="sidebar-button" onClick={toggleAddTaskForm}>
-              <FontAwesomeIcon icon={faCirclePlus} className="circle-icon" />
+              <FiPlusCircle  className="circle-icon" />
               <span>Add Task</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/viewtodolist')}>
               <FontAwesomeIcon icon={faList} className="circle-icon" />
-              <span>View Todo List</span>
+              <span>View To-do List</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button">
-              <FontAwesomeIcon icon={faClock} className="circle-icon" />
+              <FiClock  className="circle-icon" />
               <span>Make Me a Routine</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/scheduleanevent')}>
-              <FontAwesomeIcon icon={faCalendarDays} className="circle-icon" />
+              <FiCalendar icon={faCalendarDays} className="circle-icon" />
               <span>Schedule an Event</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/achievements')}>
-              <FontAwesomeIcon icon={faAward} className="circle-icon" />
+              <SlBadge icon={faAward} className="circle-icon" />
               <span>Achievements</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/games')}>
-              <FontAwesomeIcon icon={faGamepad} className="circle-icon" />
+              <IoGameControllerOutline icon={faGamepad} className="circle-icon" />
               <span>Play A Game</span>
             </div>
           </li>
@@ -301,6 +313,7 @@ const Dashboard = () => {
       </nav>
       <main className="content">
         <header className="topbar">
+        
           <div className="icon-container">
             <FontAwesomeIcon icon={faBell} className="bell-icon" onClick={handleBellClick} />
             <div className="profile-info">
@@ -324,18 +337,7 @@ const Dashboard = () => {
   <div className='hero-today'>
     Today
   </div>
-  <div className='hero-date'>
-    <div className='calendar-icon'>
-      <img src={Calendar} alt="Calendar Icon" />
-    </div>
-    <div className='date-text'>
-      {todayDate}
-    </div>
-  </div>
-</div>
-
-        <div className='body-dashboard'>
-        <div className='filters'>
+  <div className='filters'>
           <div className='filter'>
             <label htmlFor="filter">Filter:   </label>
             <select id="filter" value={filterCriteria} onChange={handleFilterChange}>
@@ -358,7 +360,25 @@ const Dashboard = () => {
               <option value="OTHERS">Others</option>
             </select>
           </div>
+          
         </div>
+  {/* <div className='hero-date'> */}
+    {/* <div className='calendar-icon'>
+      <img src={Calendar} alt="Calendar Icon" />
+    </div> */}
+    
+    {/* <div className='date-text'>
+      {todayDate}
+    </div> */}
+  {/* </div> */}
+ 
+</div>
+<MiniCalendar />
+
+
+
+        <div className='body-dashboard'>
+      
         <div className='task-list'>
           {getFilteredTasksByCategory().map((task) => (
             <TaskCard 
@@ -369,6 +389,7 @@ const Dashboard = () => {
             />
           ))}
         </div>
+        
         </div>
 
         {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />}

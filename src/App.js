@@ -28,7 +28,7 @@ const App = () => {
         <Route path="/tictactoe" element={<TicTacToe />} />
         <Route path="/games" element={<Games />} />
         <Route path="/sudoku" element={<Sudoku/>} />
-       
+        
         
       </Routes>
     </Router>
