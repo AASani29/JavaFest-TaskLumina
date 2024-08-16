@@ -38,8 +38,8 @@ const ViewTodoList = () => {
   const [hasNotified, setHasNotified] = useState(false);
   const [filterCriteria, setFilterCriteria] = useState('');
   const [filterCategory, setFilterCategory] = useState('ALL');
-  const [showDueTasks, setShowDueTasks] = useState(true); // State to toggle due tasks
-  const [showUpcomingTasks, setShowUpcomingTasks] = useState(true); // State to toggle upcoming tasks
+  const [showDueTasks, setShowDueTasks] = useState(true);
+  const [showUpcomingTasks, setShowUpcomingTasks] = useState(true);
   const notificationsFetchedRef = useRef(false);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const ViewTodoList = () => {
     const formattedDate = currentDate.toLocaleDateString('en-US', options);
     setTodayDate(formattedDate);
   }, []);
-
+  
   const fetchAllTasks = async () => {
     try {
       const data = await getTasks();

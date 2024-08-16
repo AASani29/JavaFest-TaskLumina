@@ -7,6 +7,7 @@
   font-family: 'Work Sans', sans-serif; /* Apply font family */
 }
 
+/* Sidebar */
 .sidebar {
   width: 16%;
   background-color: #1C4D53; /* Dark teal background */
@@ -17,9 +18,14 @@
   align-items: center;
   transition: width 0.3s ease;
   font-family: 'Work Sans', sans-serif; /* Apply font family */
- 
   background-image: linear-gradient(to right, rgb(28, 76, 83), rgba(255, 255, 255, 0.1)); 
+  position: fixed; /* Fix the sidebar in place */
+  top: 0;
+  left: 0;
+  height: 100vh; /* Full height of the viewport */
+  z-index: 1000; /* Ensure it stays above other content */
 }
+
 
 
 
@@ -38,10 +44,11 @@
   display: flex;
   flex-direction: column;
   font-family: 'Work Sans', sans-serif;
+  margin-left: 16%; /* Adjust the content to the right to account for the sidebar */
 }
 
 .topbar {
-  width: 84%;
+  width: calc(100% - 16%); /* Full width minus sidebar */
   display: flex;
   justify-content: flex-end;
   padding: 30px 50px;
@@ -49,8 +56,21 @@
   box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
+  left: 16%; /* Adjust for the sidebar */
+  z-index: 999; /* Ensure it stays above content but below the sidebar */
   font-family: 'Work Sans', sans-serif;
+  transition: transform 0.3s ease, top 0.3s ease; /* Smooth transition */
 }
+
+.topbar.minimized {
+  transform: translateY(-80%); /* Partially hidden (only 20% visible) */
+}
+
+.topbar:hover {
+  transform: translateY(0); /* Fully visible when hovered */
+}
+
+
 
 .icon-container {
   display: inline-flex;
@@ -108,6 +128,7 @@
   display: flex;
   flex-direction: column;
   font-family: 'Work Sans', sans-serif;
+  position: relative; /* Ensure positioning within the task card */
 }
 
 .task-header {
@@ -194,8 +215,9 @@
 }
 
 .task-card-item {
-  display: inline-flex;
-  align-items: center;
+  display: flex;
+  align-items: center; /* Align items vertically */
+  justify-content: center; /* Center items horizontally */
   background-color: #e9f5f4; /* Light background for the small card */
   border-radius: 8px; /* Rounded corners */
   padding: 5px 10px; /* Padding inside the card */
@@ -204,7 +226,7 @@
   font-weight: 500; /* Slightly less bold to appear as descriptions */
   white-space: nowrap; /* Prevent text from wrapping */
   flex-shrink: 0; /* Prevent the card from shrinking */
-  flex-grow: 1; /* Allow the card to grow if necessary */
+  text-align: center; /* Center text */
 }
 
 .task-card-item svg {
@@ -217,18 +239,17 @@
   color: #ffffff; /* White text color */
   border: none; /* Remove default border */
   border-radius: 8px; /* Rounded corners */
-  padding: 8px 8px; /* Padding inside the button */
-  font-size: 14px; /* Font size */
+  padding: 5px 10px; /* Padding inside the button */
+  font-size: 12px; /* Font size */
   font-family: 'Work Sans', sans-serif;
   font-weight: 400; /* Slightly bold text */
   cursor: pointer; /* Pointer cursor on hover */
   white-space: nowrap; /* Prevent text from wrapping */
-  align-self: flex-end; /* Align the button to the bottom of the container */
   transition: background-color 0.3s ease; /* Smooth transition on hover */
-  margin-left: 300px;
+  position: absolute; /* Position the button within the task card */
+  bottom: 20px; /* Distance from the bottom of the task card */
+  right: 20px; /* Distance from the right edge of the task card */
 }
-
-
 
 .task-done-button:hover {
   background-color: #5b898c; /* Slightly darker shade on hover */
