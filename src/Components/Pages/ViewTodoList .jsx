@@ -1,17 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
-import '../CSS Files/Viewtodolist.css';
+import '../CSS Files/Dashboard.css';
+import '../CSS Files/ScheduleAnEvent.css';
+import Notification from '../Pages/Notification';
+import NotificationDropdown from '../Features/NotificationDropdown';
 import { useNavigate } from 'react-router-dom';
 import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
 import Calendar from "../Assets/299092_calendar_icon.png";
-import Notification from '../Pages/Notification';
-import NotificationDropdown from '../Features/NotificationDropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faClock, faFilter, faTag } from '@fortawesome/free-solid-svg-icons';
-import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad, faEdit, faCheck, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faClock, faFilter, faCirclePlus, faList, faCalendarDays, faAward, faTag, faGamepad, faEdit, faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { getCurrentUser } from '../Auth';
 import { getTasks, completeTask, getTaskProgress, updateProgress, getMyProfile, getMyRewards, markRewardAsNotified, getNotifications } from '../user-service';
-
+import { FaRegSmileBeam } from "react-icons/fa";
+import { FiPlusCircle , FiClock, FiCalendar, Fi } from "react-icons/fi";
+import { IoGameControllerOutline } from "react-icons/io5";
+import { SlBadge } from "react-icons/sl";
+import MiniCalendar from '../Features/MiniCalendar';
 const loadScript = (src, async = true, defer = true) => {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -22,6 +26,58 @@ const loadScript = (src, async = true, defer = true) => {
     script.onerror = reject;
     document.body.appendChild(script);
   });
+};
+const TaskCard = ({ task, onEdit, onComplete }) => {
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case 'HIGH': return 'green';
+      case 'MEDIUM': return 'purple';
+      case 'LOW': return 'black';
+      default: return 'black';
+    }
+  };
+
+  return (
+    <div className="task-card">
+      <div className="task-header">
+        <div className="task-name" style={{ color: getPriorityColor(task.priority) }}>
+          {task.name}
+        </div>
+        <div className="task-icons">
+          <div className="task-icon-card" onClick={() => onEdit(task)}>
+            <FontAwesomeIcon icon={faEdit} className="task-icon-edit" />
+          </div>
+          <div className="task-icon-card" onClick={() => onComplete(task.id)}>
+            <FontAwesomeIcon icon={faTrash} className="task-icon-done" />
+          </div>
+        </div>
+      </div>
+      <div className="task-description">
+        <p>{task.description}</p>
+      </div>
+      <div className="task-body">
+        <div className="task-details">
+          <span className="task-card-item">
+            {new Date(task.dateTime).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })}{' '}
+            {new Date(task.dateTime).toLocaleTimeString('en-US', {
+              hour: 'numeric',
+              minute: 'numeric',
+              hour12: true,
+            })}
+          </span>
+          <span className="task-card-item">{task.category}</span>
+          <span className="task-card-item">{task.priority}</span>
+          <button className="task-done-button" onClick={() => onComplete(task.id)}>
+            Mark as completed
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 const ViewTodoList = () => {
@@ -38,9 +94,14 @@ const ViewTodoList = () => {
   const [hasNotified, setHasNotified] = useState(false);
   const [filterCriteria, setFilterCriteria] = useState('');
   const [filterCategory, setFilterCategory] = useState('ALL');
+  const notificationsFetchedRef = useRef(false);
   const [showDueTasks, setShowDueTasks] = useState(true);
   const [showUpcomingTasks, setShowUpcomingTasks] = useState(true);
-  const notificationsFetchedRef = useRef(false);
+  
+  
+  const toggleDueTasks = () => setShowDueTasks(!showDueTasks);
+const toggleUpcomingTasks = () => setShowUpcomingTasks(!showUpcomingTasks);
+
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -64,7 +125,7 @@ const ViewTodoList = () => {
     const formattedDate = currentDate.toLocaleDateString('en-US', options);
     setTodayDate(formattedDate);
   }, []);
-  
+
   const fetchAllTasks = async () => {
     try {
       const data = await getTasks();
@@ -188,121 +249,20 @@ const ViewTodoList = () => {
     setPopupNotifications(popupNotifications.filter((_, i) => i !== index));
   };
 
-  const toggleDueTasks = () => {
-    setShowDueTasks(!showDueTasks);
-  };
-
-  const toggleUpcomingTasks = () => {
-    setShowUpcomingTasks(!showUpcomingTasks);
-  };
-
-  const renderTasks = () => {
-    const getPriorityColor = (priority) => {
-      switch (priority) {
-        case 'HIGH': return 'green';
-        case 'MEDIUM': return 'purple';
-        case 'LOW': return 'black';
-        default: return 'black';
-      }
-    };
-
-    const filteredTasks = getFilteredTasksByCategory();
+  const getDueTasks = () => {
     const today = new Date().toISOString().split('T')[0];
-    const dueTasks = filteredTasks.filter(task => {
+    return getFilteredTasksByCategory().filter(task => {
       const taskDate = new Date(task.dateTime).toISOString().split('T')[0];
       return taskDate < today && !task.completed;
     });
+  };
 
-    const futureTasks = filteredTasks.filter(task => {
+  const getUpcomingTasks = () => {
+    const today = new Date().toISOString().split('T')[0];
+    return getFilteredTasksByCategory().filter(task => {
       const taskDate = new Date(task.dateTime).toISOString().split('T')[0];
       return taskDate >= today && !task.completed;
     });
-
-    return (
-      <>
-        <div className='task-section'>
-          <h3 onClick={toggleDueTasks}>
-            <FontAwesomeIcon icon={showDueTasks ? faChevronDown : faChevronRight} /> Due Tasks
-          </h3>
-          {showDueTasks && dueTasks.length > 0 && dueTasks.map((task) => (
-            <div className='task-card' key={task.id}>
-              <div className='task-header'>
-                <h3 style={{ color: getPriorityColor(task.priority) }}>{task.name}</h3>
-                <span className="task-datetime">
-                  {new Date(task.dateTime).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                  })}
-                  {' '}
-                  {new Date(task.dateTime).toLocaleTimeString('en-US', {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    hour12: true
-                  })}
-                </span>
-                <div className="task-icons">
-                  <FontAwesomeIcon icon={faEdit} className="task-icon-edit" onClick={() => handleEditTask(task)} />
-                  <FontAwesomeIcon icon={faCheck} className="task-icon-done" onClick={() => handleCompleteTask(task.id)} />
-                </div>
-              </div>
-              <div className='task-description'>
-                {task.description}
-              </div>
-              <div className='task-details'>
-                <span className="t-details">
-                  <FontAwesomeIcon icon={faTag} /> {task.category}
-                </span>
-                <span className="t-details">
-                  <FontAwesomeIcon icon={faFilter} /> {task.priority}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className='task-section'>
-          <h3 onClick={toggleUpcomingTasks}>
-            <FontAwesomeIcon icon={showUpcomingTasks ? faChevronDown : faChevronRight} /> Upcoming Tasks
-          </h3>
-          {showUpcomingTasks && futureTasks.length > 0 && futureTasks.map((task) => (
-            <div className='task-card' key={task.id}>
-              <div className='task-header'>
-                <h3 style={{ color: getPriorityColor(task.priority) }}>{task.name}</h3>
-                <span className="task-datetime">
-                  {new Date(task.dateTime).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                  })}
-                  {' '}
-                  {new Date(task.dateTime).toLocaleTimeString('en-US', {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    hour12: true
-                  })}
-                </span>
-                <div className="task-icons">
-                  <FontAwesomeIcon icon={faEdit} className="task-icon-edit" onClick={() => handleEditTask(task)} />
-                  <FontAwesomeIcon icon={faCheck} className="task-icon-done" onClick={() => handleCompleteTask(task.id)} />
-                </div>
-              </div>
-              <div className='task-description'>
-                {task.description}
-              </div>
-              <div className='task-details'>
-                <span className="t-details">
-                  <FontAwesomeIcon icon={faTag} /> {task.category}
-                </span>
-                <span className="t-details">
-                  <FontAwesomeIcon icon={faFilter} /> {task.priority}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </>
-    );
   };
 
   return (
@@ -314,7 +274,7 @@ const ViewTodoList = () => {
         <ul className="sidebar-features">
           <li>
             <div className="sidebar-button" onClick={toggleAddTaskForm}>
-              <FontAwesomeIcon icon={faCirclePlus} className="circle-icon" />
+              <FiPlusCircle icon={faCirclePlus} className="circle-icon" />
               <span>Add Task</span>
             </div>
           </li>
@@ -326,26 +286,26 @@ const ViewTodoList = () => {
           </li>
           <li>
             <div className="sidebar-button">
-              <FontAwesomeIcon icon={faClock} className="circle-icon" />
+              <FiClock icon={faClock} className="circle-icon" />
               <span>Make Me a Routine</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/scheduleanevent')}>
-              <FontAwesomeIcon icon={faCalendarDays} className="circle-icon" />
+              <FiCalendar icon={faCalendarDays} className="circle-icon" />
               <span>Schedule an Event</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/achievements')}>
-              <FontAwesomeIcon icon={faAward} className="circle-icon" />
+              <SlBadge icon={faAward} className="circle-icon" />
               <span>View Achievements</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/games')}>
-              <FontAwesomeIcon icon={faGamepad} className="circle-icon" />
-              <span>Play a Game</span>
+              <IoGameControllerOutline icon={faGamepad} className="circle-icon" />
+              <span>Play A Game</span>
             </div>
           </li>
         </ul>
@@ -375,17 +335,7 @@ const ViewTodoList = () => {
           <div className='hero-today'>
             All Tasks
           </div>
-          <div className='hero-date'>
-            <div className='calendar-icon'>
-              <img src={Calendar} alt="Calendar Icon" />
-            </div>
-            <div className='date-text'>
-              {todayDate}
-            </div>
-          </div>
-        </div>
-
-        <div className='filters'>
+          <div className='filters'>
           <div className='filter'>
             <label htmlFor="filter">Filter:   </label>
             <select id="filter" value={filterCriteria} onChange={handleFilterChange}>
@@ -409,10 +359,79 @@ const ViewTodoList = () => {
             </select>
           </div>
         </div>
-
-        <div className='task-list1'>
-          {tasks.length === 0 ? "No task added yet" : renderTasks()}
         </div>
+        <MiniCalendar />
+       
+
+       
+
+        <div className='body-dashboard'>
+  <div className='task-list'>
+    <h3 onClick={toggleDueTasks} style={{ cursor: 'pointer', color: '#264653', textAlign: 'justify', marginLeft:'22%' }}>
+      {showDueTasks ? '▼' : '▶'} Due Tasks
+    </h3>
+    {showDueTasks && (
+      getDueTasks().length > 0 ? (
+        getDueTasks().map((task) => (
+          <TaskCard
+            key={task.id}
+            task={task}
+            onEdit={handleEditTask}
+            onComplete={handleCompleteTask}
+          />
+        ))
+      ) : (
+        <p style={{
+          textAlign: 'center',
+          color: '#2A9D8F',
+          
+          fontStyle: 'italic',
+          fontWeight: 'bold',
+          marginLeft: '20%',
+          marginRight: '20%',
+          
+         
+        }}>
+          No due tasks. Keep up the great work, you're on top of everything! <FaRegSmileBeam />
+        </p>
+        
+      )
+    )}
+    
+
+    <h3 onClick={toggleUpcomingTasks} style={{ cursor: 'pointer', color: '#264653', textAlign: 'justify', marginLeft:'22%' }}>
+      {showUpcomingTasks ? '▼' : '▶'} Upcoming Tasks
+    </h3>
+    {showUpcomingTasks && (
+      getUpcomingTasks().length > 0 ? (
+        getUpcomingTasks().map((task) => (
+          <TaskCard
+            key={task.id}
+            task={task}
+            onEdit={handleEditTask}
+            onComplete={handleCompleteTask}
+          />
+        ))
+      ) : (
+        <p style={{
+          textAlign: 'center',
+          color: '#2A9D8F',
+          
+          fontStyle: 'italic',
+          fontWeight: 'bold',
+          marginLeft: '21%',
+          marginRight: '20%',
+          
+        }}>
+          No upcoming tasks. You're well prepared for what's ahead, keep it up! <FaRegSmileBeam />
+        </p>
+      )
+    )}
+  </div>
+</div>
+
+
+
         {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />}
         {popupNotifications.map((message, index) => (
           <Notification key={index} message={message} onClose={() => handlePopupClose(index)} />

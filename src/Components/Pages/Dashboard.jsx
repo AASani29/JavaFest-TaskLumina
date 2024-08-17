@@ -9,7 +9,7 @@ import Logo from "../Assets/Logo.png";
 import Calendar from "../Assets/299092_calendar_icon.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faClock, faFilter, faCirclePlus, faList, faCalendarDays, faAward, faTag, faGamepad, faEdit, faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FaPlusCircle } from "react-icons/fa";
+
 import { getCurrentUser } from '../Auth';
 import { SlBadge } from "react-icons/sl";
 import { FiPlusCircle , FiClock, FiCalendar } from "react-icons/fi";
@@ -17,7 +17,7 @@ import { getTasks, completeTask, getTaskProgress, updateProgress, getMyProfile, 
 import MiniCalendar from '../Features/MiniCalendar';
 import { IoGameControllerOutline } from "react-icons/io5";
 
-import { CgGames } from "react-icons/cg";
+
 const loadScript = (src, async = true, defer = true) => {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -300,7 +300,7 @@ const Dashboard = () => {
           <li>
             <div className="sidebar-button" onClick={() => navigate('/achievements')}>
               <SlBadge icon={faAward} className="circle-icon" />
-              <span>Achievements</span>
+              <span>View Achievements</span>
             </div>
           </li>
           <li>

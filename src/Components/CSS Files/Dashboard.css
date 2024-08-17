@@ -1,36 +1,31 @@
-/* Importing Work Sans font */
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap');
 
 .dashboard {
   display: flex;
   height: 100vh;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-family: 'Work Sans', sans-serif;
 }
 
-/* Sidebar */
 .sidebar {
   width: 16%;
-  background-color: #1C4D53; /* Dark teal background */
-  color: #ffffff; /* White text */
+  background-color: #1C4D53; 
+  color: #ffffff;
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: width 0.3s ease;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-family: 'Work Sans', sans-serif;
   background-image: linear-gradient(to right, rgb(28, 76, 83), rgba(255, 255, 255, 0.1)); 
-  position: fixed; /* Fix the sidebar in place */
+  position: fixed;
   top: 0;
   left: 0;
-  height: 100vh; /* Full height of the viewport */
-  z-index: 1000; /* Ensure it stays above other content */
+  height: 100vh; 
+  z-index: 1000;
 }
 
-
-
-
 .sidebar ul li, .sidebar ul li .sidebar-button {
-  color: #ffffff; /* White icons and text */
+  color: #ffffff;
 }
 
 .sidebar ul li .sidebar-button {
@@ -40,44 +35,42 @@
 .content {
   flex: 1;
   padding: 20px;
-  background-color: #f4f9f9; /* Very light background color */
+  background-color: #f4f9f9;
   display: flex;
   flex-direction: column;
   font-family: 'Work Sans', sans-serif;
-  margin-left: 16%; /* Adjust the content to the right to account for the sidebar */
+  margin-left: 16%; 
 }
 
 .topbar {
-  width: calc(100% - 16%); /* Full width minus sidebar */
+  width: calc(100% - 16%);
   display: flex;
   justify-content: flex-end;
   padding: 30px 50px;
-  background-color: #ffffff; /* White background */
+  background-color: #ffffff;
   box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
-  left: 16%; /* Adjust for the sidebar */
-  z-index: 999; /* Ensure it stays above content but below the sidebar */
+  left: 16%; 
+  z-index: 999;
   font-family: 'Work Sans', sans-serif;
-  transition: transform 0.3s ease, top 0.3s ease; /* Smooth transition */
+  transition: transform 0.3s ease, top 0.3s ease;
 }
 
 .topbar.minimized {
-  transform: translateY(-80%); /* Partially hidden (only 20% visible) */
+  transform: translateY(-80%); 
 }
 
 .topbar:hover {
-  transform: translateY(0); /* Fully visible when hovered */
+  transform: translateY(0);
 }
-
-
 
 .icon-container {
   display: inline-flex;
   flex-direction: row;
   align-items: center;
   gap: 40px;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-family: 'Work Sans', sans-serif;
 }
 
 .filters {
@@ -101,12 +94,12 @@
 }
 
 .filter select:hover, .category-filter select:hover {
-  border-color: #2a9d8f; /* Light teal hover color */
+  border-color: #2a9d8f;
 }
 
 .filter select:focus, .category-filter select:focus {
   border-color: #2a9d8f;
-  box-shadow: 0 0 5px rgba(42, 157, 143, 0.5); /* Light teal shadow */
+  box-shadow: 0 0 5px rgba(42, 157, 143, 0.5);
 }
 
 .task-list {
@@ -123,12 +116,12 @@
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 20px;
-  background-color: #ffffff; /* White background for task cards */
+  background-color: #ffffff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   font-family: 'Work Sans', sans-serif;
-  position: relative; /* Ensure positioning within the task card */
+  position: relative;
 }
 
 .task-header {
@@ -136,25 +129,24 @@
   display: flex;
   justify-content: left;
   align-items: normal;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-family: 'Work Sans', sans-serif;
 }
 .task-name{
   width: 70%;
   font-size: 20px;
   font-weight: 600;
   color: #34495e;
-  word-break: break-word; /* Allows long words to break to the next line */
-  overflow-wrap: anywhere; /* Breaks at any point if necessary */
-  white-space: normal; /* Ensures normal text wrapping */
-  box-sizing: border-box; /* Includes border in the width calculation */
-  flex-grow: 1; /* Allow task list to take up available space */
-  
+  word-break: break-word; 
+  overflow-wrap: anywhere;
+  white-space: normal; 
+  box-sizing: border-box; 
+  flex-grow: 1;
 }
 
 .task-datetime {
   width: 33%;
   background-color: #ffffff;
-  color: #2a9d8f; /* Teal color matching the sidebar */
+  color: #2a9d8f;
   padding-top: 10px;
   border-radius: 5px;
   font-weight: 500;
@@ -172,90 +164,87 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e9f5f4; /* Light teal background for the card */
-  border-radius: 8px; /* Rounded corners */
-  padding: 8px; /* Padding inside the card */
-  cursor: pointer; /* Change cursor to pointer */
-  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  background-color: #e9f5f4; 
+  border-radius: 8px; 
+  padding: 8px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
 }
 
 .task-icon-card:hover {
-  background-color: #c4e2de; /* Slightly darker teal background on hover */
+  background-color: #c4e2de;
 }
 
 .task-icon-edit, .task-icon-done {
   font-size: 16px;
-  color: inherit; /* Inherit color from parent card */
+  color: inherit; 
 }
 
 .task-icon-edit {
-  color: #264653; /* Dark teal color for edit icon */
+  color: #264653; 
 }
-
 .task-icon-done {
-  color: #264653; /* Dark teal color for done icon */
+  color: #264653; 
 }
 
 .task-description {
   font-size: 15px;
   color: #666;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-family: 'Work Sans', sans-serif;
 }
 
 .task-details, .task-body .task-details, .task-body .t-details {
   display: flex;
-  align-items: flex-start; /* Align items vertically */
+  align-items: flex-start;
   gap: 10px;
   font-family: 'Work Sans', sans-serif;
   font-size: 14px;
   text-align: center;
   color: #34495e;
   margin-top: 10px;
-  flex-wrap: nowrap; /* Prevent wrapping */
+  flex-wrap: nowrap;
 }
 
 .task-card-item {
   display: flex;
-  align-items: center; /* Align items vertically */
-  justify-content: center; /* Center items horizontally */
-  background-color: #e9f5f4; /* Light background for the small card */
-  border-radius: 8px; /* Rounded corners */
-  padding: 5px 10px; /* Padding inside the card */
-  font-size: 12px; /* Slightly smaller font size */
-  color: rgba(38, 70, 83, 0.7); /* Dark teal color with 70% opacity */
-  font-weight: 500; /* Slightly less bold to appear as descriptions */
-  white-space: nowrap; /* Prevent text from wrapping */
-  flex-shrink: 0; /* Prevent the card from shrinking */
-  text-align: center; /* Center text */
+  align-items: center; 
+  justify-content: center; 
+  background-color: #e9f5f4; 
+  border-radius: 8px; 
+  padding: 5px 10px; 
+  font-size: 12px; 
+  color: rgba(38, 70, 83, 0.7);
+  font-weight: 500;
+  white-space: nowrap; 
+  flex-shrink: 0; 
+  text-align: center; 
 }
 
 .task-card-item svg {
-  margin-right: 5px; /* Space between icon and text */
-  color: rgba(38, 70, 83, 0.7); /* Icon color matching the text */
+  margin-right: 5px; 
+  color: rgba(38, 70, 83, 0.7); 
 }
 
 .task-done-button {
-  background-color: #6a9c9e; /* Button color similar to the image */
-  color: #ffffff; /* White text color */
-  border: none; /* Remove default border */
-  border-radius: 8px; /* Rounded corners */
-  padding: 5px 10px; /* Padding inside the button */
-  font-size: 12px; /* Font size */
+  background-color: #6a9c9e;
+  color: #ffffff; 
+  border: none; 
+  border-radius: 8px; 
+  padding: 5px 10px; 
+  font-size: 12px; 
   font-family: 'Work Sans', sans-serif;
-  font-weight: 400; /* Slightly bold text */
-  cursor: pointer; /* Pointer cursor on hover */
-  white-space: nowrap; /* Prevent text from wrapping */
-  transition: background-color 0.3s ease; /* Smooth transition on hover */
-  position: absolute; /* Position the button within the task card */
-  bottom: 20px; /* Distance from the bottom of the task card */
-  right: 20px; /* Distance from the right edge of the task card */
+  font-weight: 400; 
+  cursor: pointer; 
+  white-space: nowrap; 
+  transition: background-color 0.3s ease; 
+  position: absolute; 
+  bottom: 20px; 
+  right: 20px; 
 }
 
 .task-done-button:hover {
-  background-color: #5b898c; /* Slightly darker shade on hover */
+  background-color: #5b898c; 
 }
-
-
 
 .Hero {
   width: 70%;
@@ -264,7 +253,7 @@
   gap: 80px;
   margin-top: 50px;
   padding: 10px 20px;
-  background-color: #ffffff; /* Light background */
+  background-color: #ffffff;
   border-radius: 8px;
 }
 
@@ -272,7 +261,7 @@
   margin-left: 1%;
   font-size: 3em;
   font-weight: 600;
-  color: #264653; /* Darker teal color */
+  color: #264653;
   font-family: 'Work Sans', sans-serif;
 }
 
@@ -305,23 +294,27 @@
 #calendar {
   width: 20%;
   flex-shrink: 0;
-  background-color: #ffffff; /* Match background color */
-  color: #264653; /* Match text color */
+  background-color: #ffffff; 
+  color: #264653; 
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 10px;
   text-align: center;
 }
 
 #calendar #month {
-  background-color: #2a9d8f; /* Teal background for month */
-  color: #ffffff; /* White text */
+  background-color: #2a9d8f; 
+  color: #ffffff; 
   padding: 10px;
   border-radius: 8px;
   text-transform: uppercase;
 }
 
 #calendar #date, #calendar #weekday, #calendar #year {
-  color: #264653; /* Darker teal text color */
+  color: #264653; 
   margin-top: 10px;
 }
+
+
+
+

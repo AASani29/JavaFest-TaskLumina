@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faEdit, faCheck, faClock, faCirclePlus, faPlus, faList, faCalendarDays, faAward, faGamepad, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faAward, faBell, faCalendarDays, faCirclePlus, faClock, faEllipsisV, faGamepad, faList } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import Logo from "../Assets/Logo.png";
 import '../CSS Files/ScheduleAnEvent.css';
@@ -12,21 +12,20 @@ import { getMyProfile, getNotifications } from '../user-service';
 import { getCurrentUser } from '../Auth';
 import NotificationDropdown from '../Features/NotificationDropdown';
 
-const loadScript = (src, async = true, defer = true) => {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = src;
-    script.async = async;
-    script.defer = defer;
-    script.onload = resolve;
-    script.onerror = reject;
-    document.body.appendChild(script);
-  });
-};
+import { SlBadge } from "react-icons/sl";
+import { FiPlusCircle , FiClock, FiCalendar } from "react-icons/fi";
+import { IoGameControllerOutline } from "react-icons/io5";
+
 
 const ScheduleAnEvent = () => {
   const [showEventForm, setShowEventForm] = useState(false);
   const [editEvent, setEditEvent] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(null);
+  const [expandedEventId, setExpandedEventId] = useState(null);
+  const [eventsForSelectedDate, setEventsForSelectedDate] = useState([]);
+  const [showAllEvents, setShowAllEvents] = useState(true);
+
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
   const [userProfile, setUserProfile] = useState(null); 
@@ -61,10 +60,6 @@ const ScheduleAnEvent = () => {
       setEventData((prevData) => ({ ...prevData, userId: userData.id }));
     }
   }, []);
-
-  const onChange = (date) => {
-    setDate(date);
-  };
 
   const fetchEvents = async () => {
     try {
@@ -126,10 +121,11 @@ const ScheduleAnEvent = () => {
 
   const handleDateClick = (value) => {
     setDate(value);
-    setEventData({ ...eventData, dateTime: value }); // Use dateTime for consistency with backend
-    setShowEventForm(true);
+    const eventsForDate = events.filter(event => new Date(event.dateTime).toDateString() === value.toDateString());
+    setEventsForSelectedDate(eventsForDate);
+    setShowAllEvents(false); // Hide all events and show only selected date's events
+    setShowEventForm(false); // Ensure form is hidden when clicking on a date
   };
-
   const handleInputChange = (e, field) => {
     setEventData({ ...eventData, [field]: e.target.value });
   };
@@ -149,11 +145,12 @@ const ScheduleAnEvent = () => {
 
   const toggleAddEventForm = () => {
     setEditEvent(null);
-    setShowEventForm(!showEventForm);
+    setShowEventForm(true); // Show the form when the button is clicked
   };
 
   const handleEditEvent = (event) => {
     setEditEvent(event);
+    setSelectedEvent(event);
     setEventData({
       title: event.title,
       time: new Date(event.dateTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
@@ -184,6 +181,23 @@ const ScheduleAnEvent = () => {
     setNotifications(notifications.filter((_, i) => i !== index));
   };
 
+  const toggleDropdown = (eventId) => {
+    setShowDropdown(showDropdown === eventId ? null : eventId);
+  };
+
+  const toggleExpandEvent = (eventId) => {
+    setExpandedEventId(expandedEventId === eventId ? null : eventId);
+  };
+
+  const highlightDates = events.map(event => new Date(event.dateTime).toDateString());
+
+  const isHighlighted = ({ date, view }) => {
+    if (view === 'month') {
+      return highlightDates.includes(date.toDateString());
+    }
+    return false;
+  };
+
   return (
     <div className="dashboard">
       <nav className="sidebar">
@@ -193,7 +207,7 @@ const ScheduleAnEvent = () => {
         <ul className="sidebar-features">
           <li>
             <div className="sidebar-button" onClick={toggleAddTaskForm}>
-              <FontAwesomeIcon icon={faCirclePlus} className="circle-icon" />
+            <FiPlusCircle  className="circle-icon" />
               <span>Add Task</span>
             </div>
           </li>
@@ -205,25 +219,25 @@ const ScheduleAnEvent = () => {
           </li>
           <li>
             <div className="sidebar-button">
-              <FontAwesomeIcon icon={faClock} className="circle-icon" />
+            <FiClock  className="circle-icon" />
               <span>Make Me a Routine</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/scheduleanevent')}>
-              <FontAwesomeIcon icon={faCalendarDays} className="circle-icon" />
+            <FiCalendar icon={faCalendarDays} className="circle-icon" />
               <span>Schedule an Event</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/achievements')}>
-              <FontAwesomeIcon icon={faAward} className="circle-icon" />
+            <SlBadge icon={faAward} className="circle-icon" />
               <span>View Achievements</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/games')}>
-              <FontAwesomeIcon icon={faGamepad} className="circle-icon" />
+            <IoGameControllerOutline icon={faGamepad} className="circle-icon" />
               <span>Play a Game</span>
             </div>
           </li>
@@ -250,48 +264,100 @@ const ScheduleAnEvent = () => {
             )}
           </div>
         </header>
-        <div className='time'>
-          Events
-        </div>
-        <div className='task_added'>
-          <div className="profile-details">
-            {events.map((event) => (
-              <div key={event.id}>
-                <div className='eventname'>
-                  <span className='span'> {event.title} 
-                    <FontAwesomeIcon icon={faEdit} className="task-icon"  onClick={() => handleEditEvent(event)} />
-                    <FontAwesomeIcon icon={faCheck} className="task-icon" onClick={() => handleDeleteEvent(event.id)} />
-                  </span>
-                </div>
-                <div className='locationandtime'>
-                  <span className='span'>
-                    <FontAwesomeIcon icon={faLocationDot} className='location-icon'/> 
-                    {event.location}
-                  </span>
-                  <span className='span'>
-                    <FontAwesomeIcon icon={faClock} className='location-icon'/> 
-                    {new Date(event.dateTime).toLocaleString()} 
-                  </span>
-                </div>
-                <div className='links'>
-                  <span> <a href={event.link} target="_blank" rel="noopener noreferrer">{event.link}</a></span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className='present_time'>
-          {date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-        </div>
-        <button className="add-task-button" onClick={() => setShowEventForm(true)}>
-          Schedule Event
-        </button>
-        <div className="add-task-button" onClick={toggleAddEventForm}>
-          <FontAwesomeIcon icon={faPlus} className="add-task-icon" />
-          <span>Add Event</span>
-        </div>
         
-        {showEventForm && <AddEventForm toggleForm={toggleAddEventForm} editEvent={editEvent} />}
+        <div className='schedule-an-event'>
+          <div className='calendar-container'>
+            <Calendar 
+              onClickDay={handleDateClick} 
+              value={date}
+              tileClassName={({ date, view }) => isHighlighted({ date, view }) ? 'highlighted' : null}
+            />
+          </div>
+          <div className="events-list">
+  <h3>Upcoming Events</h3>
+  {showAllEvents
+    ? events.map(event => (
+        <div 
+          key={event.id} 
+          className={`event-item ${expandedEventId === event.id ? 'expanded' : ''}`}
+          onClick={() => toggleExpandEvent(event.id)}
+        >
+          <span>{event.title}</span>
+          <FontAwesomeIcon 
+            icon={faEllipsisV} 
+            className="event-options-icon" 
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent click from triggering the card expansion
+              toggleDropdown(event.id);
+            }} 
+          />
+          {showDropdown === event.id && (
+            <div className={`dropdown-menu ${showDropdown === event.id ? 'show' : ''}`}>
+              <div onClick={() => handleEditEvent(event)}>Update</div>
+              <div onClick={() => handleDeleteEvent(event.id)}>Delete</div>
+            </div>
+          )}
+          {expandedEventId === event.id && (
+            <div className="event-details">
+              <p><strong>Location: </strong><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`} target="_blank" rel="noopener noreferrer">{event.location}</a></p>
+              <p><strong>Time:</strong> {new Date(event.dateTime).toLocaleString()}</p>
+              <p><strong>Link:</strong> <a href={`http://${event.link}`} target="_blank" rel="noopener noreferrer">{event.link}</a></p>
+            </div>
+          )}
+        </div>
+      ))
+    : (
+      <>
+        {eventsForSelectedDate.map(event => (
+          <div 
+            key={event.id} 
+            className={`event-item ${expandedEventId === event.id ? 'expanded' : ''}`}
+            onClick={() => toggleExpandEvent(event.id)}
+          >
+            <span>{event.title}</span>
+            <FontAwesomeIcon 
+              icon={faEllipsisV} 
+              className="event-options-icon" 
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent click from triggering the card expansion
+                toggleDropdown(event.id);
+              }} 
+            />
+            {showDropdown === event.id && (
+              <div className={`dropdown-menu ${showDropdown === event.id ? 'show' : ''}`}>
+                <div onClick={() => handleEditEvent(event)}>Update</div>
+                <div onClick={() => handleDeleteEvent(event.id)}>Delete</div>
+              </div>
+            )}
+            {expandedEventId === event.id && (
+              <div className="event-details">
+                <p><strong>Location: </strong><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`} target="_blank" rel="noopener noreferrer">{event.location}</a></p>
+                <p><strong>Time:</strong> {new Date(event.dateTime).toLocaleString()}</p>
+                <p><strong>Link:</strong> <a href={`http://${event.link}`} target="_blank" rel="noopener noreferrer">{event.link}</a></p>
+              </div>
+            )}
+          </div>
+        ))}
+        <button 
+          className="add-event-button" 
+          onClick={toggleAddEventForm}
+          style={{ marginTop: '20px', padding: '10px 20px', fontSize: '1em', cursor: 'pointer', backgroundColor: '#1C4D53', color: '#fff', borderRadius: '10px', border: 'none' }}
+        >
+          Add Event
+        </button>
+      </>
+    )
+  }
+</div>
+
+        </div>
+
+        {showEventForm && (
+          <AddEventForm 
+            toggleForm={toggleAddEventForm} 
+            editEvent={editEvent} 
+          />
+        )}
       </main>
     </div>
   );

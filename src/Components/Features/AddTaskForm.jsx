@@ -1,130 +1,116 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import '../CSS Files/AddTaskForm.css';
-import { addTask, updateTask } from '../user-service.js'; // Import updateTask function from user-service
+import { addTask, updateTask } from '../user-service.js';
 import { toast } from "react-toastify";
+import { FaAlignCenter } from 'react-icons/fa';
 
 const AddTaskForm = ({ toggleForm, editTask }) => {
-  const [taskData, setTaskData] = useState({
-    name: "",
-    description: "",
-    dateTime: "",
-    priority: "LOW",
-    category: "OTHERS"
+  const { register, handleSubmit, setValue, getValues } = useForm({
+    defaultValues: {
+      name: "",
+      description: "",
+      dateTime: "", 
+      priority: "LOW", 
+      category: "OTHERS" 
+    }
   });
 
   useEffect(() => {
     if (editTask) {
-      setTaskData(editTask);
+      for (const key in editTask) {
+        setValue(key, editTask[key]);
+      }
     }
-  }, [editTask]);
+  }, [editTask, setValue]);
 
-  const handleChange = (e, field) => {
-    setTaskData({ ...taskData, [field]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (editTask) {
-      updateTask(taskData.id, taskData)
-        .then((res) => {
-          toast.success("Task updated successfully!");
-          toggleForm();
-        })
-        .catch((err) => {
-          console.error(err);
-          toast.error("Failed to update task!");
-        });
-    } else {
-      addTask(taskData)
-        .then((res) => {
-          toast.success("Task added successfully!");
-          toggleForm();
-        })
-        .catch((err) => {
-          console.error(err);
-          toast.error("Failed to add task!");
-        });
+  const onSubmit = async (data) => {
+    try {
+      if (editTask) {
+        const response = await updateTask(editTask.id, data);
+        console.log('Task updated:', response);
+        toast.success("Task updated successfully!");
+      } else {
+        const response = await addTask(data);
+        console.log('Task added:', response);
+        toast.success("Task added successfully!");
+      }
+      toggleForm();
+    } catch (err) {
+      console.error('Error:', err);
+      toast.error(editTask ? "Failed to update task!" : "Failed to add task!");
     }
-  };
-
-  // Function to get today's date in the format YYYY-MM-DDTHH:MM
-  const getTodayDateTime = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    const hours = String(today.getHours()).padStart(2, '0');
-    const minutes = String(today.getMinutes()).padStart(2, '0');
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
   return (
-    <div className="add-task-form">
-      <form onSubmit={handleSubmit}>
+    <div className="add-task-form-container">
+      <form onSubmit={handleSubmit(onSubmit)} className="add-task-form">
         <div className="form-group">
-          <label htmlFor="name">Name</label>
           <input
             type="text"
             id="name"
             name="name"
-            value={taskData.name}
-            onChange={(e) => handleChange(e, "name")}
-            required
+            placeholder="Task name"
+            {...register("name", { required: true })}
+            defaultValue={getValues("name")}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="description">Description</label>
-          <textarea
+        <div className="form-group form-group-description">
+          <input
+            type="text"
             id="description"
             name="description"
-            value={taskData.description}
-            onChange={(e) => handleChange(e, "description")}
-            required
+            placeholder="Description"
+            {...register("description", { required: false })}
+            defaultValue={getValues("description")}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="dateTime">Date and Time</label>
-          <input
-            type="datetime-local"
-            id="dateTime"
-            name="dateTime"
-            value={taskData.dateTime}
-            onChange={(e) => handleChange(e, "dateTime")}
-            min={getTodayDateTime()} // Set the min attribute to today's date
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="priority">Priority</label>
-          <select
-            id="priority"
-            name="priority"
-            value={taskData.priority}
-            onChange={(e) => handleChange(e, "priority")}
-            required
-          >
-            <option value="LOW">Low</option>
-            <option value="MEDIUM">Medium</option>
-            <option value="HIGH">High</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="category">Category</label>
-          <select
-            id="category"
-            name="category"
-            value={taskData.category}
-            onChange={(e) => handleChange(e, "category")}
-            required
-          >
-            <option value="EDUCATION">Education</option>
-            <option value="FOOD">Food</option>
-            <option value="HEALTH">Health</option>
-            <option value="JOB">Job</option>
-            <option value="ENTERTAINMENT">Entertainment</option>
-            <option value="HOUSEHOLD">Household</option>
-            <option value="OTHERS">Others</option>
-          </select>
+        <div className="form-group form-group-inline">
+          <div className="custom-card">
+            <label htmlFor="dateTime" className="custom-label">
+              <i className="fa fa-calendar"></i> 
+            </label>
+            <input
+              type="datetime-local"
+              id="dateTime"
+              name="dateTime"
+              placeholder="Set Time"
+              {...register("dateTime", { required: false })}
+              min={new Date().toISOString().slice(0, 16)}
+              defaultValue={getValues("dateTime")}
+            />
+          </div>
+
+          <div className="custom-card">
+            <select
+              id="priority"
+              name="priority"
+              {...register("priority", { required: false })}
+              defaultValue={getValues("priority")}
+            >
+              
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH">High</option>
+            </select>
+          </div>
+          <div className="custom-card">
+            
+            <select
+              id="category"
+              name="category"
+              {...register("category", { required: false })}
+              defaultValue={getValues("category")}
+            >
+              <option value="EDUCATION">Education</option>
+              <option value="FOOD">Food</option>
+              <option value="HEALTH">Health</option>
+              <option value="JOB">Job</option>
+              <option value="ENTERTAINMENT">Entertainment</option>
+              <option value="HOUSEHOLD">Household</option>
+              <option value="OTHERS">Others</option>
+            </select>
+          </div>
         </div>
         <div className="form-buttons">
           <button type="submit">{editTask ? "Update Task" : "Add Task"}</button>
