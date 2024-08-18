@@ -11,6 +11,7 @@ import github_icon from '../Assets/github-logo.png';
 import logo from '../Assets/Logo.png';
 import { signUp } from '../user-service';
 import { toast } from "react-toastify";
+import signup from '../Assets/signup_bg.png';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -63,91 +64,93 @@ const SignUp = () => {
 
   return (
     <>
-      <div className='Navbar'>
+      {/* <div className='Navbar'>
         <img src={logo} alt="" className='logo' />
-      </div>
+      </div> */}
       <div className='main-container'>
         <div className='container'>
           <div className='header'>
-            <div className='text'>Sign Up</div>
-            <div className='underline'></div>
+            <div className='text'><h1 >Sign up</h1></div>
+
           </div>
+
           <form onSubmit={handleSubmitForm}>
             <div className='inputs'>
+              <label htmlFor="name"><div className='label_text '>Name</div></label>
               <div className='input'>
-                <img src={user_icon} alt=""/>
-                <input 
+
+                {/* <img src={user_icon} alt=""/> */}
+                <input
                   onChange={handleInputChange}
                   id="name"
                   name="name"
-                  placeholder="Name"
+                  // placeholder="Name"
                   type="text"
                   value={formData.name}
                   invalid={error.errors?.response?.data?.name ? true : false}
                 />
               </div>
+              <label htmlFor="email"><div className='label_text '>Email</div></label>
               <div className='input'>
-                <img src={email_icon} alt=""/>
-                <input 
+                {/* <img src={email_icon} alt=""/> */}
+                <input
                   onChange={handleInputChange}
                   id="email"
                   name="email"
-                  placeholder="Email Id"
+                  // placeholder="Email Id"
                   type="email"
                   value={formData.email}
                   invalid={error.errors?.response?.data?.email ? true : false}
                 />
               </div>
+              <label htmlFor="password"><div className='label_text '>Password</div></label>
               <div className='input'>
-                <img src={password_icon} alt=""/>
-                <input 
+
+                <input
                   onChange={handleInputChange}
                   id="password"
                   name="password"
+                  // placeholder="password"
                   type="password"
                   value={formData.password}
                   invalid={error.errors?.response?.data?.password ? true : false}
                 />
               </div>
-              {/* Role input removed from here */}
-              <div className='input'>
-                <img src={city_icon} alt=""/>
-                <input 
-                  onChange={handleInputChange}
-                  id="city"
-                  name="city"
-                  placeholder="City"
-                  type="text"
-                  value={formData.city}
-                />
-              </div>
+
             </div>
             <div className='submit-container'>
               <div className='submit gray'>
                 <button type="submit" className='submit gray'>Sign up</button>
               </div>
-              <div className='submit'>
-                <Link to="/login">Login</Link>
-              </div>
             </div>
           </form>
-        </div>
-        <div className='auth-container'>
-          <div className='auth-header'>Or Continue with</div>
-          <div className='auth-buttons'>
-            <div className='auth-button'>
-              <img src={google_icon} alt="Google" />
-              <span>Google</span>
-            </div>
-            <div className='auth-button'>
-              <img src={facebook_icon} alt="Facebook" />
-              <span>Facebook</span>
-            </div>
-            <div className='auth-button'>
-              <img src={github_icon} alt="GitHub" />
-              <span>GitHub</span>
+
+          <div className='auth-container'>
+            <div className='auth-header'>Or Continue with</div>
+            <div className='auth-buttons'>
+              <div className='auth-button'>
+                <img src={google_icon} alt="Google" />
+                <span>Google</span>
+              </div>
+              <div className='auth-button'>
+                <img src={facebook_icon} alt="Facebook" />
+                <span>Facebook</span>
+              </div>
+              <div className='auth-button'>
+                <img src={github_icon} alt="GitHub" />
+                <span>GitHub</span>
+              </div>
             </div>
           </div>
+          <div className='submit-container'>
+            <p className='login-text'>
+              Already have an account? <Link to="/login" className='login-link'>Login</Link>
+            </p>
+          </div>
+
+        </div>
+        <div className='side-container'>
+          <img src={signup} alt="" />
         </div>
       </div>
     </>
@@ -155,3 +158,4 @@ const SignUp = () => {
 }
 
 export default SignUp;
+ 
