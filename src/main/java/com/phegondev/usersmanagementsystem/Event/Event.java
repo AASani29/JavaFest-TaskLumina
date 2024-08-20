@@ -19,6 +19,7 @@ public class Event {
     private LocalDateTime dateTime;
     private String link;
     private boolean remindMe;
+    private boolean reminderSent = false;
 
     // Add user ID field
     private Integer userId;

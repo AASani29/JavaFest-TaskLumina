@@ -10,7 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Optional;
 
@@ -132,6 +135,69 @@ public class TaskService {
                 monthlyMasterReward.setNotified(false);
                 rewardRepository.save(monthlyMasterReward);
             }
+
+            boolean consistentPerformer = true;
+            for (int i = 0; i < 15; i++) {
+                LocalDate date = today.minusDays(i);
+                List<Task> dayTasks = taskRepository.findByUserIdAndDateTimeBetween(
+                        userId, date.atStartOfDay(), date.plusDays(1).atStartOfDay());
+                if (dayTasks.isEmpty() || dayTasks.stream().anyMatch(daytask -> !daytask.isCompleted())) {
+                    consistentPerformer = false;
+                    break;
+                }
+            }
+            if (consistentPerformer) {
+                Reward consistentPerformerReward = new Reward();
+                consistentPerformerReward.setUserId(userId);
+                consistentPerformerReward.setDate(today);
+                consistentPerformerReward.setBadge("Consistent Performer");
+                consistentPerformerReward.setNotified(false);
+                rewardRepository.save(consistentPerformerReward);
+            }
+
+            // Check and award "Task Marathoner" badge
+            if (completedTasksCount == 10) {
+                Reward taskMarathonerReward = new Reward();
+                taskMarathonerReward.setUserId(userId);
+                taskMarathonerReward.setDate(today);
+                taskMarathonerReward.setBadge("Task Marathoner");
+                taskMarathonerReward.setNotified(false);
+                rewardRepository.save(taskMarathonerReward);
+            }
+
+            // Check and award "Weekend Warrior" badge
+            DayOfWeek day = today.getDayOfWeek();
+            if (day == DayOfWeek.SUNDAY || day == DayOfWeek.SATURDAY) {
+                boolean weekendWarrior = true;
+                for (DayOfWeek d : new DayOfWeek[]{DayOfWeek.SATURDAY, DayOfWeek.SUNDAY}) {
+                    LocalDate date = today.with(TemporalAdjusters.previousOrSame(d));
+                    List<Task> weekendTasks = taskRepository.findByUserIdAndDateTimeBetween(
+                            userId, date.atStartOfDay(), date.plusDays(1).atStartOfDay());
+                    if (weekendTasks.isEmpty() || weekendTasks.stream().anyMatch(daytask -> !daytask.isCompleted())) {
+                        weekendWarrior = false;
+                        break;
+                    }
+                }
+                if (weekendWarrior) {
+                    Reward weekendWarriorReward = new Reward();
+                    weekendWarriorReward.setUserId(userId);
+                    weekendWarriorReward.setDate(today);
+                    weekendWarriorReward.setBadge("Weekend Warrior");
+                    weekendWarriorReward.setNotified(false);
+                    rewardRepository.save(weekendWarriorReward);
+                }
+            }
+
+            // Check and award "Early Bird" badge
+            if (task.getDateTime().toLocalTime().isBefore(LocalTime.of(9, 0)) && completedTasksCount == 1) {
+                Reward earlyBirdReward = new Reward();
+                earlyBirdReward.setUserId(userId);
+                earlyBirdReward.setDate(today);
+                earlyBirdReward.setBadge("Early Bird");
+                earlyBirdReward.setNotified(false);
+                rewardRepository.save(earlyBirdReward);
+            }
+
 
             return new ResponseEntity<>("Task completed successfully", HttpStatus.OK);
         } else {
