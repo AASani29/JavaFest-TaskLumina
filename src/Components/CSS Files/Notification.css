@@ -19,29 +19,55 @@
   cursor: pointer;
 }
 
-/* src/CSS Files/Notification.css */
 .notification-dropdown {
   position: absolute;
-  top: 50px;
-  right: 10px;
-  width: 300px;
-  max-height: 400px;
+  top: 60px;
+  right: 200px;
+  width: 320px;
+  max-height: 500px;
   overflow-y: auto;
-  background: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background: #e9f5f4; /* Light gray background to match the sidebar */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   z-index: 1000;
+  font-family: 'Inter', sans-serif; /* Matches the font style in the image */
 }
 
 .notification-item {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0; /* Slightly lighter border */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: background 0.2s ease; /* Smooth transition for hover effect */
+}
+
+.notification-item:hover {
+  background-color: #e0f7fa; /* Light cyan hover effect for a subtle visual cue */
+}
+
+.notification-item span {
+  color: #333; /* Darker text color for better readability */
+  font-size: 14px;
+}
+
+.notification-item button {
+  background: none;
+  border: none;
+  color: #1C4D53; /* Blue color to match the button color in the image */
+  font-size: 16px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: color 0.2s ease; /* Smooth transition for hover effect */
+}
+
+.notification-item button:hover {
+  color: #0056b3; /* Darker blue on hover */
 }
 
 .notification-empty {
-  padding: 10px;
+  padding: 15px;
   text-align: center;
+  color: #999; /* Light gray color for empty state text */
+  font-size: 14px;
 }

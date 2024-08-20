@@ -170,6 +170,26 @@ export const getNotifications = async () => {
   }
 };
 
+// In your service file (e.g., user-service.js)
+
+export const getReminders = async () => {
+  try {
+    const response = await privateAxios.get('/adminuser/reminders');
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch reminders:", error);
+    throw error;
+  }
+};
+
+export const markReminderAsNotified = async (reminderId) => {
+  try {
+    await privateAxios.put(`/adminuser/reminders/${reminderId}/notified`);
+  } catch (error) {
+    console.error('Failed to mark reminder as notified:', error);
+    throw error;
+  }
+};
 
 
 

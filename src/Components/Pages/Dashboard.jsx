@@ -13,7 +13,7 @@ import { faBell, faClock, faFilter, faCirclePlus, faList, faCalendarDays, faAwar
 import { getCurrentUser } from '../Auth';
 import { SlBadge } from "react-icons/sl";
 import { FiPlusCircle , FiClock, FiCalendar } from "react-icons/fi";
-import { getTasks, completeTask, getTaskProgress, updateProgress, getMyProfile, getMyRewards, markRewardAsNotified, getNotifications } from '../user-service';
+import { getTasks, completeTask, getTaskProgress, updateProgress, getMyProfile, getMyRewards, markRewardAsNotified, getNotifications, getReminders,markReminderAsNotified } from '../user-service';
 import MiniCalendar from '../Features/MiniCalendar';
 import { IoGameControllerOutline } from "react-icons/io5";
 
@@ -84,37 +84,39 @@ const TaskCard = ({ task, onEdit, onComplete }) => {
 
 
 
-const Dashboard = () => {
-  const navigate = useNavigate();
-  const [showAddTaskForm, setShowAddTaskForm] = useState(false);
-  const [tasks, setTasks] = useState([]);
-  const [editTask, setEditTask] = useState(null);
-  const [todayDate, setTodayDate] = useState('');
-  const [userProfile, setUserProfile] = useState(null);
-  const [progress, setProgress] = useState(0);
-  const [notifications, setNotifications] = useState([]);
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [popupNotifications, setPopupNotifications] = useState([]);
-  const [hasNotified, setHasNotified] = useState(false);
-  const [filterCriteria, setFilterCriteria] = useState('');
-  const [filterCategory, setFilterCategory] = useState('ALL');
-  const notificationsFetchedRef = useRef(false);
+  const Dashboard = () => {
+    const navigate = useNavigate();
+    const [showAddTaskForm, setShowAddTaskForm] = useState(false);
+    const [tasks, setTasks] = useState([]);
+    const [editTask, setEditTask] = useState(null);
+    const [todayDate, setTodayDate] = useState('');
+    const [userProfile, setUserProfile] = useState(null);
+    const [progress, setProgress] = useState(0);
+    const [notifications, setNotifications] = useState([]);
+    const [showNotifications, setShowNotifications] = useState(false);
+    const [popupNotifications, setPopupNotifications] = useState([]);
+    const [hasNotified, setHasNotified] = useState(false);
+    const [filterCriteria, setFilterCriteria] = useState('');
+    const [filterCategory, setFilterCategory] = useState('ALL');
+    const notificationsFetchedRef = useRef(false);
 
-  useEffect(() => {
-    const user = getCurrentUser();
-    if (!user) {
-      navigate("/login");
-    } else {
-      fetchTodayTasks();
-      fetchUserProfile();
-      fetchTaskProgress();
-      if (!notificationsFetchedRef.current) {
-        fetchAndCheckRewards();
-        fetchStoredNotifications();
-        notificationsFetchedRef.current = true;
+    useEffect(() => {
+      const user = getCurrentUser();
+      if (!user) {
+        navigate("/login");
+      } else {
+        fetchTodayTasks();
+        fetchUserProfile();
+        fetchTaskProgress();
+        if (!notificationsFetchedRef.current) {
+          fetchAndCheckRewards();
+          fetchAndCheckReminders();  // Fetch reminders and display them
+          fetchStoredNotifications();
+          notificationsFetchedRef.current = true;
+        }
       }
-    }
-  }, [navigate]);
+    }, [navigate]);
+    
 
   useEffect(() => {
     const currentDate = new Date();
@@ -180,6 +182,7 @@ const Dashboard = () => {
       console.error("Failed to fetch rewards:", error);
     }
   };
+  
 
   const fetchStoredNotifications = async () => {
     try {
@@ -189,6 +192,25 @@ const Dashboard = () => {
       console.error("Failed to fetch notifications:", error);
     }
   };
+  const fetchAndCheckReminders = async () => {
+    try {
+      const reminders = await getReminders(); // This function should fetch reminders from the backend
+      const newReminders = reminders.filter(reminder => !reminder.notified);
+  
+      if (newReminders.length > 0) {
+        const reminderMessages = newReminders.map(reminder => `Reminder: ${reminder.message}`);
+        setNotifications(prevNotifications => [...prevNotifications, ...reminderMessages]);
+        setPopupNotifications(prevPopupNotifications => [...prevPopupNotifications, ...reminderMessages]);
+  
+        for (const reminder of newReminders) {
+          await markReminderAsNotified(reminder.id); // Mark the reminder as notified
+        }
+      }
+    } catch (error) {
+      console.error("Failed to fetch reminders:", error);
+    }
+  };
+  
 
   const handleCompleteTask = async (taskId) => {
     try {

@@ -94,10 +94,16 @@ const Achievements = () => {
     'Rookie Starter': 'Earned by completing first task of the month',
     'Daily Achiever': 'Earned by completing all tasks in a single day.',
     'Weekly Warrior': 'Earned by completing all tasks every day for a full week.',
-    'Monthly Master': 'Earned by completing all tasks every day for a full month.'
-  };
+    'Monthly Master': 'Earned by completing all tasks every day for a full month.',
+    'Consistent Performer': 'Earned by completing at least one task every day for 15 consecutive days.',
+    'Task Marathoner': 'Earned by completing 10 tasks in a single day.',
+    'Weekend Warrior': 'Earned by completing all tasks on both Saturday and Sunday.',
+    'Early Bird': 'Earned by completing the first task of the day before 9 AM.'
+};
 
-  const allBadges = ['Rookie Starter', 'Daily Achiever', 'Weekly Warrior', 'Monthly Master'];
+
+const allBadges = ['Rookie Starter', 'Daily Achiever', 'Weekly Warrior', 'Monthly Master', 'Consistent Performer', 'Task Marathoner', 'Weekend Warrior', 'Early Bird'];
+
 
   const isBadgeEarned = (badge) => {
     return achievements.some((achievement) => achievement.badge === badge);
