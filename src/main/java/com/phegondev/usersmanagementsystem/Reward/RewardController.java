@@ -55,28 +55,5 @@ public class RewardController {
     }
 
 
-    @GetMapping
-    public ResponseEntity<List<Reminder>> getReminders(Authentication authentication) {
-        Integer userId = ((OurUsers) authentication.getPrincipal()).getId();
-        List<Reminder> reminders = reminderRepository.findByUserIdAndNotified(userId, false);
-        return new ResponseEntity<>(reminders, HttpStatus.OK);
-    }
 
-    // Mark a specific reminder as notified
-    @PutMapping("/{reminderId}/notified")
-    public ResponseEntity<String> markReminderAsNotified(@PathVariable Long reminderId) {
-        Optional<Reminder> reminderOptional = reminderRepository.findById(reminderId);
-        if (reminderOptional.isPresent()) {
-            Reminder reminder = reminderOptional.get();
-            if (!reminder.isNotified()) {
-                reminder.setNotified(true);
-                reminderRepository.save(reminder);
-                return new ResponseEntity<>("Reminder marked as notified", HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Reminder already notified", HttpStatus.BAD_REQUEST);
-            }
-        } else {
-            return new ResponseEntity<>("Reminder not found", HttpStatus.NOT_FOUND);
-        }
-    }
 }
