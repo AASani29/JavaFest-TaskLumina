@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import '../CSS Files/tic-tac-toe.css';
 import { useNavigate } from 'react-router-dom';
 import Logo from "../Assets/Logo.png";
-import { getAchievements} from '../user-service';
+import { getAchievements } from '../user-service';
 import { getCurrentUser } from '../Auth'
 const Games = () => {
   const navigate = useNavigate();
@@ -55,6 +55,7 @@ const Games = () => {
           <img src={Logo} alt="Logo" className="logo1" />
         </div>
         <h1>Click to play</h1>
+        <div onClick={() => handleGameClick('Stone-Paper-Scissor')}><span className="game-icon">Stone-Paper-Scissor</span></div>
         <div
           className={`games ${isBadgeEarned('Rookie Starter') ? 'active' : 'disabled'}`}
           onClick={() => handleGameClick('Tic-Tac-Toe')}

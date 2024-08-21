@@ -14,6 +14,7 @@ import Games from './Components/Games/Games.jsx';
 import TicTacToe from './Components/Games/tic-tac-toe.jsx';
 import Sudoku from './Components/Games/SudokuGame.jsx';
 import RoutineForm from './Components/Features/RoutineForm.jsx';
+import Stonepaperscissors from './Components/Games/StoneScissorPaperGame .jsx';
 const App = () => {
   return (
     <Router>
@@ -29,6 +30,8 @@ const App = () => {
         <Route path="/games" element={<Games />} />
         <Route path="/Sudoku" element={<Sudoku/>} />
         <Route path="/routine" element={<RoutineForm/>} />
+        <Route path="/Stone-Paper-Scissor" element={<Stonepaperscissors/>} />
+        
         
       </Routes>
     </Router>
