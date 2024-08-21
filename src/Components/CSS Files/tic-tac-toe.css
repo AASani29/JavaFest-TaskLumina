@@ -1,17 +1,20 @@
-
+/* Original Tic-Tac-Toe CSS */
 main {
     width: 300px;
     margin: 50px auto 0;
 }
+
 main h1, h3 {
     text-align: center;
 }
+
 div.board {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     border: 2px solid #34495e;
 }
+
 div.square {
     width: 100px;
     height: 100px;
@@ -22,48 +25,111 @@ div.square {
     font-weight: bolder;
     text-align: center;
 }
+
 div.square.red {
     color: red;
 }
+
 div.square.blue {
     color: blue;
 }
+
 div.result {
     font-size: 1.5rem;
     padding: 10px;
 }
+
 div.result button {
     float: right;
     padding: 5px;
 }
+
 div.result.green {
     background-color: #5a5;
 }
+
 div.result.red {
     background-color: #a55;
 }
+
 div.result.gray {
     background-color: gray;
 }
-.games{
-    
+
+.games {
     margin-top: 100px;
-}
-.game-icon{
-    
-    border-style:solid;
-
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #34495e;
+    cursor: pointer;
     font-weight: 600;
     font-size: 40px;
+    transition: background-color 0.3s;
+}
+
+.game-icon {
     color: rgb(165, 55, 55);
-    cursor: pointer;
-    
+    border-style: solid;
 }
-.sudoku-icon{
-    border-style:solid;
 
-    font-weight: 600;
-    font-size: 40px;
+.sudoku-icon {
     color: rgb(55, 165, 119);
+    border-style: solid;
+}
+
+.games.active {
+    background-color: #dfe6e9;
+}
+
+.games.disabled {
+    background-color: #b2bec3;
+}
+
+/* New CSS for Popup */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    width: 80%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.popup h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.popup p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.popup button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
+}
+
+.popup button:hover {
+    background-color: #2980b9;
 }

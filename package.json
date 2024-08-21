@@ -13,6 +13,8 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.2",
     "feather-icons-react": "^0.7.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
     "react-calendar": "^5.0.0",
@@ -23,6 +25,7 @@
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.24.0",
     "react-scripts": "5.0.1",
+    "react-to-print": "^2.15.1",
     "react-toastify": "^10.0.5",
     "universal-cookie": "^7.1.4",
     "web-vitals": "^2.1.4"

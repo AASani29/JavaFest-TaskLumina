@@ -13,7 +13,7 @@ import Achievement from './Components/Pages/Achievements.jsx';
 import Games from './Components/Games/Games.jsx';
 import TicTacToe from './Components/Games/tic-tac-toe.jsx';
 import Sudoku from './Components/Games/SudokuGame.jsx';
-
+import RoutineForm from './Components/Features/RoutineForm.jsx';
 const App = () => {
   return (
     <Router>
@@ -25,10 +25,10 @@ const App = () => {
         <Route path="/scheduleanevent" element={<ScheduleAnEvent />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/achievements" element={<Achievement />} />
-        <Route path="/tictactoe" element={<TicTacToe />} />
+        <Route path="/Tic-Tac-Toe" element={<TicTacToe />} />
         <Route path="/games" element={<Games />} />
-        <Route path="/sudoku" element={<Sudoku/>} />
-        
+        <Route path="/Sudoku" element={<Sudoku/>} />
+        <Route path="/routine" element={<RoutineForm/>} />
         
       </Routes>
     </Router>

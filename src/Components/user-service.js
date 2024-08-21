@@ -192,5 +192,28 @@ export const markReminderAsNotified = async (reminderId) => {
 };
 
 
+export const generateRoutine = async ({ tasks, timeRange }) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await privateAxios.post("/adminuser/routine/generate", {
+      timeRange,
+      tasks
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    // Ensure the response contains scheduledTasks and failedTasks
+    return {
+      scheduledTasks: response.data.scheduledTasks || [],
+      failedTasks: response.data.failedTasks || []
+    };
+  } catch (error) {
+    console.error("Error generating routine:", error);
+    throw error;
+  }
+};
+
+
 
 
