@@ -129,7 +129,7 @@ const allBadges = ['Rookie Starter', 'Daily Achiever', 'Weekly Warrior', 'Monthl
             </div>
           </li>
           <li>
-            <div className="sidebar-button">
+            <div className="sidebar-button" onClick={() => navigate('/routine')}>
               <FontAwesomeIcon icon={faClock} className="circle-icon" />
               <span>Make Me a Routine</span>
             </div>

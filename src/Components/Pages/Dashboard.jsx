@@ -308,7 +308,7 @@ const TaskCard = ({ task, onEdit, onComplete }) => {
             </div>
           </li>
           <li>
-            <div className="sidebar-button">
+            <div className="sidebar-button" onClick={() => navigate('/routine')}>
               <FiClock  className="circle-icon" />
               <span>Make Me a Routine</span>
             </div>
