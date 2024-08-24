@@ -56,6 +56,7 @@ const Games = () => {
         </div>
         <h1>Click to play</h1>
         <div onClick={() => handleGameClick('Stone-Paper-Scissor')}><span className="game-icon">Stone-Paper-Scissor</span></div>
+        <div onClick={() => handleGameClick('WordPuzzle')}><span className="game-icon">WordPuzzle</span></div>
         <div
           className={`games ${isBadgeEarned('Rookie Starter') ? 'active' : 'disabled'}`}
           onClick={() => handleGameClick('Tic-Tac-Toe')}
