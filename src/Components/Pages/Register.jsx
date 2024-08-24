@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../CSS Files/LoginSignup.css';
+import '../CSS Files/Signup.css';
 import user_icon from '../Assets/person.png';
 import email_icon from '../Assets/email.png';
 import password_icon from '../Assets/Password.png';
@@ -11,7 +11,7 @@ import github_icon from '../Assets/github-logo.png';
 import logo from '../Assets/Logo.png';
 import { signUp } from '../user-service';
 import { toast } from "react-toastify";
-import signup from '../Assets/signup_bg.png';
+import signup from '../Assets/signup.png';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -64,9 +64,7 @@ const SignUp = () => {
 
   return (
     <>
-      {/* <div className='Navbar'>
-        <img src={logo} alt="" className='logo' />
-      </div> */}
+     
       <div className='main-container'>
         <div className='container'>
           <div className='header'>
@@ -84,7 +82,7 @@ const SignUp = () => {
                   onChange={handleInputChange}
                   id="name"
                   name="name"
-                  // placeholder="Name"
+                  placeholder="name"
                   type="text"
                   value={formData.name}
                   invalid={error.errors?.response?.data?.name ? true : false}
@@ -97,7 +95,7 @@ const SignUp = () => {
                   onChange={handleInputChange}
                   id="email"
                   name="email"
-                  // placeholder="Email Id"
+                  placeholder="name@gmail.com"
                   type="email"
                   value={formData.email}
                   invalid={error.errors?.response?.data?.email ? true : false}
@@ -110,7 +108,7 @@ const SignUp = () => {
                   onChange={handleInputChange}
                   id="password"
                   name="password"
-                  // placeholder="password"
+                  placeholder="password"
                   type="password"
                   value={formData.password}
                   invalid={error.errors?.response?.data?.password ? true : false}
@@ -126,20 +124,14 @@ const SignUp = () => {
           </form>
 
           <div className='auth-container'>
-            <div className='auth-header'>Or Continue with</div>
+            <div className='auth-header'>Or</div>
             <div className='auth-buttons'>
               <div className='auth-button'>
                 <img src={google_icon} alt="Google" />
-                <span>Google</span>
+                <span>Continue with Google</span>
               </div>
-              <div className='auth-button'>
-                <img src={facebook_icon} alt="Facebook" />
-                <span>Facebook</span>
-              </div>
-              <div className='auth-button'>
-                <img src={github_icon} alt="GitHub" />
-                <span>GitHub</span>
-              </div>
+             
+              
             </div>
           </div>
           <div className='submit-container'>
@@ -150,9 +142,10 @@ const SignUp = () => {
 
         </div>
         <div className='side-container'>
-          <img src={signup} alt="" />
+        <div className='side_text'><h1 >Plan, manage, and streamline your tasks with ease!</h1></div>
+        <img src={signup} alt="Centered Image" class="centered-image"/>
         </div>
-      </div>
+      </div>*/
     </>
   );
 }

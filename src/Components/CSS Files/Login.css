@@ -1,0 +1,226 @@
+/* Reset margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Make sure body and html are full height */
+html,
+body {
+    height: 100%;
+    background-color: #ffffff;
+    /* Set the entire background to white */
+
+}
+
+.navbar2 {
+    width: 20%;
+    height: 10vh;
+    background-color: #ffffff;
+    padding: 10px 200px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    /* Align items to the left */
+    position: fixed;
+    /* Keep the navbar fixed at the top */
+    top: 0;
+    z-index: 1000;
+}
+
+/* Main container should fill the full viewport height */
+.main-container2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* Adjusted to fit full viewport */
+    background-color: #ffffff;
+    
+    margin: 0;
+    flex-direction: column;
+    /* Ensure logo stays above the form */
+}
+
+.left-image {
+    position: absolute;
+    top: 100;
+    bottom: 0;
+    left: 0;
+    width: 30%; /* Adjust as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-image img {
+    max-width:100%;
+    height: auto;
+}
+
+/* Style for right image */
+.right-image {
+    position: absolute;
+    top: 0;
+    bottom: 100;
+    right: 0;
+    width: 20%; /* Adjust as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Adjustments for small screens */
+@media (max-width: 768px) {
+    .left-image, .right-image {
+        width: 15%; /* Reduce width for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .left-image, .right-image {
+        width: 10%; /* Further reduce width for very small screens */
+    }
+}
+
+/* Adjust main container positioning for smaller screens */
+@media (max-width: 768px) {
+    .main-container2 {
+        flex-direction: column;
+    }
+    
+    .left-image, .right-image {
+        position: static; /* Change positioning for column layout */
+        width: 100%; /* Full width in column layout */
+    }
+}
+
+/* Logo styling */
+.logo2 {
+    display: flex;
+    position: absolute;
+    top: 25px;
+    /* Adjust the distance from the top */
+    left: 100px;
+    /* Adjust the distance from the left */
+    width: 200px;
+    /* Set the size of the logo */
+}
+
+.header2{
+    display: flex;
+    flex-direction: column;
+    align-items: auto;
+    margin-left: 80px;
+    gap: 9px;
+    width: 100%;
+    margin-top: 90px;
+}
+
+.text2 {
+    color: #1C4D53;
+    font-weight: 70;
+    margin-left: 80px;
+}
+
+.label_text2 {
+    color: #000000;
+    margin-left: 80px;
+    font-size: 17px;
+  }
+
+.forgot-password {
+    padding-left: 165px;
+    margin-top: 20px;
+    color: #797979;
+    font-size: 18px;
+  }
+  
+  .forgot-password span {
+    color: #1C4D53;
+    cursor: pointer;
+  }
+
+/* Container for the form */
+.container2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Ensures content stays within the container */
+    width: 600px;
+    border-radius: 10px;
+    padding: 40px 20px;
+    background: #fff;
+    /* Make sure the form container is white */
+
+    overflow: hidden;
+    /* Prevents content from overflowing */
+}
+
+/* Grouping buttons and authentication section */
+.submit-container,
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    width: 100%;
+    /* Make sure they fit within the container */
+}
+
+.auth-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+/* Additional Styling */
+.submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    /* Reduced width to ensure it stays within the container */
+    height: 45px;
+    color: #fff;
+    background-color: #1C4D53;
+    border-radius: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.submit.gray {
+    background-color: #1C4D53;
+    color: #FFFFFF;
+    border: none;
+    height: 42px;
+}
+
+.auth-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    border: 1px solid #A3A5A8;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    justify-content: center;
+    width: 400px;
+}
+
+/* Adjustments to make sure buttons stay inside */
+.submit-container .submit,
+.auth-container .auth-button {
+    max-width: 100%;
+    box-sizing: border-box;
+}

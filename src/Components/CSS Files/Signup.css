@@ -1,23 +1,67 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  
+}
+
+html,
+body {
+    height: 100%;
+    background-color: #ffffff;
+    /* Set the entire background to white */
+    overflow-x: hidden;
+    
+
+}
 .main-container {
   display: flex;
   justify-content: space-between;
-  /* gap: auto; */
-  /* background: url('../Assets/signup_bg.png') no-repeat center center; */
-  margin-top: 105px;
+  min-height: 100vh; /* Ensures full height */
+  background-color: #ffffff;
+  margin: 0; /* Reset margins */
+  padding: 0; /* Reset padding */
+  box-sizing: border-box;
+  
   
 }
 
 .side-container {
-  margin-top: 2%;
   display: flex;
+  justify-content: center; /* Centers the content horizontally */
+  align-items: center; /* Centers the content vertically */
   flex-direction: column;
-  width: 800px;
-  background: fixed;
-  /* transform: rotate(30deg);
-  border:20px solid #739BA0; */
-  border-radius: 2%;
+  width: 900px;
   
+
+
+  background-image: url('../Assets/Rectangle_bg.png'); /* Add your background image path */
+  background-size: cover;
+  background-image: fixed;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+ 
+  
+ /* Adds space on both left and right sides */
 }
+.centered-image {
+  width: 125%; /* Keep the image larger than the container */
+  height: 150%; /* Keep the image larger than the container */
+  object-fit: cover; /* Ensure the image covers the area */
+  object-position: top left; /* Focus on the top-left corner of the image */
+  
+  /* Adjust the vertical position of the image */
+  margin-top: 100px; /* Increase this value to move the image lower */
+  margin-left: 550px;
+}
+.side_text {
+  color: #1C4D53; 
+  font-weight: 700;
+  margin-top: 60px;
+    margin-left: 220px;
+}
+
 
 .container {
 
@@ -30,11 +74,13 @@
   /* padding-bottom: 30px; */
   width: 600px;
   border-radius: 10px;
+  min-height: 100%;
 }
 
 .header {
   display: flex;
   flex-direction: column;
+    align-items: flex-start;
   align-items: auto;
   margin-left: 100px;
   gap: 9px;
@@ -45,6 +91,9 @@
 .text {
   color: #1C4D53; 
   font-weight: 700;
+  padding-left: 130px;
+
+
 }
 
 .label_text {
@@ -53,12 +102,6 @@
   font-size: 17px;
 }
 
-.underline {
-  width: 61px;
-  height: 6px;
-  background: #2F5E8C;
-  border-radius: 9px;
-}
 
 .inputs {
   margin-top: 55px;
@@ -79,9 +122,7 @@
   padding-left: 30px;
 }
 
-.input img {
-  margin: 0px 30px;
-}
+
 
 .input input {
   height: 50px;
@@ -93,17 +134,10 @@
   font-size: 19px;
 }
 
-.forgot-password {
-  padding-left: 62px;
-  margin-top: 27x;
-  color: #797979;
-  font-size: 18px;
+.input img {
+  margin: 0px 30px;
 }
 
-.forgot-password span {
-  color: #1C4D53;
-  cursor: pointer;
-}
 
 .submit-container {
   display: flex;
@@ -111,10 +145,11 @@
   align-items: center;
   gap: 10px;
   margin-top: 40px;
+  
 }
 
 .submit {
-  margin-bottom: 10px;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -131,7 +166,7 @@
   background-color: #1C4D53;
   color: #FFFFFF;
   border: none;
-  height: 42px;
+  height: 4px;
 }
 
 .auth-container {
@@ -145,7 +180,7 @@
 
 .auth-header {
   font-size: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 2px;
 }
 
 .auth-buttons {
@@ -165,7 +200,8 @@
   padding: 10px 20px;
   border-radius: 6px;
   cursor: pointer;
-  width: auto; /* Adjust width to auto so buttons can fit better in a row */
+  width: 400px;
+  
   justify-content: center;
 }
 
