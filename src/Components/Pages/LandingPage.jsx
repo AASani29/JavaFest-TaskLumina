@@ -15,7 +15,7 @@ const LandingPage = () => {
     <div>
 
       {/* Navbar */}
-      <nav className="navbar">
+      <nav className="navbar7">
         <div className="navbar-container">
 
           <div className="navbar-logo">
