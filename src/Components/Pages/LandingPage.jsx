@@ -12,7 +12,7 @@ import feature_4 from '../Assets/feature-4.png';
 const LandingPage = () => {
   return (
 
-    <div>
+    <body className='landing-page'>
 
       {/* Navbar */}
       <nav className="navbar7">
@@ -92,7 +92,7 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-    </div>
+    </body>
   );
 };
 

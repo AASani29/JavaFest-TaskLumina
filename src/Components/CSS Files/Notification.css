@@ -71,3 +71,56 @@
   color: #999; /* Light gray color for empty state text */
   font-size: 14px;
 }
+
+/* Notification.css */
+
+.notification-popup {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  max-width: 350px;
+  padding: 15px 20px;
+  background-color: #1C4D53; /* Green background color */
+  color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: fadeInSlideDown 0.5s ease-in-out;
+}
+
+.notification-message {
+  flex-grow: 1;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.notification-close {
+  background-color: white;
+  border: none;
+  color: #1C4D53;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.notification-close:hover {
+  background-color: #45a049;
+  color: white;
+}
+
+@keyframes fadeInSlideDown {
+  from {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

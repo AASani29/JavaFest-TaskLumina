@@ -1,49 +1,129 @@
 /* AddEventForm.css */
 
+.add-event-form-container {
+  position: fixed;
+  top: 35%;
+  left: 51.5%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  width: 43.5%;
+  padding: 20px;
+}
+
 .add-event-form {
-    margin: 200px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-  }
-  
-  .add-event-form h2 {
-    margin-bottom: 10px;
-  }
-  
-  .add-event-form .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .add-event-form label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .add-event-form input[type='text'],
-  .add-event-form input[type='time'],
-  .add-event-form input[type='checkbox'] {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  font-family: 'Work Sans', sans-serif;
+}
+
+.add-event-form .form-group {
+  margin-bottom: 15px;
+}
+
+.add-event-form .form-group-inline {
+  display: flex;
+  gap: 10px;
+}
+
+.add-event-form input,
+.add-event-form select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.custom-card {
+  display: inline-flex;
+  flex-direction: row;
+  padding: 0;
+  background-color: #e9f5f4;
+  border-radius: 8px;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  cursor: pointer;
+}
+
+.custom-card input,
+.custom-card select {
+  text-align: center;
+  background-color: transparent;
+}
+
+.custom-card input[type="datetime-local"] {
+  color: #333;
+}
+
+.custom-card .custom-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #264653;
+}
+
+.add-event-form .form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.add-event-form button[type="submit"] {
+  background-color: #2a9d8f;
+  padding: 12px 24px;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Work Sans', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.add-event-form button[type="submit"]:hover {
+  background-color: #264653;
+}
+
+.add-event-form button[type="button"] {
+  background-color: #ffffff;
+  padding: 12px 24px;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Work Sans', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.add-event-form button[type="button"]:hover {
+  background-color: #a19d9c;
+}
+
+@media (max-width: 768px) {
+  .add-event-form-container {
     width: 100%;
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    box-sizing: border-box;
+    padding: 10px;
   }
-  
+
+  .add-event-form {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .add-event-form .form-group-inline {
+    flex-direction: row;
+  }
+
+  .add-event-form .form-buttons {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
   .add-event-form button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
+    width: 100%;
+    padding: 15px;
   }
-  
-  .add-event-form button:hover {
-    background-color: #0056b3;
-  }
-  
-  
+}

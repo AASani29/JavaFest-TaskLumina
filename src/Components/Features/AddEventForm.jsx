@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import '../CSS Files/AddEventForm.css'; // Import CSS file
-import { addEvent, updateEvent } from '../event-service'; // Import event service methods
+import '../CSS Files/AddEventForm.css'; 
+import { addEvent, updateEvent } from '../event-service'; 
 import { toast } from 'react-toastify';
 
 const AddEventForm = ({ toggleForm, editEvent }) => {
   const [eventData, setEventData] = useState({
     title: '',
-    dateTime: '', // Corrected to match your field names
+    dateTime: '',
     location: '',
     link: '',
     remindMe: false,
   });
+
   useEffect(() => {
     if (editEvent) {
       setEventData(editEvent);
@@ -23,9 +24,10 @@ const AddEventForm = ({ toggleForm, editEvent }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('Form submitted'); // Debug log
     if (editEvent) {
       updateEvent(eventData.id, eventData)
-        .then((res) => {
+        .then(() => {
           toast.success("Event updated successfully!");
           toggleForm();
         })
@@ -35,7 +37,7 @@ const AddEventForm = ({ toggleForm, editEvent }) => {
         });
     } else {
       addEvent(eventData)
-        .then((res) => {
+        .then(() => {
           toast.success("Event added successfully!");
           toggleForm();
         })
@@ -46,68 +48,55 @@ const AddEventForm = ({ toggleForm, editEvent }) => {
     }
   };
 
-  const handleInputChange = (e, field) => {
-    setEventData({ ...eventData, [field]: e.target.value });
-  };
-
   const handleRemindMeChange = (e) => {
+    console.log('Remind Me clicked'); // Debug log
     setEventData({ ...eventData, remindMe: e.target.checked });
   };
 
-  // const handleAddEvent = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     await addEvent(eventData);
-  //     toast.success('Event added successfully!');
-  //     toggleForm(); // Close the form after adding event
-  //   } catch (error) {
-  //     console.error('Failed to add event:', error);
-  //     toast.error('Failed to add event!');
-  //     // Handle error state or display error message to user
-  //   }
-  // };
-
   return (
-    <div className="add-event-form">
-      <h2>Add Event</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="add-event-form-container">
+      <form onSubmit={handleSubmit} className="add-event-form">
         <div className="form-group">
-          <label htmlFor="title">Title</label>
           <input
             type="text"
             id="title"
+            placeholder="Event title"
             value={eventData.title}
-            onChange={(e) => handleInputChange(e, 'title')}
+            onChange={(e) => handleChange(e, 'title')}
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="dateTime">Date and Time</label>
-          <input
-            type="datetime-local"
-            id="dateTime"
-            name="dateTime"
-            value={eventData.dateTime}
-            onChange={(e) => handleInputChange(e, 'dateTime')}
-            required
-          />
+        <div className="form-group form-group-inline">
+          <div className="custom-card">
+            <label htmlFor="dateTime" className="custom-label">
+              <i className="fa fa-calendar"></i>
+            </label>
+            <input
+              type="datetime-local"
+              id="dateTime"
+              value={eventData.dateTime}
+              onChange={(e) => handleChange(e, 'dateTime')}
+              min={new Date().toISOString().slice(0, 16)}
+              required
+            />
+          </div>
         </div>
         <div className="form-group">
-          <label htmlFor="location">Location</label>
           <input
             type="text"
             id="location"
+            placeholder="Location"
             value={eventData.location}
-            onChange={(e) => handleInputChange(e, 'location')}
+            onChange={(e) => handleChange(e, 'location')}
           />
         </div>
         <div className="form-group">
-          <label htmlFor="link">Link</label>
           <input
             type="text"
             id="link"
+            placeholder="Link"
             value={eventData.link}
-            onChange={(e) => handleInputChange(e, 'link')}
+            onChange={(e) => handleChange(e, 'link')}
           />
         </div>
         <div className="form-group">
@@ -120,8 +109,10 @@ const AddEventForm = ({ toggleForm, editEvent }) => {
             &nbsp; Remind Me
           </label>
         </div>
-        <button type="submit">{editEvent ? "Update Event" : "Add Event"}</button>
+        <div className="form-buttons">
+          <button type="submit">{editEvent ? "Update Event" : "Add Event"}</button>
           <button type="button" onClick={toggleForm}>Cancel</button>
+        </div>
       </form>
     </div>
   );

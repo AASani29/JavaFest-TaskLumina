@@ -16,6 +16,8 @@ import { FiPlusCircle , FiClock, FiCalendar } from "react-icons/fi";
 import { getTasks, completeTask, getTaskProgress, updateProgress, getMyProfile, getMyRewards, markRewardAsNotified, getNotifications, getReminders,markReminderAsNotified } from '../user-service';
 import MiniCalendar from '../Features/MiniCalendar';
 import { IoGameControllerOutline } from "react-icons/io5";
+import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
+import VoiceTaskManager from '../Pages/VoiceTaskManager'; // Adjust the path if necessary
 
 
 const loadScript = (src, async = true, defer = true) => {
@@ -99,6 +101,8 @@ const TaskCard = ({ task, onEdit, onComplete }) => {
     const [filterCriteria, setFilterCriteria] = useState('');
     const [filterCategory, setFilterCategory] = useState('ALL');
     const notificationsFetchedRef = useRef(false);
+    const [showVoiceTaskManager, setShowVoiceTaskManager] = useState(false);
+
 
     useEffect(() => {
       const user = getCurrentUser();
@@ -348,6 +352,8 @@ const TaskCard = ({ task, onEdit, onComplete }) => {
               )}
             </div>
           </div>
+         
+
           {showNotifications && (
             <NotificationDropdown
               notifications={notifications}
@@ -413,6 +419,26 @@ const TaskCard = ({ task, onEdit, onComplete }) => {
         </div>
         
         </div>
+         {/* Mic Icon for VoiceTaskManager */}
+         <button
+  className="voice-task-button"
+  onClick={() => setShowVoiceTaskManager(!showVoiceTaskManager)}
+  style={{  cursor: 'pointer', marginRight: '10px' }}
+>
+  <FontAwesomeIcon icon={faMicrophone} className="mic-icon" />
+</button>
+        {showVoiceTaskManager && (
+        <div className="voice-task-popup">
+      <VoiceTaskManager />
+      <button
+       className="close-popup-button"
+       onClick={() => setShowVoiceTaskManager(false)}
+        style={{  cursor: 'pointer', marginTop: '100px' }}
+       >
+      Close
+    </button>
+  </div>
+)}
 
         {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />}
         {popupNotifications.map((message, index) => (
