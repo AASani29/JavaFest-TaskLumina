@@ -77,10 +77,10 @@
 .notification-popup {
   position: fixed;
   top: 30px;
-  right: 30px;
+  right: 100px;
   max-width: 350px;
   padding: 15px 20px;
-  background-color: #1C4D53; /* Green background color */
+  background-color: #45a049; /* Green background color */
   color: white;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
