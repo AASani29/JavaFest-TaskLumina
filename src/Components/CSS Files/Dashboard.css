@@ -316,11 +316,6 @@
   margin-top: 10px;
 }
 
-
-
-
-
-
 .bg{
   background-color: white;
 }
@@ -378,5 +373,25 @@
 }
 
   
+.add-task {
+  display: block;
+  margin:1.67% 2.5%;
+  margin-left: 29%;
+  padding: 15px 20px;
+  background-color: #6a9c9e; 
+  box-shadow: 0 4px 8px rgba(79, 141, 140, 0.2); 
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
 
+  
+  
+  
+}
 
+.add-task:hover {
+  background-color: #a9c9d2; /* Darker green on hover */
+}

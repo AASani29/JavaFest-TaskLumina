@@ -3,9 +3,11 @@ import { generateRoutine, getMyProfile, getNotifications, markNotificationAsRead
 import '../CSS Files/RoutineForm.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faPrint, faDownload, faClock, faList } from '@fortawesome/free-solid-svg-icons';
-import { FiPlusCircle, FiCalendar } from "react-icons/fi";
+
+import { FiPlusCircle, FiCalendar, FiClock } from "react-icons/fi";
 import { IoGameControllerOutline } from "react-icons/io5";
 import { SlBadge } from "react-icons/sl";
+import { MdOutlineToday } from "react-icons/md";
 import Logo from "../Assets/Logo.png";
 import { useNavigate } from 'react-router-dom';
 import NotificationDropdown from '../Features/NotificationDropdown';
@@ -119,9 +121,9 @@ const RoutineForm = () => {
         </div>
         <ul className="sidebar-features">
           <li>
-            <div className="sidebar-button" onClick={() => alert('Add Task')}>
-              <FiPlusCircle className="circle-icon" />
-              <span>Add Task</span>
+            <div className="sidebar-button" onClick={() =>  navigate('/dashboard')}>
+              <MdOutlineToday  className="circle-icon" />
+              <span>Today</span>
             </div>
           </li>
           <li>
@@ -131,8 +133,8 @@ const RoutineForm = () => {
             </div>
           </li>
           <li>
-            <div className="sidebar-button" onClick={() => navigate('/dashboard')}>
-              <FontAwesomeIcon icon={faClock} className="circle-icon" />
+            <div className="sidebar-button-slected" onClick={() => navigate('/routine')}>
+            <FiClock  className="circle-icon" />
               <span>Make Me a Routine</span>
             </div>
           </li>

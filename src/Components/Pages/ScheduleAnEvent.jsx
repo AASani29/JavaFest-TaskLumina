@@ -3,7 +3,10 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAward, faBell, faCalendarDays, faCirclePlus, faClock, faEllipsisV, faGamepad, faList } from '@fortawesome/free-solid-svg-icons';
+import { MdOutlineToday } from "react-icons/md";
+
 import { useNavigate } from 'react-router-dom';
+
 import Logo from "../Assets/Logo.png";
 import '../CSS Files/ScheduleAnEvent.css';
 import { getEvents, addEvent, deleteEvent, updateEvent } from '../event-service';
@@ -207,8 +210,8 @@ const ScheduleAnEvent = () => {
         <ul className="sidebar-features">
           <li>
             <div className="sidebar-button" onClick={toggleAddTaskForm}>
-              <FiPlusCircle className="circle-icon" />
-              <span>Add Task</span>
+              <MdOutlineToday  className="circle-icon" />
+              <span>Today</span>
             </div>
           </li>
           <li>
@@ -224,7 +227,7 @@ const ScheduleAnEvent = () => {
             </div>
           </li>
           <li>
-            <div className="sidebar-button" onClick={() => navigate('/scheduleanevent')}>
+            <div className="sidebar-button-slected" onClick={() => navigate('/scheduleanevent')}>
               <FiCalendar icon={faCalendarDays} className="circle-icon" />
               <span>Schedule an Event</span>
             </div>

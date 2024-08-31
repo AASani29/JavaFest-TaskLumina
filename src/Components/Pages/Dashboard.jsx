@@ -6,9 +6,9 @@ import NotificationDropdown from '../Features/NotificationDropdown';
 import { useNavigate } from 'react-router-dom';
 import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
-import Calendar from "../Assets/299092_calendar_icon.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faClock, faFilter, faCirclePlus, faList, faCalendarDays, faAward, faTag, faGamepad, faEdit, faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBell,faPlus, faList, faCalendarDays, faAward, faGamepad, faEdit, faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { MdOutlineToday } from "react-icons/md";
 
 import { getCurrentUser } from '../Auth';
 import { SlBadge } from "react-icons/sl";
@@ -102,6 +102,8 @@ const TaskCard = ({ task, onEdit, onComplete }) => {
     const [filterCategory, setFilterCategory] = useState('ALL');
     const notificationsFetchedRef = useRef(false);
     const [showVoiceTaskManager, setShowVoiceTaskManager] = useState(false);
+    const [activeButton, setActiveButton] = useState('');
+
 
 
     useEffect(() => {
@@ -300,9 +302,9 @@ const TaskCard = ({ task, onEdit, onComplete }) => {
         </div>
         <ul className="sidebar-features">
           <li>
-            <div className="sidebar-button" onClick={toggleAddTaskForm}>
-              <FiPlusCircle  className="circle-icon" />
-              <span>Add Task</span>
+            <div className="sidebar-button-slected" onClick={() => navigate('/dashboard')}>
+              <MdOutlineToday  className="circle-icon" />
+              <span>Today</span>
             </div>
           </li>
           <li>
@@ -417,8 +419,13 @@ const TaskCard = ({ task, onEdit, onComplete }) => {
             />
           ))}
         </div>
+       
         
         </div>
+        <button className="add-task" onClick={toggleAddTaskForm}>
+        <FontAwesomeIcon icon={faPlus} style={{ marginRight: '8px' }} />
+          Add Task
+        </button>
          {/* Mic Icon for VoiceTaskManager */}
          <button
   className="voice-task-button"

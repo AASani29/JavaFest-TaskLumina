@@ -60,12 +60,40 @@
 .sidebar-button .circle-icon {
   font-size: 25px;
   color: #ffffff;
-  margin-right: 30px;
+  margin-right: 25px;
 }
-
 .sidebar-button span {
   color: #ffffff;
 }
+.sidebar-button:hover {
+
+  transform: scale(1.05); 
+}
+
+/*seleceted buttons*/
+.sidebar-button-slected {
+  background-color: #E9F5F4; /* Button background color */
+  border-radius: 10px;
+  color:#1C4D53;
+  padding: 13px ; /* Padding inside the button */
+  /* Makes the rectangle circular */
+  display: flex;
+  align-items: center;
+  margin: 10px 0; 
+  margin-right: 8%;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+.sidebar-button-slected .circle-icon {
+  font-size: 25px;
+  color: #1C4D53;
+  margin-right: 25px;
+}
+.span{
+  color: #1C4D53;
+}
+
+/*-------*/
 
 .content {
   flex: 1;

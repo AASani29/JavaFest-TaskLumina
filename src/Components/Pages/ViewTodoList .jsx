@@ -6,13 +6,13 @@ import NotificationDropdown from '../Features/NotificationDropdown';
 import { useNavigate } from 'react-router-dom';
 import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
-import Calendar from "../Assets/299092_calendar_icon.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faClock, faFilter, faCirclePlus, faList, faCalendarDays, faAward, faTag, faGamepad, faEdit, faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faClock,  faList, faCalendarDays, faAward,faPlus, faTag, faGamepad, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { getCurrentUser } from '../Auth';
 import { getTasks, completeTask, getTaskProgress, updateProgress, getMyProfile, getMyRewards, markRewardAsNotified, getNotifications } from '../user-service';
 import { FaRegSmileBeam } from "react-icons/fa";
-import { FiPlusCircle , FiClock, FiCalendar, Fi } from "react-icons/fi";
+import { MdOutlineToday } from "react-icons/md";
+import {  FiClock, FiCalendar, Fi } from "react-icons/fi";
 import { IoGameControllerOutline } from "react-icons/io5";
 import { SlBadge } from "react-icons/sl";
 import MiniCalendar from '../Features/MiniCalendar';
@@ -273,15 +273,15 @@ const toggleUpcomingTasks = () => setShowUpcomingTasks(!showUpcomingTasks);
         </div>
         <ul className="sidebar-features">
           <li>
-            <div className="sidebar-button" onClick={toggleAddTaskForm}>
-              <FiPlusCircle icon={faCirclePlus} className="circle-icon" />
-              <span>Add Task</span>
+          <div className="sidebar-button" onClick={() => navigate('/dashboard')}>
+              <MdOutlineToday  className="circle-icon" />
+              <span>Today</span>
             </div>
           </li>
           <li>
-            <div className="sidebar-button" onClick={() => navigate('/dashboard')}>
+          <div className="sidebar-button-slected" onClick={() => navigate('/viewtodolist')}>
               <FontAwesomeIcon icon={faList} className="circle-icon" />
-              <span>Today's Tasks</span>
+              <span>View To-do List</span>
             </div>
           </li>
           <li>
@@ -428,8 +428,12 @@ const toggleUpcomingTasks = () => setShowUpcomingTasks(!showUpcomingTasks);
       )
     )}
   </div>
+  
 </div>
-
+<button className="add-task" onClick={toggleAddTaskForm}>
+<FontAwesomeIcon icon={faPlus} style={{ marginRight: '8px' }} />
+          Add Task
+        </button>
 
 
         {showAddTaskForm && <AddTaskForm toggleForm={toggleAddTaskForm} editTask={editTask} />}

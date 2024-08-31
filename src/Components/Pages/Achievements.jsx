@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import '../CSS Files/Achievements.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAward, faCalendarDays, faClock, faList, faCirclePlus, faBell, faGamepad, faMedal } from '@fortawesome/free-solid-svg-icons';
+import { FiPlusCircle , FiClock, FiCalendar } from "react-icons/fi";
+import { IoGameControllerOutline } from "react-icons/io5";
+import { SlBadge } from "react-icons/sl";
+import { MdOutlineToday } from "react-icons/md";
 import { getAchievements, getMyProfile, getNotifications } from '../user-service';
 import { getCurrentUser } from '../Auth';
 import Logo from "../Assets/Logo.png";
@@ -118,8 +122,8 @@ const allBadges = ['Rookie Starter', 'Daily Achiever', 'Weekly Warrior', 'Monthl
         <ul className="sidebar-features">
           <li>
             <div className="sidebar-button" onClick={() => navigate('/dashboard')}>
-              <FontAwesomeIcon icon={faCirclePlus} className="circle-icon" />
-              <span>Today's Tasks</span>
+            <MdOutlineToday  className="circle-icon" />
+              <span>Today</span>
             </div>
           </li>
           <li>
@@ -130,25 +134,25 @@ const allBadges = ['Rookie Starter', 'Daily Achiever', 'Weekly Warrior', 'Monthl
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/routine')}>
-              <FontAwesomeIcon icon={faClock} className="circle-icon" />
+            <FiClock  className="circle-icon" />
               <span>Make Me a Routine</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/scheduleanevent')}>
-              <FontAwesomeIcon icon={faCalendarDays} className="circle-icon" />
+            <FiCalendar icon={faCalendarDays} className="circle-icon" />
               <span>Schedule an Event</span>
             </div>
           </li>
           <li>
-            <div className="sidebar-button">
-              <FontAwesomeIcon icon={faAward} className="circle-icon" />
-              <span>View Achievements</span>
+            <div className="sidebar-button-slected">
+            <SlBadge icon={faAward} className="circle-icon" />
+              <span color='#1C4D53'>View Achievements</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/games')}>
-              <FontAwesomeIcon icon={faGamepad} className="circle-icon" />
+            <IoGameControllerOutline icon={faGamepad} className="circle-icon" />
               <span>Play a Game</span>
             </div>
           </li>
