@@ -175,8 +175,8 @@
 
 .achievements {
   position: absolute;
-  top: 10%;
-  left: 50%;
+  top: 8%;
+  left: 48%;
   transform: translateX(-50%);
   font-size: 3vw;
   color: #5B789F;
@@ -260,50 +260,54 @@
   font-size: 20px;
 }
 .achievements-container {
+  background-color: #ffffff;
   display: flex;
   flex-direction: row;
-  gap: 80px; /* Space between columns */
   justify-content: space-around;
   margin-top: 150px;
-  margin-right: 700px;
   margin-bottom: 800px;
-  padding-bottom: 200px;
-  width:800px;
-  max-width: 100%; /* Prevent container from growing beyond viewport */
-  
+  padding-bottom: 100px;
+  width: 100%;
 }
 
-/* Ensure columns do not grow larger than their parent */
-.column {
-  flex: 1; /* Each column takes equal space */
-  display: flex;
-  flex-direction: column;
-  gap: 20px; /* Space between items in a column */
-  max-width: 100%; /* Prevent columns from growing too large */
+.achievements {
+  margin-left: 1%;
+  font-size: 3em;
+  font-weight: 600;
+  color: #264653;
+  font-family: 'Work Sans', sans-serif;
 }
-
 
 .achievement-item.earned {
-  border-color: gold;
-  background-color: #f9f9c1;
+  border-color: #ddd;
+  background-color: #ffffff;
+ 
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2); /* Shadow on right and bottom only */
 }
 
 .achievement-item {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  border: 1px solid #ddd;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  border: 0.5px solid #ddd;
   border-radius: 30px;
   background-color: #f9f9f9;
-  width: 100%; /* Full width of the column */
+  width: 80%; /* Increase width of badges */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  
+ 
 }
 
 .achievement-header {
+  color: #A8ADB1;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Align items with space between */
-  margin-bottom: 10px;
+  justify-content: flex-start;
 }
+
 .medal-icon {
   font-size: 55px;
   color: #A8ADB1;
@@ -311,59 +315,47 @@
   margin-left: 15px;
   padding-top: 10px;
 }
+
 .medal-icon.earned {
-  font-size: 55px;
-  color: #5B789F;
-  margin-top: 10px;
-  margin-left: 15px;
-  padding-top: 10px;
+  color: #1C4D53; /* Gold color for earned badges */
 }
+
 .achievement-name {
-  font-size: 21px;
+  font-size: 27px;
   font-weight: 600;
   color: #A8ADB1;
-  flex: 1;
   margin-left: 27px;
-  margin-bottom: 15px; /* Adjust this value to decrease space between name and description */
+  margin-bottom: 15px;
 }
+
 .achievement-name.earned {
-  font-size: 21px;
-  color: #000000;
-  flex: 1;
-  margin-left: 27px;
-  margin-bottom: 15px; /* Adjust this value to decrease space between name and description */
+  color: #1C4D53; /* Black color for earned badges */
 }
+
 .achievement-description {
-  font-size: 15px;
+  font-size: 20px;
   color: #A8ADB1;
-  margin-left: 100px; /* Align with the name's margin-left */
-  margin-bottom: 10px; /* Adjust this value to control the bottom space */
-  margin-top: 0; /* Remove any extra space above */
+  margin-left: 100px;
+  position: relative;
+  top: -15px;
 }
+
 .achievement-description.earned {
-  font-size: 15px;
-  color: #000000;
-  margin-left: 100px; /* Align with the name's margin-left */
-  margin-bottom: 10px; /* Adjust this value to control the bottom space */
-  margin-top: 0; /* Remove any extra space above */
+  color: #000000; /* Black color for earned badges */
 }
+
 .badge-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 20px; /* Reduce the gap between badges */
+  max-width: 100%; /* Ensure container doesn't grow beyond viewport */
 }
 
-.progress-container {
-  background-color: #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  height: 8px;
-  margin-top: 10px;
-  margin-left: 100px
+@media (min-width: 300px) {
+  .achievement-item {
+    margin-left: 3%;
+    margin-right: 3%;
+    flex-basis: calc(45% - 30px); /* Make badges wider and reduce gap */
+  }
 }
 
-.progress-bar {
-  background-color: #285581;
-  height: 100%;
-  transition: width 0.5s ease;
-}

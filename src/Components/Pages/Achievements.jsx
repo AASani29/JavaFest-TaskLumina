@@ -179,27 +179,28 @@ const allBadges = ['Rookie Starter', 'Daily Achiever', 'Weekly Warrior', 'Monthl
             )}
           </div>
         </header>
-        <div className='time'>
-          Achievements
+        <div className='achievements'>
+  Badges
+</div>
+<div className='achievements-container'>
+  <div className='badge-list'>
+    {allBadges.map((badge, index) => (
+      <div
+        className={`achievement-item ${isBadgeEarned(badge) ? 'earned' : ''}`}
+        key={index}
+      >
+        <div className='achievement-header'>
+          <FontAwesomeIcon icon={faMedal} className={`medal-icon ${isBadgeEarned(badge) ? 'earned' : ''}`} />
+          <span className={`achievement-name ${isBadgeEarned(badge) ? 'earned' : ''}`}>{badge}</span>
         </div>
-        <div className='achievements-container'>
-          <div className='badge-list'>
-            {allBadges.map((badge, index) => (
-              <div
-                className={`achievement-item ${isBadgeEarned(badge) ? 'earned' : ''}`}
-                key={index}
-              >
-                <div className='achievement-header'>
-                  <FontAwesomeIcon icon={faMedal} className={`medal-icon ${isBadgeEarned(badge) ? 'earned' : ''}`} />
-                  <span className={`achievement-name ${isBadgeEarned(badge) ? 'earned' : ''}`}>{badge}</span>
-                </div>
-                <div className={`achievement-description ${isBadgeEarned(badge) ? 'earned' : ''}`}>
-                  {badgeDescriptions[badge]}
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className={`achievement-description ${isBadgeEarned(badge) ? 'earned' : ''}`}>
+          {badgeDescriptions[badge]}
         </div>
+      </div>
+    ))}
+  </div>
+</div>
+
       </main>
     </div>
   );
