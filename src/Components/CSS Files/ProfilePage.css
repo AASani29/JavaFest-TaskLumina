@@ -1,37 +1,160 @@
-.profile-page {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-  }
-  
-  .profile-page h2 {
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .profile-details {
-    
-    display: flex;
-    flex-direction: column;
-    grid-template-columns: 1fr 2fr;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .profile-details label {
-    font-weight: bold;
-  }
-  
-  .profile-details span {
-    display: block;
-    margin-top: 5px;
-  }
-  
-  .profile-details div {
-    margin-bottom: 10px;
-  }
-  
-  
+/* Profile Page Styles */
+.profilepage-content {
+  display: flex;
+  align-items: flex-start;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  gap: 50px; /* Reduced gap to move the avatar section closer */
+  margin-top: 2%;
+  width:1000px;
+  padding: 4%;
+}
+.hero-today1{
+  margin-top: 2%;
+  margin-left: 1%;
+  font-size: 2em;
+  font-weight: 600;
+  color: #264653;
+  font-family: 'Work Sans', sans-serif;
+}
+.avatar-section {
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 200px; /* Adjust width as needed */
+  position: relative; /* Added for precise positioning */
+  left: -20px; /* Adjust this value to move the section to the left */
+}
+
+.profile-avatar {
+  width: 220px; /* Increase size for better visibility */
+  height: 220px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.select-avatar-btn {
+  background-color: #1C4D53;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 20%;
+}
+
+.select-avatar-btn:hover {
+  background-color: #49b932;
+}
+
+/* Profile Container Styles */
+.profile-container {
+  max-width: 500px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-grow: 1; /* Allow container to take remaining space */
+  margin-top: 5%;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-header h2 {
+  font-size: 24px;
+  color: #333;
+}
+
+.profile-details-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.profile-details-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 17px;
+}
+
+.profile-details-item label {
+  font-weight: 600;
+  color: #555;
+}
+
+.profile-details-item span {
+  color: #333;
+}
+
+.profile-logout {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.profile-logout button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.profile-logout button:hover {
+  background-color: #0056b3;
+}
+
+/* Badges Section Styles */
+.badges-section {
+  margin-top: 30px;
+}
+
+.badges-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.badge-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.badge-item {
+  background-color: #1C4D53;
+  border: 1px solid #d1d9e6;
+  border-radius: 8px;
+  padding: 15px;
+  width: 100%;
+  max-width: 200px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.badge-icon {
+  color: #ffffff;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.badge-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.badge-description {
+  font-size: 14px;
+  color: #9e9a9a;
+}

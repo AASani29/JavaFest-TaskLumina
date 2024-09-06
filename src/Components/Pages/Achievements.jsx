@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../CSS Files/Achievements.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAward, faCalendarDays, faClock, faList, faCirclePlus, faBell, faGamepad, faMedal } from '@fortawesome/free-solid-svg-icons';
-import { FiPlusCircle , FiClock, FiCalendar } from "react-icons/fi";
+import {  FiClock, FiCalendar } from "react-icons/fi";
 import { IoGameControllerOutline } from "react-icons/io5";
 import { SlBadge } from "react-icons/sl";
 import { MdOutlineToday } from "react-icons/md";

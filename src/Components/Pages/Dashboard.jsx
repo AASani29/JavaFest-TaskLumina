@@ -7,12 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import AddTaskForm from '../Features/AddTaskForm';
 import Logo from "../Assets/Logo.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell,faPlus, faList, faCalendarDays, faAward, faGamepad, faEdit, faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBell,faPlus, faList, faCalendarDays, faAward, faGamepad, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { MdOutlineToday } from "react-icons/md";
 
 import { getCurrentUser } from '../Auth';
 import { SlBadge } from "react-icons/sl";
-import { FiPlusCircle , FiClock, FiCalendar } from "react-icons/fi";
+import { FiClock, FiCalendar } from "react-icons/fi";
 import { getTasks, completeTask, getTaskProgress, updateProgress, getMyProfile, getMyRewards, markRewardAsNotified, getNotifications, getReminders,markReminderAsNotified } from '../user-service';
 import MiniCalendar from '../Features/MiniCalendar';
 import { IoGameControllerOutline } from "react-icons/io5";

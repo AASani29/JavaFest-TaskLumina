@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { getMyProfile } from '../user-service'; // Import getMyProfile function from userService
-import '../CSS Files/ProfilePage.css'; // Import your CSS file for styling
-import { useNavigate} from 'react-router-dom';
-import '../CSS Files/Dashboard.css';
+import { getMyProfile, getNotifications, getAchievements } from '../user-service';
+import '../CSS Files/ProfilePage.css';
+import { useNavigate } from 'react-router-dom';
+import { FiClock, FiCalendar } from "react-icons/fi";
+import { MdOutlineToday } from "react-icons/md";
 import Logo from "../Assets/Logo.png";
+import { IoGameControllerOutline } from "react-icons/io5";
+import { SlBadge } from "react-icons/sl";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faClock } from '@fortawesome/free-regular-svg-icons';
-import { faCirclePlus, faList, faCalendarDays, faAward, faGamepad} from '@fortawesome/free-solid-svg-icons';
-
+import { faBell, faList, faCalendarDays, faAward, faGamepad, faMedal } from '@fortawesome/free-solid-svg-icons';
+import NotificationDropdown from '../Features/NotificationDropdown';
+import { getCurrentUser } from '../Auth';
+import Avatar1 from "../Assets/Avatar/Avatar1.jpg"
 const loadScript = (src, async = true, defer = true) => {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -19,58 +23,95 @@ const loadScript = (src, async = true, defer = true) => {
     document.body.appendChild(script);
   });
 };
+
 const ProfilePage = () => {
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState(null);
-   // State to store user profile
-   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
-   const [tasks, setTasks] = useState([]);
-   const [editTask, setEditTask] = useState(null);
-   const [todayDate, setTodayDate] = useState('');
-  const toggleAddTaskForm = () => {
-    setEditTask(null);
-    setShowAddTaskForm(!showAddTaskForm);
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [achievements, setAchievements] = useState([]);
+  const [selectedAvatar, setSelectedAvatar] = useState('avatar1.png'); // default avatar
+
+  const badgeDescriptions = {
+    'Rookie Starter': 'Earned by completing first task of the month',
+    'Daily Achiever': 'Earned by completing all tasks in a single day.',
+    'Weekly Warrior': 'Earned by completing all tasks every day for a full week.',
+    'Monthly Master': 'Earned by completing all tasks every day for a full month.',
+    'Consistent Performer': 'Earned by completing at least one task every day for 15 consecutive days.',
+    'Task Marathoner': 'Earned by completing 10 tasks in a single day.',
+    'Weekend Warrior': 'Earned by completing all tasks on both Saturday and Sunday.',
+    'Early Bird': 'Earned by completing the first task of the day before 9 AM.'
   };
-  useEffect(() => {
-    fetchUserProfile(); // Fetch user profile on component mount
-  }, []);
-  useEffect(() => {
-    const loadBotpressScripts = async () => {
-      try {
-        
-        await loadScript("https://cdn.botpress.cloud/webchat/v1/inject.js");
-        await loadScript("https://mediafiles.botpress.cloud/6f06300e-840b-4711-b2ac-8e9d5f7d4bf5/webchat/config.js");
-      } catch (error) {
-        console.error("Failed to load Botpress scripts:", error);
-      }
-    };
 
-    loadBotpressScripts();
-  }, []);
+  const allBadges = ['Rookie Starter', 'Daily Achiever', 'Weekly Warrior', 'Monthly Master', 'Consistent Performer', 'Task Marathoner', 'Weekend Warrior', 'Early Bird'];
 
-  
+  const fetchAchievements = async (userId) => {
+    try {
+      const data = await getAchievements(userId);
+      setAchievements(data || []);
+    } catch (error) {
+      console.error("Failed to fetch achievements:", error);
+    }
+  };
+
+  const isBadgeEarned = (badge) => {
+    return achievements.some((achievement) =>
+      achievement.badge.trim().toLowerCase() === badge.trim().toLowerCase()
+    );
+  };
+
+  useEffect(() => {
+    const user = getCurrentUser();
+    if (!user) {
+      navigate("/login");
+    } else {
+      fetchUserProfile();
+      fetchAchievements(user.id);
+      fetchNotifications();
+    }
+  }, [navigate]);
 
   const fetchUserProfile = async () => {
     try {
-      const response = await getMyProfile(); // Fetch user profile using userService function
+      const response = await getMyProfile();
       if (response.statusCode === 200) {
-        // Destructure only required fields from response.ourUsers
         const { email, name, city } = response.ourUsers;
-        // Set user profile in state with only required fields
         setUserProfile({ email, name, city });
       } else {
-        // Handle error scenario
         console.error('Failed to fetch user profile:', response.message);
-        // Example: You can display an error message or handle as needed
       }
     } catch (error) {
       console.error('Error occurred while fetching user profile:', error.message);
-      // Example: You can display an error message or handle as needed
     }
   };
+
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Remove token from localStorage on logout
-    navigate('/login'); // Navigate to login page
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
+  const handleCloseNotification = (index) => {
+    setNotifications(notifications.filter((_, i) => i !== index));
+  };
+
+  const handleBellClick = () => {
+    setShowNotifications(!showNotifications);
+  };
+
+  const fetchNotifications = async () => {
+    try {
+      const storedNotifications = await getNotifications();
+      setNotifications(storedNotifications.map(notification => notification.message));
+    } catch (error) {
+      console.error("Failed to fetch notifications:", error);
+    }
+  };
+
+  // Filter earned badges
+  const earnedBadges = allBadges.filter(badge => isBadgeEarned(badge));
+
+  const handleAvatarChange = (avatar) => {
+    setSelectedAvatar(avatar);
   };
 
   return (
@@ -81,49 +122,48 @@ const ProfilePage = () => {
         </div>
         <ul className="sidebar-features">
           <li>
-            <div className="sidebar-button" onClick={toggleAddTaskForm}>
-              <FontAwesomeIcon icon={faCirclePlus} className="circle-icon" />
-              <span>Add Task</span>
+            <div className="sidebar-button" onClick={() => navigate('/dashboard')}>
+              <MdOutlineToday className="circle-icon" />
+              <span>Today</span>
             </div>
           </li>
           <li>
-            <div className="sidebar-button" onClick={() => navigate('/dashboard')}>
+            <div className="sidebar-button" onClick={() => navigate('/viewtodolist')}>
               <FontAwesomeIcon icon={faList} className="circle-icon" />
-              <span>Todays Tasks</span>
+              <span>View Todo List</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/routine')}>
-              <FontAwesomeIcon icon={faClock} className="circle-icon" />
+              <FiClock className="circle-icon" />
               <span>Make Me a Routine</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/scheduleanevent')}>
-              <FontAwesomeIcon icon={faCalendarDays} className="circle-icon" />
+              <FiCalendar icon={faCalendarDays} className="circle-icon" />
               <span>Schedule an Event</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/achievements')}>
-              <FontAwesomeIcon icon={faAward} className="circle-icon" />
+              <SlBadge icon={faAward} className="circle-icon" />
               <span>View Achievements</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/games')}>
-              <FontAwesomeIcon icon={faGamepad} className="circle-icon" />
+              <IoGameControllerOutline icon={faGamepad} className="circle-icon" />
               <span>Play a Game</span>
             </div>
           </li>
         </ul>
       </nav>
       
-      
       <main className='content'>
-      <header className="topbar">
+        <header className="topbar">
           <div className="icon-container">
-          <FontAwesomeIcon icon={faBell} className="bell-icon" />
+            <FontAwesomeIcon icon={faBell} className="bell-icon" onClick={handleBellClick} />
             <div className="profile-info">
               {userProfile ? (
                 <span className="user-name" onClick={() => navigate('/profile')} style={{ cursor: 'pointer' }}>
@@ -133,44 +173,80 @@ const ProfilePage = () => {
                 <span>Loading...</span>
               )}
             </div>
-            
-           
-            {/* <FontAwesomeIcon icon={faUser} className="user-icon" onClick={handleLogout} style={{ cursor: 'pointer' }} /> */}
+            {showNotifications && (
+              <NotificationDropdown
+                notifications={notifications}
+                onCloseNotification={handleCloseNotification}
+              />
+            )}
           </div>
         </header>
-        <div className='time'>
-        My Profile
-        </div>
-        <div className='task_added'>
-        {userProfile ? (
-        <div className="profile-details">
-          <div className='details'>
-            <label>Name:</label>
-            <span>{userProfile.name}</span>
+        <div className='hero-today1'>
+            <h2>My Profile</h2>
           </div>
-          <div className='details'>
-            <label>Email:</label>
-            <span>{userProfile.email}</span>
-          </div>
+        <div className='profilepage-content'>
+       
           
-          <div className='details'>
-            <label>City:</label>
-            <span>{userProfile.city}</span>
-          </div>
-          <div >
-          <span className="user-icon" onClick={handleLogout} style={{ cursor: 'pointer' }}>Logout</span>
-          </div>
-
-          {/* Exclude displaying password as per requirement */}
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
-      </div>
-        </main>
-
+        <div className='avatar-section'>
+          <img
+            src={Avatar1}
+            alt="Selected Avatar"
+            className="profile-avatar"
+          />
           
+          <button className="select-avatar-btn" onClick={() => navigate('/select-avatar')}>
+            Select Avatar
+          </button>
+          <div className='profile-details-section'>
+            {userProfile ? (
+              <>
+                <div className='profile-details-item'>
+                  <label>Name:</label>
+                  <span>{userProfile.name}</span>
+                </div>
+                <div className='profile-details-item'>
+                  <label>Email:</label>
+                  <span>{userProfile.email}</span>
+                </div>
+               
+               
+                <div className='profile-logout'>
+                  <button onClick={handleLogout}>Logout</button>
+                </div>
+              </>
+            ) : (
+              <p>Loading...</p>
+            )}
+          </div>
+        </div>
+        <div className='profile-container'>
+          
+                
 
+          <div className="badges-section">
+            <div className="badges-header">
+              <h3>Earned Badges</h3>
+            </div>
+            <div className="badge-list">
+              {earnedBadges.length > 0 ? (
+                earnedBadges.map((badge, index) => (
+                  <div className='badge-item' key={index}>
+                    <FontAwesomeIcon icon={faMedal} className='badge-icon' />
+                    <div className='badge-title'>{badge}</div>
+                    <div className='badge-description'>
+                      {badgeDescriptions[badge]}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No badges earned yet.</p>
+              )}
+            </div>
+          </div>
+          </div>
+        </div>
+      </main>
+      
     </div>
     
   );
