@@ -8,10 +8,13 @@ import Logo from "../Assets/Logo.png";
 import { IoGameControllerOutline } from "react-icons/io5";
 import { SlBadge } from "react-icons/sl";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faList, faCalendarDays, faAward, faGamepad, faMedal } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faList } from '@fortawesome/free-solid-svg-icons';
 import NotificationDropdown from '../Features/NotificationDropdown';
 import { getCurrentUser } from '../Auth';
-import Avatar1 from "../Assets/Avatar/Avatar1.jpg"
+import Avatar1 from "../Assets/Avatar/Avatar1.jpg";
+import Medal from "../Assets/medal_404647.png";
+import { BiEdit } from "react-icons/bi";
+
 const loadScript = (src, async = true, defer = true) => {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -141,25 +144,25 @@ const ProfilePage = () => {
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/scheduleanevent')}>
-              <FiCalendar icon={faCalendarDays} className="circle-icon" />
+              <FiCalendar className="circle-icon" />
               <span>Schedule an Event</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/achievements')}>
-              <SlBadge icon={faAward} className="circle-icon" />
+              <SlBadge className="circle-icon" />
               <span>View Achievements</span>
             </div>
           </li>
           <li>
             <div className="sidebar-button" onClick={() => navigate('/games')}>
-              <IoGameControllerOutline icon={faGamepad} className="circle-icon" />
+              <IoGameControllerOutline className="circle-icon" />
               <span>Play a Game</span>
             </div>
           </li>
         </ul>
       </nav>
-      
+
       <main className='content'>
         <header className="topbar">
           <div className="icon-container">
@@ -182,73 +185,65 @@ const ProfilePage = () => {
           </div>
         </header>
         <div className='hero-today1'>
-            <h2>My Profile</h2>
-          </div>
-        <div className='profilepage-content'>
-       
-          
-        <div className='avatar-section'>
-          <img
-            src={Avatar1}
-            alt="Selected Avatar"
-            className="profile-avatar"
-          />
-          
-          <button className="select-avatar-btn" onClick={() => navigate('/select-avatar')}>
-            Select Avatar
-          </button>
-          <div className='profile-details-section'>
-            {userProfile ? (
-              <>
-                <div className='profile-details-item'>
-                  <label>Name:</label>
-                  <span>{userProfile.name}</span>
-                </div>
-                <div className='profile-details-item'>
-                  <label>Email:</label>
-                  <span>{userProfile.email}</span>
-                </div>
-               
-               
-                <div className='profile-logout'>
-                  <button onClick={handleLogout}>Logout</button>
-                </div>
-              </>
-            ) : (
-              <p>Loading...</p>
-            )}
-          </div>
+          <h2>My Profile</h2>
         </div>
-        <div className='profile-container'>
-          
-                
-
-          <div className="badges-section">
-            <div className="badges-header">
-              <h3>Earned Badges</h3>
-            </div>
-            <div className="badge-list">
-              {earnedBadges.length > 0 ? (
-                earnedBadges.map((badge, index) => (
-                  <div className='badge-item' key={index}>
-                    <FontAwesomeIcon icon={faMedal} className='badge-icon' />
-                    <div className='badge-title'>{badge}</div>
-                    <div className='badge-description'>
-                      {badgeDescriptions[badge]}
-                    </div>
+        <div className='profilepage-content'>
+          <div className='avatar-section'>
+          <img
+                src={Avatar1}
+                alt="Selected Avatar"
+                className="profile-avatar"
+              />
+            <div className='avatarbutton'>
+              
+              <div className='profile-section'>
+              
+                <div className='profile-details-section'>
+                  <div className='profile-details-item'>
+                    <label>Profile name:</label>
+                    <input type="text" value={userProfile ? userProfile.name : ''} readOnly />
                   </div>
-                ))
-              ) : (
-                <p>No badges earned yet.</p>
-              )}
+                  <div className='profile-details-item'>
+                    <label>Username:</label>
+                    <input type="text" value={userProfile ? userProfile.email : ''} readOnly />
+                  </div>
+                  <div className='buttons'>
+                  <div className='profile-logout'>
+                    <button onClick={handleLogout}>Logout</button>
+                  </div>
+                  
+                  </div>
+                </div>
+              </div>
             </div>
+            <BiEdit className='editbutton' />
           </div>
+
+          <div className='profile-container'>
+            <div className="badges-section">
+              <div className="badges-header">
+                <h3>Earned Badges</h3>
+              </div>
+              <div className="badge-list">
+                {earnedBadges.length > 0 ? (
+                  earnedBadges.map((badge, index) => (
+                    <div className='badge-item' key={index}>
+                      <img src={Medal} alt="Badge Medal" />
+                      <div className='badge-title'>{badge}</div>
+                      <div className='badge-description'>
+                        {badgeDescriptions[badge] || 'No description available.'}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>No badges earned yet</p>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </main>
-      
     </div>
-    
   );
 };
 
