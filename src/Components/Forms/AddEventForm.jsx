@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import '../CSS Files/AddEventForm.css'; 
-import { addEvent, updateEvent } from '../event-service'; 
-import { toast } from 'react-toastify';
+import React, { useState, useEffect } from "react";
+import "../CSS Files/AddEventForm.css";
+import { addEvent, updateEvent } from "../Common/event-service";
+import { toast } from "react-toastify";
 
 const AddEventForm = ({ toggleForm, editEvent }) => {
   const [eventData, setEventData] = useState({
-    title: '',
-    dateTime: '',
-    location: '',
-    link: '',
+    title: "",
+    dateTime: "",
+    location: "",
+    link: "",
     remindMe: false,
   });
 
@@ -24,7 +24,7 @@ const AddEventForm = ({ toggleForm, editEvent }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted'); // Debug log
+    console.log("Form submitted"); // Debug log
     if (editEvent) {
       updateEvent(eventData.id, eventData)
         .then(() => {
@@ -49,7 +49,7 @@ const AddEventForm = ({ toggleForm, editEvent }) => {
   };
 
   const handleRemindMeChange = (e) => {
-    console.log('Remind Me clicked'); // Debug log
+    console.log("Remind Me clicked"); // Debug log
     setEventData({ ...eventData, remindMe: e.target.checked });
   };
 
@@ -62,7 +62,7 @@ const AddEventForm = ({ toggleForm, editEvent }) => {
             id="title"
             placeholder="Event title"
             value={eventData.title}
-            onChange={(e) => handleChange(e, 'title')}
+            onChange={(e) => handleChange(e, "title")}
             required
           />
         </div>
@@ -75,7 +75,7 @@ const AddEventForm = ({ toggleForm, editEvent }) => {
               type="datetime-local"
               id="dateTime"
               value={eventData.dateTime}
-              onChange={(e) => handleChange(e, 'dateTime')}
+              onChange={(e) => handleChange(e, "dateTime")}
               min={new Date().toISOString().slice(0, 16)}
               required
             />
@@ -87,7 +87,7 @@ const AddEventForm = ({ toggleForm, editEvent }) => {
             id="location"
             placeholder="Location"
             value={eventData.location}
-            onChange={(e) => handleChange(e, 'location')}
+            onChange={(e) => handleChange(e, "location")}
           />
         </div>
         <div className="form-group">
@@ -96,7 +96,7 @@ const AddEventForm = ({ toggleForm, editEvent }) => {
             id="link"
             placeholder="Link"
             value={eventData.link}
-            onChange={(e) => handleChange(e, 'link')}
+            onChange={(e) => handleChange(e, "link")}
           />
         </div>
         <div className="form-group">
@@ -110,8 +110,12 @@ const AddEventForm = ({ toggleForm, editEvent }) => {
           </label>
         </div>
         <div className="form-buttons">
-          <button type="submit">{editEvent ? "Update Event" : "Add Event"}</button>
-          <button type="button" onClick={toggleForm}>Cancel</button>
+          <button type="submit">
+            {editEvent ? "Update Event" : "Add Event"}
+          </button>
+          <button type="button" onClick={toggleForm}>
+            Cancel
+          </button>
         </div>
       </form>
     </div>

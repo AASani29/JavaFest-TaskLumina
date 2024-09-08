@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAward, faBell, faCalendarDays, faCirclePlus, faClock, faEllipsisV, faGamepad, faList } from '@fortawesome/free-solid-svg-icons';
-import { MdOutlineToday } from "react-icons/md";
-
-import { useNavigate } from 'react-router-dom';
-
-import Logo from "../Assets/Logo.png";
-import '../CSS Files/ScheduleAnEvent.css';
-import { getEvents, addEvent, deleteEvent, updateEvent } from '../event-service';
-import AddEventForm from '../Features/AddEventForm';
-import { getMyProfile, getNotifications } from '../user-service';
-import { getCurrentUser } from '../Auth';
-import NotificationDropdown from '../Features/NotificationDropdown';
-
-import { SlBadge } from "react-icons/sl";
-import { FiPlusCircle, FiClock, FiCalendar } from "react-icons/fi";
-import { IoGameControllerOutline } from "react-icons/io5";
+import React, { useState, useEffect } from "react";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import "../CSS Files/ScheduleAnEvent.css";
+import {
+  getEvents,
+  addEvent,
+  deleteEvent,
+  updateEvent,
+} from "../Common/event-service";
+import AddEventForm from "../Forms/AddEventForm";
+import { getMyProfile, getNotifications } from "../Common/user-service";
+import { getCurrentUser } from "../Common/Auth";
+import Sidebar from "../Common/Sidebar";
+import Topbar from "../Common/Topbar";
 
 const ScheduleAnEvent = () => {
   const [showEventForm, setShowEventForm] = useState(false);
@@ -30,7 +28,7 @@ const ScheduleAnEvent = () => {
 
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
-  const [userProfile, setUserProfile] = useState(null); 
+  const [userProfile, setUserProfile] = useState(null);
   const [eventData, setEventData] = useState({
     title: "",
     time: "",
@@ -57,7 +55,7 @@ const ScheduleAnEvent = () => {
   }, [navigate]);
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem('userData'));
+    const userData = JSON.parse(localStorage.getItem("userData"));
     if (userData) {
       setEventData((prevData) => ({ ...prevData, userId: userData.id }));
     }
@@ -68,30 +66,37 @@ const ScheduleAnEvent = () => {
       const eventsData = await getEvents();
       setEvents(eventsData);
     } catch (error) {
-      console.error('Error fetching events:', error);
+      console.error("Error fetching events:", error);
     }
   };
 
   const handleScheduleEvent = async () => {
     try {
-      const combinedDateTime = new Date(`${date.toDateString()} ${eventData.time}`);
+      const combinedDateTime = new Date(
+        `${date.toDateString()} ${eventData.time}`
+      );
       await addEvent({ ...eventData, dateTime: combinedDateTime });
       fetchEvents(); // Refresh events after adding
       setShowEventForm(false); // Close form after scheduling
     } catch (error) {
-      console.error('Error scheduling event:', error);
+      console.error("Error scheduling event:", error);
     }
   };
 
   const handleUpdateEvent = async () => {
     try {
-      const combinedDateTime = new Date(`${date.toDateString()} ${eventData.time}`);
-      await updateEvent(editEvent.id, { ...eventData, dateTime: combinedDateTime });
+      const combinedDateTime = new Date(
+        `${date.toDateString()} ${eventData.time}`
+      );
+      await updateEvent(editEvent.id, {
+        ...eventData,
+        dateTime: combinedDateTime,
+      });
       fetchEvents(); // Refresh events after updating
       setShowEventForm(false); // Close form after updating
       setEditEvent(null); // Clear editEvent state
     } catch (error) {
-      console.error('Error updating event:', error);
+      console.error("Error updating event:", error);
     }
   };
 
@@ -101,29 +106,37 @@ const ScheduleAnEvent = () => {
       if (response.statusCode === 200) {
         setUserProfile(response.ourUsers); // Set user profile in state
       } else {
-        console.error('Failed to fetch user profile:', response.message);
+        console.error("Failed to fetch user profile:", response.message);
       }
     } catch (error) {
-      console.error('Error occurred while fetching user profile:', error.message);
+      console.error(
+        "Error occurred while fetching user profile:",
+        error.message
+      );
     }
   };
 
   const fetchNotifications = async () => {
     try {
       const storedNotifications = await getNotifications(); // Fetch stored notifications from the backend
-      setNotifications(storedNotifications.map(notification => notification.message));
+      setNotifications(
+        storedNotifications.map((notification) => notification.message)
+      );
     } catch (error) {
       console.error("Failed to fetch notifications:", error);
     }
   };
 
   const toggleAddTaskForm = () => {
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
 
   const handleDateClick = (value) => {
     setDate(value);
-    const eventsForDate = events.filter(event => new Date(event.dateTime).toDateString() === value.toDateString());
+    const eventsForDate = events.filter(
+      (event) =>
+        new Date(event.dateTime).toDateString() === value.toDateString()
+    );
     setEventsForSelectedDate(eventsForDate);
     setShowAllEvents(false); // Hide all events and show only selected date's events
     setShowEventForm(false); // Ensure form is hidden when clicking on a date
@@ -156,7 +169,10 @@ const ScheduleAnEvent = () => {
     setSelectedEvent(event);
     setEventData({
       title: event.title,
-      time: new Date(event.dateTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+      time: new Date(event.dateTime).toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
       location: event.location,
       link: event.link,
       remindMe: event.remindMe,
@@ -170,18 +186,10 @@ const ScheduleAnEvent = () => {
   const handleDeleteEvent = async (eventId) => {
     try {
       await deleteEvent(eventId);
-      setEvents(events.filter(event => event.id !== eventId));
+      setEvents(events.filter((event) => event.id !== eventId));
     } catch (error) {
       console.error("Failed to delete event:", error);
     }
-  };
-
-  const handleBellClick = () => {
-    setShowNotifications(!showNotifications);
-  };
-
-  const handleCloseNotification = (index) => {
-    setNotifications(notifications.filter((_, i) => i !== index));
   };
 
   const toggleDropdown = (eventId) => {
@@ -192,10 +200,12 @@ const ScheduleAnEvent = () => {
     setExpandedEventId(expandedEventId === eventId ? null : eventId);
   };
 
-  const highlightDates = events.map(event => new Date(event.dateTime).toDateString());
+  const highlightDates = events.map((event) =>
+    new Date(event.dateTime).toDateString()
+  );
 
   const isHighlighted = ({ date, view }) => {
-    if (view === 'month') {
+    if (view === "month") {
       return highlightDates.includes(date.toDateString());
     }
     return false;
@@ -203,162 +213,170 @@ const ScheduleAnEvent = () => {
 
   return (
     <div className="dashboard">
-      <nav className="sidebar">
-        <div className="logo-container" onClick={() => navigate('/dashboard')}>
-          <img src={Logo} alt="Logo" className="logo1" />
-        </div>
-        <ul className="sidebar-features">
-          <li>
-            <div className="sidebar-button" onClick={toggleAddTaskForm}>
-              <MdOutlineToday  className="circle-icon" />
-              <span>Today</span>
-            </div>
-          </li>
-          <li>
-            <div className="sidebar-button" onClick={() => navigate('/viewtodolist')}>
-              <FontAwesomeIcon icon={faList} className="circle-icon" />
-              <span>View Todo List</span>
-            </div>
-          </li>
-          <li>
-            <div className="sidebar-button" onClick={() => navigate('/routine')}>
-              <FiClock className="circle-icon" />
-              <span>Make Me a Routine</span>
-            </div>
-          </li>
-          <li>
-            <div className="sidebar-button-slected" onClick={() => navigate('/scheduleanevent')}>
-              <FiCalendar icon={faCalendarDays} className="circle-icon" />
-              <span>Schedule an Event</span>
-            </div>
-          </li>
-          <li>
-            <div className="sidebar-button" onClick={() => navigate('/achievements')}>
-              <SlBadge icon={faAward} className="circle-icon" />
-              <span>View Achievements</span>
-            </div>
-          </li>
-          <li>
-            <div className="sidebar-button" onClick={() => navigate('/games')}>
-              <IoGameControllerOutline icon={faGamepad} className="circle-icon" />
-              <span>Play a Game</span>
-            </div>
-          </li>
-        </ul>
-      </nav>
+      <Sidebar />
       <main className="content">
-        <header className="topbar">
-          <div className="icon-container">
-            <FontAwesomeIcon icon={faBell} className="bell-icon" onClick={handleBellClick} />
-            <div className="profile-info">
-              {userProfile ? (
-                <span className="user-name" onClick={() => navigate('/profile')} style={{ cursor: 'pointer' }}>
-                  {userProfile.name}
-                </span>
-              ) : (
-                <span>Loading...</span>
-              )}
-            </div>
-            {showNotifications && (
-              <NotificationDropdown
-                notifications={notifications}
-                onCloseNotification={handleCloseNotification}
-              />
-            )}
-          </div>
-        </header>
-        
-        <div className='schedule-an-event'>
-          <div className='calendar-container'>
-            <Calendar 
-              onClickDay={handleDateClick} 
+        <Topbar />
+
+        <div className="schedule-an-event">
+          <div className="calendar-container">
+            <Calendar
+              onClickDay={handleDateClick}
               value={date}
-              tileClassName={({ date, view }) => isHighlighted({ date, view }) ? 'highlighted' : null}
+              tileClassName={({ date, view }) =>
+                isHighlighted({ date, view }) ? "highlighted" : null
+              }
             />
           </div>
           <div className="events-list">
             <h3>Upcoming Events</h3>
-            {showAllEvents
-              ? events.map(event => (
-                  <div 
-                    key={event.id} 
-                    className={`event-item ${expandedEventId === event.id ? 'expanded' : ''}`}
+            {showAllEvents ? (
+              events.map((event) => (
+                <div
+                  key={event.id}
+                  className={`event-item ${
+                    expandedEventId === event.id ? "expanded" : ""
+                  }`}
+                  onClick={() => toggleExpandEvent(event.id)}
+                >
+                  <span>{event.title}</span>
+                  <FontAwesomeIcon
+                    icon={faEllipsisV}
+                    className="event-options-icon"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent click from triggering the card expansion
+                      toggleDropdown(event.id);
+                    }}
+                  />
+                  {showDropdown === event.id && (
+                    <div
+                      className={`dropdown-menu ${
+                        showDropdown === event.id ? "show" : ""
+                      }`}
+                    >
+                      <div onClick={() => handleEditEvent(event)}>Update</div>
+                      <div onClick={() => handleDeleteEvent(event.id)}>
+                        Delete
+                      </div>
+                    </div>
+                  )}
+                  {expandedEventId === event.id && (
+                    <div className="event-details">
+                      <p>
+                        <strong>Location: </strong>
+                        <a
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                            event.location
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {event.location}
+                        </a>
+                      </p>
+                      <p>
+                        <strong>Time:</strong>{" "}
+                        {new Date(event.dateTime).toLocaleString()}
+                      </p>
+                      <p>
+                        <strong>Link:</strong>{" "}
+                        <a
+                          href={`http://${event.link}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {event.link}
+                        </a>
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <>
+                {eventsForSelectedDate.map((event) => (
+                  <div
+                    key={event.id}
+                    className={`event-item ${
+                      expandedEventId === event.id ? "expanded" : ""
+                    }`}
                     onClick={() => toggleExpandEvent(event.id)}
                   >
                     <span>{event.title}</span>
-                    <FontAwesomeIcon 
-                      icon={faEllipsisV} 
-                      className="event-options-icon" 
+                    <FontAwesomeIcon
+                      icon={faEllipsisV}
+                      className="event-options-icon"
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent click from triggering the card expansion
                         toggleDropdown(event.id);
-                      }} 
+                      }}
                     />
                     {showDropdown === event.id && (
-                      <div className={`dropdown-menu ${showDropdown === event.id ? 'show' : ''}`}>
+                      <div
+                        className={`dropdown-menu ${
+                          showDropdown === event.id ? "show" : ""
+                        }`}
+                      >
                         <div onClick={() => handleEditEvent(event)}>Update</div>
-                        <div onClick={() => handleDeleteEvent(event.id)}>Delete</div>
+                        <div onClick={() => handleDeleteEvent(event.id)}>
+                          Delete
+                        </div>
                       </div>
                     )}
                     {expandedEventId === event.id && (
                       <div className="event-details">
-                        <p><strong>Location: </strong><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`} target="_blank" rel="noopener noreferrer">{event.location}</a></p>
-                        <p><strong>Time:</strong> {new Date(event.dateTime).toLocaleString()}</p>
-                        <p><strong>Link:</strong> <a href={`http://${event.link}`} target="_blank" rel="noopener noreferrer">{event.link}</a></p>
+                        <p>
+                          <strong>Location: </strong>
+                          <a
+                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                              event.location
+                            )}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {event.location}
+                          </a>
+                        </p>
+                        <p>
+                          <strong>Time:</strong>{" "}
+                          {new Date(event.dateTime).toLocaleString()}
+                        </p>
+                        <p>
+                          <strong>Link:</strong>{" "}
+                          <a
+                            href={`http://${event.link}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {event.link}
+                          </a>
+                        </p>
                       </div>
                     )}
                   </div>
-                ))
-              : (
-                <>
-                  {eventsForSelectedDate.map(event => (
-                    <div 
-                      key={event.id} 
-                      className={`event-item ${expandedEventId === event.id ? 'expanded' : ''}`}
-                      onClick={() => toggleExpandEvent(event.id)}
-                    >
-                      <span>{event.title}</span>
-                      <FontAwesomeIcon 
-                        icon={faEllipsisV} 
-                        className="event-options-icon" 
-                        onClick={(e) => {
-                          e.stopPropagation(); // Prevent click from triggering the card expansion
-                          toggleDropdown(event.id);
-                        }} 
-                      />
-                      {showDropdown === event.id && (
-                        <div className={`dropdown-menu ${showDropdown === event.id ? 'show' : ''}`}>
-                          <div onClick={() => handleEditEvent(event)}>Update</div>
-                          <div onClick={() => handleDeleteEvent(event.id)}>Delete</div>
-                        </div>
-                      )}
-                      {expandedEventId === event.id && (
-                        <div className="event-details">
-                          <p><strong>Location: </strong><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`} target="_blank" rel="noopener noreferrer">{event.location}</a></p>
-                          <p><strong>Time:</strong> {new Date(event.dateTime).toLocaleString()}</p>
-                          <p><strong>Link:</strong> <a href={`http://${event.link}`} target="_blank" rel="noopener noreferrer">{event.link}</a></p>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                  <button 
-                    className="add-event-button" 
-                    onClick={toggleAddEventForm}
-                    style={{ marginTop: '20px', padding: '10px 20px', fontSize: '1em', cursor: 'pointer', backgroundColor: '#1C4D53', color: '#fff', borderRadius: '10px', border: 'none' }}
-                  >
-                    Add Event
-                  </button>
-                </>
-              )
-            }
+                ))}
+                <button
+                  className="add-event-button"
+                  onClick={toggleAddEventForm}
+                  style={{
+                    marginTop: "20px",
+                    padding: "10px 20px",
+                    fontSize: "1em",
+                    cursor: "pointer",
+                    backgroundColor: "#1C4D53",
+                    color: "#fff",
+                    borderRadius: "10px",
+                    border: "none",
+                  }}
+                >
+                  Add Event
+                </button>
+              </>
+            )}
           </div>
         </div>
 
         {showEventForm && (
-          <AddEventForm 
-            toggleForm={toggleAddEventForm} 
-            editEvent={editEvent} 
-          />
+          <AddEventForm toggleForm={toggleAddEventForm} editEvent={editEvent} />
         )}
       </main>
     </div>

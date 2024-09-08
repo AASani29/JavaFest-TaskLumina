@@ -1,19 +1,18 @@
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import '../CSS Files/AddTaskForm.css';
-import { addTask, updateTask } from '../user-service.js';
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import "../CSS Files/AddTaskForm.css";
+import { addTask, updateTask } from "../Common/user-service.js";
 import { toast } from "react-toastify";
-import { FaAlignCenter } from 'react-icons/fa';
 
 const AddTaskForm = ({ toggleForm, editTask }) => {
   const { register, handleSubmit, setValue, getValues } = useForm({
     defaultValues: {
       name: "",
       description: "",
-      dateTime: "", 
-      priority: "LOW", 
-      category: "OTHERS" 
-    }
+      dateTime: "",
+      priority: "LOW",
+      category: "OTHERS",
+    },
   });
 
   useEffect(() => {
@@ -28,16 +27,16 @@ const AddTaskForm = ({ toggleForm, editTask }) => {
     try {
       if (editTask) {
         const response = await updateTask(editTask.id, data);
-        console.log('Task updated:', response);
+        console.log("Task updated:", response);
         toast.success("Task updated successfully!");
       } else {
         const response = await addTask(data);
-        console.log('Task added:', response);
+        console.log("Task added:", response);
         toast.success("Task added successfully!");
       }
       toggleForm();
     } catch (err) {
-      console.error('Error:', err);
+      console.error("Error:", err);
       toast.error(editTask ? "Failed to update task!" : "Failed to add task!");
     }
   };
@@ -68,7 +67,7 @@ const AddTaskForm = ({ toggleForm, editTask }) => {
         <div className="form-group form-group-inline">
           <div className="custom-card">
             <label htmlFor="dateTime" className="custom-label">
-              <i className="fa fa-calendar"></i> 
+              <i className="fa fa-calendar"></i>
             </label>
             <input
               type="datetime-local"
@@ -88,14 +87,12 @@ const AddTaskForm = ({ toggleForm, editTask }) => {
               {...register("priority", { required: false })}
               defaultValue={getValues("priority")}
             >
-              
               <option value="LOW">Low</option>
               <option value="MEDIUM">Medium</option>
               <option value="HIGH">High</option>
             </select>
           </div>
           <div className="custom-card">
-            
             <select
               id="category"
               name="category"
@@ -114,7 +111,9 @@ const AddTaskForm = ({ toggleForm, editTask }) => {
         </div>
         <div className="form-buttons">
           <button type="submit">{editTask ? "Update Task" : "Add Task"}</button>
-          <button type="button" onClick={toggleForm}>Cancel</button>
+          <button type="button" onClick={toggleForm}>
+            Cancel
+          </button>
         </div>
       </form>
     </div>

@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import '../CSS Files/tic-tac-toe.css';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import "../CSS Files/tic-tac-toe.css";
+import { useNavigate } from "react-router-dom";
 import Logo from "../Assets/Logo.png";
-import { getAchievements } from '../user-service';
-import { getCurrentUser } from '../Auth'
+import { getAchievements } from "../Common/user-service";
+import { getCurrentUser } from "../Common/Auth";
 const Games = () => {
   const navigate = useNavigate();
   const [achievements, setAchievements] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
-  const [popupMessage, setPopupMessage] = useState('');
+  const [popupMessage, setPopupMessage] = useState("");
 
   React.useEffect(() => {
     const user = getCurrentUser();
@@ -33,11 +33,11 @@ const Games = () => {
   };
 
   const handleGameClick = (game) => {
-    if (game === 'Tic-Tac-Toe' && !isBadgeEarned('Rookie Starter')) {
-      setPopupMessage('You need the Rookie Starter badge to play Tic-Tac-Toe.');
+    if (game === "Tic-Tac-Toe" && !isBadgeEarned("Rookie Starter")) {
+      setPopupMessage("You need the Rookie Starter badge to play Tic-Tac-Toe.");
       setShowPopup(true);
-    } else if (game === 'Sudoku' && !isBadgeEarned('Daily Achiever')) {
-      setPopupMessage('You need the Daily Achiever badge to play Sudoku.');
+    } else if (game === "Sudoku" && !isBadgeEarned("Daily Achiever")) {
+      setPopupMessage("You need the Daily Achiever badge to play Sudoku.");
       setShowPopup(true);
     } else {
       navigate(`/${game.toLowerCase()}`);
@@ -50,22 +50,30 @@ const Games = () => {
 
   return (
     <main>
-      <nav className='sidebar'>
-        <div className="logo-container" onClick={() => navigate('/dashboard')}>
+      <nav className="sidebar">
+        <div className="logo-container" onClick={() => navigate("/dashboard")}>
           <img src={Logo} alt="Logo" className="logo1" />
         </div>
         <h1>Click to play</h1>
-        <div onClick={() => handleGameClick('Stone-Paper-Scissor')}><span className="game-icon">Stone-Paper-Scissor</span></div>
-        <div onClick={() => handleGameClick('WordPuzzle')}><span className="game-icon">WordPuzzle</span></div>
+        <div onClick={() => handleGameClick("Stone-Paper-Scissor")}>
+          <span className="game-icon">Stone-Paper-Scissor</span>
+        </div>
+        <div onClick={() => handleGameClick("WordPuzzle")}>
+          <span className="game-icon">WordPuzzle</span>
+        </div>
         <div
-          className={`games ${isBadgeEarned('Rookie Starter') ? 'active' : 'disabled'}`}
-          onClick={() => handleGameClick('Tic-Tac-Toe')}
+          className={`games ${
+            isBadgeEarned("Rookie Starter") ? "active" : "disabled"
+          }`}
+          onClick={() => handleGameClick("Tic-Tac-Toe")}
         >
           <span className="game-icon">Tic-Tac-Toe</span>
         </div>
         <div
-          className={`games ${isBadgeEarned('Daily Achiever') ? 'active' : 'disabled'}`}
-          onClick={() => handleGameClick('Sudoku')}
+          className={`games ${
+            isBadgeEarned("Daily Achiever") ? "active" : "disabled"
+          }`}
+          onClick={() => handleGameClick("Sudoku")}
         >
           <span className="sudoku-icon">Sudoku</span>
         </div>
