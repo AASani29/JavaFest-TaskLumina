@@ -3,7 +3,7 @@ import "../CSS Files/Achievements.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { getMyProfile, getNotifications } from "./user-service";
-import { getCurrentUser } from "./Auth";
+import { getCurrentUser } from "../Common/Auth";
 import { useNavigate } from "react-router-dom";
 import NotificationDropdown from "./NotificationDropdown";
 

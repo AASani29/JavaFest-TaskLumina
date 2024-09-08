@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../CSS Files/Login.css";
 import google_icon from "../Assets/google-logo.png";
-import logo from "../images/TaskLuminaLogo.png";
+import logo from "../Assets/images/TaskLuminaLogo.png";
 import { loginUser } from "../Common/user-service";
 import { toast } from "react-toastify";
 import leftImage from "../Assets/left-image.png";

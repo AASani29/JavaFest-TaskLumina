@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { WordPuzzleComponent } from "./WordPuzzleComponent";
 import Confetti from "react-confetti";
-import TaskLuminaLogo from '../images/TaskLuminaLogo.png';
+import TaskLuminaLogo from "../Assets/images/TaskLuminaLogo.png";
 import "../CSS Files/WordPuzzleComponent.css";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 
 export const Home = () => {
   const easyMatrix = [
@@ -45,9 +45,37 @@ export const Home = () => {
     ["L", "I", "O", "N", "S", "Z", "E", "B", "R", "A"],
   ];
 
-  const easyWords = ["DOG", "CAT", "BIRD", "FISH", "MOLE", "CROCODILE", "ZEBRA", "HEDGEHOG", "ANTELOPE"];
-  const mediumWords = [...easyWords, "CHEETAH", "SNAKE", "OWL", "LION", "CROW", "GIRAFFE", "TIGER", "PANDA", "HORSE", "FOX"];
-  const hardWords = [...mediumWords, "PEACOCK", "ORANGUTAN", "BADGER", "PENGUIN"];
+  const easyWords = [
+    "DOG",
+    "CAT",
+    "BIRD",
+    "FISH",
+    "MOLE",
+    "CROCODILE",
+    "ZEBRA",
+    "HEDGEHOG",
+    "ANTELOPE",
+  ];
+  const mediumWords = [
+    ...easyWords,
+    "CHEETAH",
+    "SNAKE",
+    "OWL",
+    "LION",
+    "CROW",
+    "GIRAFFE",
+    "TIGER",
+    "PANDA",
+    "HORSE",
+    "FOX",
+  ];
+  const hardWords = [
+    ...mediumWords,
+    "PEACOCK",
+    "ORANGUTAN",
+    "BADGER",
+    "PENGUIN",
+  ];
 
   const [difficulty, setDifficulty] = useState("easy");
   const [found, setFound] = useState([]);
@@ -63,7 +91,11 @@ export const Home = () => {
   const navigate = useNavigate();
 
   const wordSets = { easy: easyWords, medium: mediumWords, hard: hardWords };
-  const matrixSets = { easy: easyMatrix, medium: mediumMatrix, hard: hardMatrix };
+  const matrixSets = {
+    easy: easyMatrix,
+    medium: mediumMatrix,
+    hard: hardMatrix,
+  };
 
   const answerWords = wordSets[difficulty];
   const matrix = matrixSets[difficulty];
@@ -177,186 +209,215 @@ export const Home = () => {
   return (
     <div className="home-container">
       <div className="head">
-      <img src={TaskLuminaLogo} alt="TaskLumina Logo" className="logo2" />
-      <div className="go-back-button-1" onClick={() => navigate('/games')}>
-                 <span>Go Back to All Games</span>
-                  </div>
-                  </div>
+        <img src={TaskLuminaLogo} alt="TaskLumina Logo" className="logo2" />
+        <div className="go-back-button-1" onClick={() => navigate("/games")}>
+          <span>Go Back to All Games</span>
+        </div>
+      </div>
       <div className="header1">
-        
         <div className="game-title">WORDSMART</div>
-      
       </div>
       <div className="herosection">
-      <div style={{ display: "flex", textAlign: "center", flexDirection:"row", alignItems:"center"}}>
-        <h2 style={{marginTop:"17px"}}> Select Difficulty  &nbsp; </h2>
-        <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+        <div
+          style={{
+            display: "flex",
+            textAlign: "center",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <h2 style={{ marginTop: "17px" }}> Select Difficulty &nbsp; </h2>
+          <div
+            style={{ display: "flex", justifyContent: "center", gap: "10px" }}
+          >
+            <button
+              style={{
+                padding: "10px 20px",
+                backgroundColor: difficulty === "easy" ? "green" : "gray",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setDifficulty("easy");
+                setFound([]);
+                setIsWinner(false);
+                setIsTimeUp(false);
+                setTimeLeft(60); // Reset time for easy
+              }}
+            >
+              Easy
+            </button>
+            <button
+              style={{
+                padding: "10px 20px",
+                backgroundColor: difficulty === "medium" ? "orange" : "gray",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setDifficulty("medium");
+                setFound([]);
+                setIsWinner(false);
+                setIsTimeUp(false);
+                setTimeLeft(90); // Reset time for medium
+              }}
+            >
+              Medium
+            </button>
+            <button
+              style={{
+                padding: "10px 20px",
+                backgroundColor: difficulty === "hard" ? "red" : "gray",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setDifficulty("hard");
+                setFound([]);
+                setIsWinner(false);
+                setIsTimeUp(false);
+                setTimeLeft(120); // Reset time for hard
+              }}
+            >
+              Hard
+            </button>
+          </div>
+        </div>
+        <div style={{ textAlign: "center", marginTop: "20px" }}>
+          <h2>Time Left: {timeLeft} seconds</h2>
+        </div>
+        <div style={{ textAlign: "center" }}>
           <button
             style={{
               padding: "10px 20px",
-              backgroundColor: difficulty === "easy" ? "green" : "gray",
+              backgroundColor: "blue",
               color: "white",
               border: "none",
               borderRadius: "5px",
               cursor: "pointer",
             }}
-            onClick={() => {
-              setDifficulty("easy");
-              setFound([]);
-              setIsWinner(false);
-              setIsTimeUp(false);
-              setTimeLeft(60); // Reset time for easy
-            }}
+            onClick={startGame}
           >
-            Easy
-          </button>
-          <button
-            style={{
-              padding: "10px 20px",
-              backgroundColor: difficulty === "medium" ? "orange" : "gray",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              setDifficulty("medium");
-              setFound([]);
-              setIsWinner(false);
-              setIsTimeUp(false);
-              setTimeLeft(90); // Reset time for medium
-            }}
-          >
-            Medium
-          </button>
-          <button
-            style={{
-              padding: "10px 20px",
-              backgroundColor: difficulty === "hard" ? "red" : "gray",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              setDifficulty("hard");
-              setFound([]);
-              setIsWinner(false);
-              setIsTimeUp(false);
-              setTimeLeft(120); // Reset time for hard
-            }}
-          >
-            Hard
+            Start Game
           </button>
         </div>
       </div>
-      <div style={{ textAlign: "center", marginTop: "20px" }}>
-        <h2>Time Left: {timeLeft} seconds</h2>
-      </div>
-      <div style={{ textAlign: "center" }}>
-        <button
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "blue",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-          onClick={startGame}
-        >
-          Start Game
-        </button>
-      </div>
-      </div>
       <div className="game-play-container">
-        <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}>
-          <h3 style={{width:"180px"}}>Words to Find:</h3>
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "15px" }}>
+        <div
+          style={{ display: "flex", justifyContent: "center", marginTop: 20 }}
+        >
+          <h3 style={{ width: "180px" }}>Words to Find:</h3>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: "15px",
+            }}
+          >
             {answerWords.map((element, index) => (
               <span
                 key={index}
                 style={{
                   color: isInList(element, found) ? "green" : "black",
-                  textDecoration: isInList(element, found) ? "line-through" : "none",
+                  textDecoration: isInList(element, found)
+                    ? "line-through"
+                    : "none",
                   fontSize: "1.2rem",
                   padding: "5px",
                 }}
-                
               >
                 {element}
               </span>
             ))}
             {!isTimeUp && !isWinner && (
-        <WordPuzzleComponent
-          design={{
-            markedBackgroundColor: "#00C3FF",
-            selectedBackgroundColor: "white",
-            hoveredBackgroundColor: "rgb(0, 218, 145)",
-            backgroundColor: "rgb(255, 255, 255)",
-            fontFamily: "monospace",
-            fontWeight: "",
-            fontSize: "2.5rem",
-            markedForeColor: "white",
-            selectedForeColor: "rgb(1, 146, 98)",
-            hoveredForeColor: "white",
-            foreColor: "black",
-          }}
-          options={{
-            answerWords: answerWords,
-            matrix: matrix,
-            isSelecting: isSelecting,
-            selectedLetters: selectedLetters,
-            setSelectedLetters: setSelectedLetters,
-            markedLetters: markedLetters,
-            setMarkedLetters: setMarkedLetters,
-            setIsSelecting: setIsSelecting,
-            availablePaths: ["left2right", "top2bottom", "right2left", "bottom2top"],
-          }}
-          path={path}
-          setPath={setPath}
-          chosePath={chosePath}
-          isBeforeSelect={isBeforeSelect}
-        />
-      )}
-       {isTimeUp && (
-        <div className="timeup-popup">
-          <div className="timeup-content">
-            <h1>Time's Up!</h1>
-            <h2>You ran out of time.</h2>
-            <button onClick={closeTimeUpPopup} className="close-button">
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+              <WordPuzzleComponent
+                design={{
+                  markedBackgroundColor: "#00C3FF",
+                  selectedBackgroundColor: "white",
+                  hoveredBackgroundColor: "rgb(0, 218, 145)",
+                  backgroundColor: "rgb(255, 255, 255)",
+                  fontFamily: "monospace",
+                  fontWeight: "",
+                  fontSize: "2.5rem",
+                  markedForeColor: "white",
+                  selectedForeColor: "rgb(1, 146, 98)",
+                  hoveredForeColor: "white",
+                  foreColor: "black",
+                }}
+                options={{
+                  answerWords: answerWords,
+                  matrix: matrix,
+                  isSelecting: isSelecting,
+                  selectedLetters: selectedLetters,
+                  setSelectedLetters: setSelectedLetters,
+                  markedLetters: markedLetters,
+                  setMarkedLetters: setMarkedLetters,
+                  setIsSelecting: setIsSelecting,
+                  availablePaths: [
+                    "left2right",
+                    "top2bottom",
+                    "right2left",
+                    "bottom2top",
+                  ],
+                }}
+                path={path}
+                setPath={setPath}
+                chosePath={chosePath}
+                isBeforeSelect={isBeforeSelect}
+              />
+            )}
+            {isTimeUp && (
+              <div className="timeup-popup">
+                <div className="timeup-content">
+                  <h1>Time's Up!</h1>
+                  <h2>You ran out of time.</h2>
+                  <button onClick={closeTimeUpPopup} className="close-button">
+                    Close
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="how-to-play">
           <h2>How to Play</h2>
           <p>
-            Welcome to the Word Puzzle Game! The objective of the game is to find all the hidden words in the puzzle grid.
+            Welcome to the Word Puzzle Game! The objective of the game is to
+            find all the hidden words in the puzzle grid.
           </p>
           <ol className="instructions-list">
             <li>
-              <span className="instruction-number">1.</span> Select a difficulty level (Easy, Medium, or Hard) and start the game.
+              <span className="instruction-number">1.</span> Select a difficulty
+              level (Easy, Medium, or Hard) and start the game.
             </li>
             <li>
-              <span className="instruction-number">2.</span> Search for words in the grid. Words can be placed horizontally, vertically, or diagonally.
+              <span className="instruction-number">2.</span> Search for words in
+              the grid. Words can be placed horizontally, vertically, or
+              diagonally.
             </li>
             <li>
-              <span className="instruction-number">3.</span> Click and drag to select the letters that form a word.
+              <span className="instruction-number">3.</span> Click and drag to
+              select the letters that form a word.
             </li>
             <li>
-              <span className="instruction-number">4.</span> If you find all the words before the time runs out, you win the game!
+              <span className="instruction-number">4.</span> If you find all the
+              words before the time runs out, you win the game!
             </li>
             <li>
-              <span className="instruction-number">5.</span> Your time taken to complete the puzzle will be displayed once you find all the words.
+              <span className="instruction-number">5.</span> Your time taken to
+              complete the puzzle will be displayed once you find all the words.
             </li>
           </ol>
         </div>
       </div>
-      
+
       {isWinner && (
         <div className="winner-popup">
           <Confetti />
@@ -370,7 +431,6 @@ export const Home = () => {
           </div>
         </div>
       )}
-     
     </div>
   );
 };

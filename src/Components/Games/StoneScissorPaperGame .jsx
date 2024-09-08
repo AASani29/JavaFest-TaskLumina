@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../CSS Files/StoneScissorPaperGame.css";
-import TaskLuminaLogo from "../images/TaskLuminaLogo.png";
+import TaskLuminaLogo from "../Assets/images/TaskLuminaLogo.png";
 import { Link, useNavigate } from "react-router-dom";
 
 const StoneScissorPaperGame = () => {
@@ -85,7 +85,7 @@ const StoneScissorPaperGame = () => {
               id="Stone"
             >
               <img
-                src={require("../images/stone.png")}
+                src={require("../Assets/images/stone.png")}
                 alt="Stone"
                 width="80"
                 height="80"
@@ -100,7 +100,7 @@ const StoneScissorPaperGame = () => {
               id="Scissor"
             >
               <img
-                src={require("../images/scissor.png")}
+                src={require("../Assets/images/scissor.png")}
                 alt="Scissor"
                 width="80"
                 height="80"
@@ -115,7 +115,7 @@ const StoneScissorPaperGame = () => {
               id="Paper"
             >
               <img
-                src={require("../images/paper.png")}
+                src={require("../Assets/images/paper.png")}
                 alt="Paper"
                 width="80"
                 height="80"
@@ -128,7 +128,7 @@ const StoneScissorPaperGame = () => {
 
           <div className="bot-choice">
             <img
-              src={require("../images/bot.png")}
+              src={require("../Assets/images/bot.png")}
               alt="Bot"
               width="90"
               height="90"
