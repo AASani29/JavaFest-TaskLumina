@@ -142,7 +142,7 @@ const StoneScissorPaperGame = () => {
                 disabled={true}
               >
                 <img
-                  src={require(`../images/${value.toLowerCase()}.png`)}
+                  src={require(`../Assets/images/${value.toLowerCase()}.png`)}
                   alt={value}
                   width="80"
                   height="80"
