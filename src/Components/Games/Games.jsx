@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import "../CSS Files/tic-tac-toe.css";
+import "../CSS Files/Games.css";
 import { useNavigate } from "react-router-dom";
 import Logo from "../Assets/Logo.png";
 import { getAchievements } from "../Common/user-service";
 import { getCurrentUser } from "../Common/Auth";
+import TicTacToeIcon from "../Assets/tic-tac-toe-icon.png.png"; // You can add game-specific icons
+import SudokuIcon from "../Assets/Sudoku.png";
+import WordPuzzleIcon from "../Assets/wordsearch.png";
+import StonePaperScissorIcon from "../Assets/rock-paper-scissors.png";
+import Sidebar from "../Common/Sidebar";
+import Topbar from "../Common/Topbar";
+
 const Games = () => {
   const navigate = useNavigate();
   const [achievements, setAchievements] = useState([]);
@@ -50,34 +57,45 @@ const Games = () => {
 
   return (
     <main>
-      <nav className="sidebar">
-        <div className="logo-container" onClick={() => navigate("/dashboard")}>
-          <img src={Logo} alt="Logo" className="logo1" />
-        </div>
-        <h1>Click to play</h1>
-        <div onClick={() => handleGameClick("Stone-Paper-Scissor")}>
-          <span className="game-icon">Stone-Paper-Scissor</span>
-        </div>
-        <div onClick={() => handleGameClick("WordPuzzle")}>
-          <span className="game-icon">WordPuzzle</span>
+      <Sidebar />
+      <Topbar />
+
+      <section className="games-container">
+        <div
+          className="game-card"
+          onClick={() => handleGameClick("Stone-Paper-Scissor")}
+        >
+          <img src={StonePaperScissorIcon} alt="Stone Paper Scissor" />
+          <h2>Stone-Paper-Scissor</h2>
         </div>
         <div
-          className={`games ${
-            isBadgeEarned("Rookie Starter") ? "active" : "disabled"
+          className={`game-card ${
+            isBadgeEarned("Daily Achiever") ? "active" : "disabled"
           }`}
           onClick={() => handleGameClick("Tic-Tac-Toe")}
         >
-          <span className="game-icon">Tic-Tac-Toe</span>
+          <img src={TicTacToeIcon} alt="Tic Tac Toe" />
+          <h2>Tic-Tac-Toe</h2>
         </div>
+
         <div
-          className={`games ${
-            isBadgeEarned("Daily Achiever") ? "active" : "disabled"
+          className="game-card"
+          onClick={() => handleGameClick("WordPuzzle")}
+        >
+          <img src={WordPuzzleIcon} alt="Word Puzzle" />
+          <h2>WordPuzzle</h2>
+        </div>
+
+        <div
+          className={`game-card ${
+            isBadgeEarned("Weekly Warrior") ? "active" : "disabled"
           }`}
           onClick={() => handleGameClick("Sudoku")}
         >
-          <span className="sudoku-icon">Sudoku</span>
+          <img src={SudokuIcon} alt="Sudoku" />
+          <h2>Sudoku</h2>
         </div>
-      </nav>
+      </section>
 
       {showPopup && (
         <div className="popup-overlay">
