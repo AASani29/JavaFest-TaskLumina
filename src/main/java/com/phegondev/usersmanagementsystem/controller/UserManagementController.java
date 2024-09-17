@@ -46,18 +46,15 @@ public class UserManagementController {
         return ResponseEntity.ok(usersManagementService.updateUser(userId, reqres));
     }
 
-//    @GetMapping("/adminuser/get-profile")
-//    public ResponseEntity<ReqRes> getMyProfile(){
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String email = authentication.getName();
-//        ReqRes response = usersManagementService.getMyInfo(email);
-//        return  ResponseEntity.status(response.getStatusCode()).body(response);
-//    }
+
 
     @DeleteMapping("/admin/delete/{userId}")
     public ResponseEntity<ReqRes> deleteUSer(@PathVariable Integer userId){
         return ResponseEntity.ok(usersManagementService.deleteUser(userId));
     }
+
+
+
 
 
 }
