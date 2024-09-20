@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "../CSS Files/Games.css";
 import { useNavigate } from "react-router-dom";
-import Logo from "../Assets/Logo.png";
+
 import { getAchievements } from "../Common/user-service";
 import { getCurrentUser } from "../Common/Auth";
-import TicTacToeIcon from "../Assets/tic-tac-toe-icon.png.png"; // You can add game-specific icons
+import TicTacToeIcon from "../Assets/tic-tac-toe-icon.png.png";
 import SudokuIcon from "../Assets/Sudoku.png";
 import WordPuzzleIcon from "../Assets/wordsearch.png";
 import StonePaperScissorIcon from "../Assets/rock-paper-scissors.png";
@@ -56,7 +56,7 @@ const Games = () => {
   };
 
   return (
-    <main>
+    <div>
       <Sidebar />
       <Topbar />
 
@@ -106,7 +106,7 @@ const Games = () => {
           </div>
         </div>
       )}
-    </main>
+    </div>
   );
 };
 

@@ -1,13 +1,10 @@
-/* Importing Work Sans font */
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
 
 .dashboard {
   display: flex;
   height: 100vh;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-family: "Work Sans", sans-serif;
 }
-
-
 
 .content {
   flex: 1;
@@ -15,27 +12,22 @@
   background-color: white;
   display: flex;
   flex-direction: column;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-family: "Work Sans", sans-serif;
 }
-
-
 
 .icon-container {
   display: inline-flex;
   flex-direction: row;
   align-items: center;
   gap: 40px;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-family: "Work Sans", sans-serif;
 }
-
-
 
 .filter,
 .category-filter {
   gap: 10px;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
   margin-left: 10px;
-  
 }
 
 .filter label,
@@ -50,7 +42,7 @@
   align-items: center;
   padding: 8px 12px 8px 10px;
   font-size: 14px;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
   color: #34495e;
   background-color: white;
   border: 1px solid #ccc;
@@ -58,13 +50,12 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   outline: none;
-  appearance: none; /* Remove default arrow in some browsers */
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDE2IDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTEuMjM2IDIuMjE0QzAuODc5NyAxLjg1OCAwLjg3OTcgMS4yNjQgMS4yMzYgMC45MDc2QzEuNTkyIDAuNTUyMiAyLjE4NiAwLjU1MjIgMi41NDIgMC45MDc2TDggNi4zNjVMMTMuNDU4IDAuOTA3NkMxMy44MTQgMC41NTIyIDE0LjQxIDAuNTUyMiAxNC43NjYgMC45MDc2QzE1LjEyMSAxLjI2NCAxNS4xMjEgMS44NTggMTQuNzY2IDIuMjE0TDguNjE2IDguMzY0QzguMzI3IDguNjUyIDcuNjczIDguNjUyIDcuMzg0IDguMzY0TDEuMjM2IDIuMjE0WiIgZmlsbD0iIzQzNDk1RSIvPgo8L3N2Zz4='); /* Custom arrow */
+  appearance: none;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDE2IDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTEuMjM2IDIuMjE0QzAuODc5NyAxLjg1OCAwLjg3OTcgMS4yNjQgMS4yMzYgMC45MDc2QzEuNTkyIDAuNTUyMiAyLjE4NiAwLjU1MjIgMi41NDIgMC45MDc2TDggNi4zNjVMMTMuNDU4IDAuOTA3NkMxMy44MTQgMC41NTIyIDE0LjQxIDAuNTUyMiAxNC43NjYgMC45MDc2QzE1LjEyMSAxLjI2NCAxNS4xMjEgMS44NTggMTQuNzY2IDIuMjE0TDguNjE2IDguMzY0QzguMzI3IDguNjUyIDcuNjczIDguNjUyIDcuMzg0IDguMzY0TDEuMjM2IDIuMjE0WiIgZmlsbD0iIzQzNDk1RSIvPgo8L3N2Zz4="); /* Custom arrow */
   background-repeat: no-repeat;
   background-position: right 10px center;
-  
+
   background-size: 12px;
-  
 }
 
 .filter select:hover,
@@ -85,12 +76,11 @@
   color: #34495e;
 }
 
-/* Additional styling for mobile responsiveness */
 @media (max-width: 768px) {
   .filters {
     flex-direction: column;
     gap: 15px;
-    margin-top: 20px; /* Reduce top margin on smaller screens */
+    margin-top: 20px;
   }
 
   .filter,
@@ -105,29 +95,21 @@
   }
 }
 
-
 .task-list1 {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   gap: 200px;
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-family: "Work Sans", sans-serif;
 }
-
-
-
-
-
 
 .date-text {
-  font-size: 18px; /* Font size for the date text */
-  font-weight: 500; /* Semi-bold font weight */
-  color: #34495e; /* Text color */
-  font-family: 'Work Sans', sans-serif; /* Apply font family */
+  font-size: 18px;
+  font-weight: 500;
+  color: #34495e;
+  font-family: "Work Sans", sans-serif;
 }
 
-
-.task-section{
-    color: #34495e;
+.task-section {
+  color: #34495e;
 }
-

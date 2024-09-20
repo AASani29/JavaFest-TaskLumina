@@ -1,5 +1,3 @@
-/* AddEventForm.css */
-
 .add-event-form-container {
   position: fixed;
   top: 35%;
@@ -15,7 +13,7 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
 
 .add-event-form .form-group {
@@ -34,7 +32,7 @@
   font-size: 16px;
   border-radius: 5px;
   box-sizing: border-box;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
 
 .custom-card {
@@ -78,7 +76,7 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
   transition: background-color 0.3s ease;
 }
 
@@ -93,7 +91,7 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
   transition: background-color 0.3s ease;
 }
 

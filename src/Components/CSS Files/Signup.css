@@ -2,76 +2,61 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  
 }
 
 html,
 body {
-    height: 100%;
-    background-color: #ffffff;
-    /* Set the entire background to white */
-    overflow-x: hidden;
-    
+  height: 100%;
+  background-color: #ffffff;
 
+  overflow-x: hidden;
 }
 .main-container {
   display: flex;
   justify-content: space-between;
-  min-height: 100vh; /* Ensures full height */
+  min-height: 100vh;
   background-color: #ffffff;
-  margin: 0; /* Reset margins */
-  padding: 0; /* Reset padding */
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  
-  
 }
 
 .side-container {
   display: flex;
-  justify-content: center; /* Centers the content horizontally */
-  align-items: center; /* Centers the content vertically */
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   width: 900px;
-  
 
-
-  background-image: url('../Assets/Rectangle_bg.png'); /* Add your background image path */
+  background-image: url("../Assets/Rectangle_bg.png");
   background-size: cover;
   background-image: fixed;
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
- 
-  
- /* Adds space on both left and right sides */
 }
 .centered-image {
-  width: 125%; /* Keep the image larger than the container */
-  height: 150%; /* Keep the image larger than the container */
-  object-fit: cover; /* Ensure the image covers the area */
-  object-position: top left; /* Focus on the top-left corner of the image */
-  
-  /* Adjust the vertical position of the image */
-  margin-top: 100px; /* Increase this value to move the image lower */
+  width: 125%;
+  height: 150%;
+  object-fit: cover;
+  object-position: top left;
+  margin-top: 100px;
   margin-left: 550px;
 }
 .side_text {
-  color: #1C4D53; 
+  color: #1c4d53;
   font-weight: 700;
   margin-top: 60px;
-    margin-left: 220px;
+  margin-left: 220px;
 }
 
-
 .container {
-
   display: flex;
   flex-direction: column;
-  /* margin: auto; */
   margin-top: 0px;
   margin-left: 220px;
   background: #fff;
-  /* padding-bottom: 30px; */
+
   width: 600px;
   border-radius: 10px;
   min-height: 100%;
@@ -80,7 +65,7 @@ body {
 .header {
   display: flex;
   flex-direction: column;
-    align-items: flex-start;
+  align-items: flex-start;
   align-items: auto;
   margin-left: 100px;
   gap: 9px;
@@ -89,11 +74,9 @@ body {
 }
 
 .text {
-  color: #1C4D53; 
+  color: #1c4d53;
   font-weight: 700;
   padding-left: 130px;
-
-
 }
 
 .label_text {
@@ -101,7 +84,6 @@ body {
   margin-left: 100px;
   font-size: 17px;
 }
-
 
 .inputs {
   margin-top: 55px;
@@ -116,13 +98,11 @@ body {
   margin: auto;
   width: 400px;
   height: 60px;
-  background-color: #FFFFFF;
-  border: 1px solid #A3A5A8;
+  background-color: #ffffff;
+  border: 1px solid #a3a5a8;
   border-radius: 6px;
   padding-left: 30px;
 }
-
-
 
 .input input {
   height: 50px;
@@ -138,33 +118,30 @@ body {
   margin: 0px 30px;
 }
 
-
 .submit-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   margin-top: 40px;
-  
 }
 
 .submit {
-
   display: flex;
   justify-content: center;
   align-items: center;
   width: 400px;
   height: 45px;
   color: #fff;
-  background-color: #1C4D53;
+  background-color: #1c4d53;
   border-radius: 20px;
   font-size: 20px;
   cursor: pointer;
 }
 
 .gray {
-  background-color: #1C4D53;
-  color: #FFFFFF;
+  background-color: #1c4d53;
+  color: #ffffff;
   border: none;
   height: 4px;
 }
@@ -185,10 +162,10 @@ body {
 
 .auth-buttons {
   display: flex;
-  flex-direction: row; /* Change from column to row */
+  flex-direction: row;
   gap: 15px;
-  justify-content: center; /* Centers the buttons */
-  margin-top: 20px; /* Adds some space from the previous element */
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .auth-button {
@@ -196,12 +173,12 @@ body {
   align-items: center;
   gap: 10px;
   background: #ffffff;
-  border: 1px solid #A3A5A8;
+  border: 1px solid #a3a5a8;
   padding: 10px 20px;
   border-radius: 6px;
   cursor: pointer;
   width: 400px;
-  
+
   justify-content: center;
 }
 
@@ -215,7 +192,6 @@ body {
   color: #676767;
 }
 
-/* Additional Styling */
 .submit a {
   text-decoration: none;
   color: inherit;
@@ -228,7 +204,7 @@ body {
 }
 
 .login-link {
-  color: #1C4D53;
+  color: #1c4d53;
   text-decoration: underline;
   font-weight: bold;
 }

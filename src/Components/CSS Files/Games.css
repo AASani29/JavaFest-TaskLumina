@@ -1,10 +1,8 @@
-/* games.css */
-
 main {
   display: flex;
   justify-content: space-between;
   min-height: 100vh;
-  background-color: #ecf0f1;
+  background-color: #ffffff;
 }
 
 .logo-container {
@@ -13,23 +11,25 @@ main {
 }
 
 h1 {
-  color: #ecf0f1;
+  color: #ffffff;
   font-size: 1.8em;
 }
 
 .games-container {
   display: flex;
-  justify-content: center; /* Center align horizontally */
-  gap: 20px; /* Adds space between the cards */
-  flex-wrap: nowrap; /* Prevent wrapping to the next line */
-  width: 100%; /* Ensure it takes full width */
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: nowrap;
+  width: 100%;
   padding: 20px;
+  height: 100vh;
+  margin-left: 10%;
+  margin-top: 4%;
   background-color: #ffffff;
-  margin-left: 40%;
 }
 
 .game-card {
-  flex: 0 0 250px; /* Ensure each card takes 200px width */
+  flex: 0 0 250px;
   height: 350px;
   border: 2px solid #ddd;
   border-radius: 10px;
@@ -37,7 +37,7 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 200px 10px; /* Space between cards */
+  margin: 200px 10px;
   transition: transform 0.3s;
   background-color: #ffffff;
   cursor: pointer;
@@ -116,51 +116,26 @@ h1 {
   background-color: #34495e;
 }
 .games-guidance {
-  background-color: #ffffff; /* White background for clarity */
-  border-radius: 10px; /* Rounded corners for a modern look */
-  padding: 20px; /* More padding for better spacing */
-  margin-bottom: 30px; /* Increased margin for separation */
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
   width: 100%;
-  max-width: 700px; /* Slightly larger width */
+  max-width: 700px;
   text-align: left;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* More pronounced shadow for depth */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .games-guidance h2 {
-  font-size: 1.6em; /* Slightly larger heading */
-  color: #2c3e50; /* Darker color for better readability */
-  margin-bottom: 15px; /* More space below the heading */
+  font-size: 1.6em;
+  color: #2c3e50;
+  margin-bottom: 15px;
 }
 
 .games-guidance ul {
-  list-style-type: none; /* No bullet points */
-  padding: 0; /* Remove padding */
-  margin: 0; /* Remove margin */
-}
-
-.games-guidance ul li {
-  font-size: 1.1em; /* Slightly larger font size for readability */
-  color: #34495e; /* Darker grey for text */
-  margin-bottom: 15px; /* Increased spacing between items */
-  padding: 15px; /* Padding for individual items */
-  border: 1px solid #ddd; /* Light border for definition */
-  border-radius: 8px; /* Rounded corners for items */
-  background-color: #f9f9f9; /* Slightly different background color for items */
-  transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
-}
-
-.games-guidance ul li:hover {
-  background-color: #eaeaea; /* Light grey on hover */
-  transform: translateY(-2px); /* Subtle lift effect */
-}
-
-.games-guidance ul li strong {
-  color: #2c3e50; /* Dark color for emphasis */
-}
-
-.games-guidance ul li em {
-  color: #7f8c8d; /* Lighter grey for emphasis */
-  font-style: italic;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 .gameheader {

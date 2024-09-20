@@ -1,31 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
 
 .dashboard {
   display: flex;
   height: 100vh;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
 
 .sidebar {
   width: 16%;
-  background-color: #1C4D53; 
+  background-color: #1c4d53;
   color: #ffffff;
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: width 0.3s ease;
-  font-family: 'Work Sans', sans-serif;
-  background-image: linear-gradient(to right, rgb(28, 76, 83), rgba(255, 255, 255, 0.1)); 
+  font-family: "Work Sans", sans-serif;
+  background-image: linear-gradient(
+    to right,
+    rgb(28, 76, 83),
+    rgba(255, 255, 255, 0.1)
+  );
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh; 
+  height: 100vh;
   z-index: 1000;
 }
 
-.sidebar ul li, .sidebar ul li .sidebar-button {
+.sidebar ul li,
+.sidebar ul li .sidebar-button {
   color: #ffffff;
 }
 
@@ -39,8 +43,8 @@
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
-  font-family: 'Work Sans', sans-serif;
-  margin-left: 16%; 
+  font-family: "Work Sans", sans-serif;
+  margin-left: 16%;
 }
 
 .topbar {
@@ -52,14 +56,14 @@
   box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
-  left: 16%; 
+  left: 16%;
   z-index: 999;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
   transition: transform 0.3s ease, top 0.3s ease;
 }
 
 .topbar.minimized {
-  transform: translateY(-80%); 
+  transform: translateY(-80%);
 }
 
 .topbar:hover {
@@ -71,7 +75,7 @@
   flex-direction: row;
   align-items: center;
   gap: 40px;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
 
 .filters {
@@ -84,7 +88,8 @@
   align-items: center;
 }
 
-.filter select, .category-filter select {
+.filter select,
+.category-filter select {
   background-color: #ffffff;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -94,11 +99,13 @@
   color: #34495e;
 }
 
-.filter select:hover, .category-filter select:hover {
+.filter select:hover,
+.category-filter select:hover {
   border-color: #2a9d8f;
 }
 
-.filter select:focus, .category-filter select:focus {
+.filter select:focus,
+.category-filter select:focus {
   border-color: #2a9d8f;
   box-shadow: 0 0 5px rgba(42, 157, 143, 0.5);
 }
@@ -108,7 +115,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
 
 .task-card {
@@ -121,7 +128,7 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
   position: relative;
 }
 
@@ -130,17 +137,17 @@
   display: flex;
   justify-content: left;
   align-items: normal;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
-.task-name{
+.task-name {
   width: 70%;
   font-size: 20px;
   font-weight: 600;
   color: #34495e;
-  word-break: break-word; 
+  word-break: break-word;
   overflow-wrap: anywhere;
-  white-space: normal; 
-  box-sizing: border-box; 
+  white-space: normal;
+  box-sizing: border-box;
   flex-grow: 1;
 }
 
@@ -151,54 +158,57 @@
   padding-top: 10px;
   border-radius: 5px;
   font-weight: 500;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
 
 .task-icons {
   display: flex;
   gap: 15px;
   margin-left: 400px;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
 
 .task-icon-card {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e9f5f4; 
-  border-radius: 8px; 
-  padding: 8px; 
-  cursor: pointer; 
-  transition: background-color 0.3s ease; 
+  background-color: #e9f5f4;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .task-icon-card:hover {
   background-color: #c4e2de;
 }
 
-.task-icon-edit, .task-icon-done {
+.task-icon-edit,
+.task-icon-done {
   font-size: 16px;
-  color: inherit; 
+  color: inherit;
 }
 
 .task-icon-edit {
-  color: #264653; 
+  color: #264653;
 }
 .task-icon-done {
-  color: #264653; 
+  color: #264653;
 }
 
 .task-description {
   font-size: 15px;
   color: #666;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
 
-.task-details, .task-body .task-details, .task-body .t-details {
+.task-details,
+.task-body .task-details,
+.task-body .t-details {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
   font-size: 14px;
   text-align: center;
   color: #34495e;
@@ -208,43 +218,43 @@
 
 .task-card-item {
   display: flex;
-  align-items: center; 
-  justify-content: center; 
-  background-color: #e9f5f4; 
-  border-radius: 8px; 
-  padding: 5px 10px; 
-  font-size: 12px; 
+  align-items: center;
+  justify-content: center;
+  background-color: #e9f5f4;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 12px;
   color: rgba(38, 70, 83, 0.7);
   font-weight: 500;
-  white-space: nowrap; 
-  flex-shrink: 0; 
-  text-align: center; 
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-align: center;
 }
 
 .task-card-item svg {
-  margin-right: 5px; 
-  color: rgba(38, 70, 83, 0.7); 
+  margin-right: 5px;
+  color: rgba(38, 70, 83, 0.7);
 }
 
 .task-done-button {
   background-color: #6a9c9e;
-  color: #ffffff; 
-  border: none; 
-  border-radius: 8px; 
-  padding: 5px 10px; 
-  font-size: 12px; 
-  font-family: 'Work Sans', sans-serif;
-  font-weight: 400; 
-  cursor: pointer; 
-  white-space: nowrap; 
-  transition: background-color 0.3s ease; 
-  position: absolute; 
-  bottom: 20px; 
-  right: 20px; 
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 400;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
 }
 
 .task-done-button:hover {
-  background-color: #5b898c; 
+  background-color: #5b898c;
 }
 
 .Hero {
@@ -263,7 +273,7 @@
   font-size: 3em;
   font-weight: 600;
   color: #264653;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
 
 .hero-date {
@@ -280,7 +290,7 @@
   font-size: 18px;
   font-weight: 500;
   color: #34495e;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
 
 .body-dashboard {
@@ -295,8 +305,8 @@
 #calendar {
   width: 20%;
   flex-shrink: 0;
-  background-color: #ffffff; 
-  color: #264653; 
+  background-color: #ffffff;
+  color: #264653;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 10px;
@@ -304,19 +314,21 @@
 }
 
 #calendar #month {
-  background-color: #2a9d8f; 
-  color: #ffffff; 
+  background-color: #2a9d8f;
+  color: #ffffff;
   padding: 10px;
   border-radius: 8px;
   text-transform: uppercase;
 }
 
-#calendar #date, #calendar #weekday, #calendar #year {
-  color: #264653; 
+#calendar #date,
+#calendar #weekday,
+#calendar #year {
+  color: #264653;
   margin-top: 10px;
 }
 
-.bg{
+.bg {
   background-color: white;
 }
 
@@ -343,55 +355,49 @@
   font-size: 1.5em;
   color: #fff;
   cursor: pointer;
-  
 }
 .voice-task-button {
   position: fixed;
-  bottom: 15%; /* Adjust distance from the bottom */
-  right: 1.5%; /* Adjust distance from the right */
-  background-color: #1C4D53; /* Green background color */
-  border: none; /* Remove border */
-  border-radius: 50%; /* Circular shape */
-  width: 50px; /* Button width */
-  height: 50px; /* Button height */
-  display: flex; /* Center the icon */
-  align-items: center; /* Center the icon vertically */
-  justify-content: center; /* Center the icon horizontally */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-  cursor: pointer; /* Pointer on hover */
-  z-index: 9999; /* Ensure it stays on top of other elements */
-  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  bottom: 15%;
+  right: 1.5%;
+  background-color: #1c4d53;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 9999;
+  transition: background-color 0.3s ease;
 }
 
 .voice-task-button .mic-icon {
   font-size: 1.5em;
-  color: #ffffff; /* White icon color */
+  color: #ffffff;
 }
 
 .voice-task-button:hover {
-  background-color: #1e7f70; /* Darker green color on hover */
+  background-color: #1e7f70;
 }
 
-  
 .add-task {
   display: block;
-  margin:1.67% 2.5%;
+  margin: 1.67% 2.5%;
   margin-left: 29%;
   padding: 15px 20px;
-  background-color: #6a9c9e; 
-  box-shadow: 0 4px 8px rgba(79, 141, 140, 0.2); 
+  background-color: #6a9c9e;
+  box-shadow: 0 4px 8px rgba(79, 141, 140, 0.2);
   color: white;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
   text-align: center;
-
-  
-  
-  
 }
 
 .add-task:hover {
-  background-color: #a9c9d2; /* Darker green on hover */
+  background-color: #a9c9d2;
 }

@@ -1,46 +1,47 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
 
 #calendar {
-    position: absolute;
-    margin-top: 60px;
-    width: 200px;
-    background-color: #ffffff; /* Match the background color of the dashboard */
-    border: 1px solid #ddd; /* Light gray border to match the task cards */
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-left: 75%; /* Adjust this as needed for spacing */
-    font-family: 'Work Sans', sans-serif; /* Apply dashboard font family */
+  position: absolute;
+  margin-top: 60px;
+  width: 200px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-left: 75%;
+  font-family: "Work Sans", sans-serif;
 }
 
 #month {
-    background-color: #2d649b; /* Use the same color as 'Today' text */
-    width: 100%;
-    margin: 0;
-    padding: 15px;
-    text-align: center;
-    border-radius: 12px 12px 0 0;
-    font-size: 24px; /* Slightly smaller to align with dashboard styles */
-    color: #ffffff; /* White text for contrast */
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-family: 'Work Sans', sans-serif; /* Apply dashboard font family */
+  background-color: #2d649b;
+  width: 100%;
+  margin: 0;
+  padding: 15px;
+  text-align: center;
+  border-radius: 12px 12px 0 0;
+  font-size: 24px;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: "Work Sans", sans-serif;
 }
 
-#weekday, #year {
-    font-size: 16px;
-    color: #34495e; /* Dark gray color used elsewhere in the dashboard */
-    margin-bottom: 20px;
-    font-family: 'Work Sans', sans-serif; /* Apply dashboard font family */
+#weekday,
+#year {
+  font-size: 16px;
+  color: #34495e;
+  margin-bottom: 20px;
+  font-family: "Work Sans", sans-serif;
 }
 
 #date {
-    font-size: 74px; /* Adjusted size to match the theme */
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-weight: 700;
-    color: #2d649b; /* Keep the blue tone, but make sure it matches other blue tones used */
-    font-family: 'Work Sans', sans-serif; /* Apply dashboard font family */
+  font-size: 74px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: #2d649b;
+  font-family: "Work Sans", sans-serif;
 }

@@ -110,17 +110,14 @@ const RoutineForm = () => {
   const handleDownloadPDF = () => {
     const input = routineRef.current;
 
-    // Use html2canvas to capture the content of the routine
     html2canvas(input, { scale: 2 })
       .then((canvas) => {
         const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4"); // Create a new PDF with A4 dimensions
+        const pdf = new jsPDF("p", "mm", "a4");
 
-        // Calculate the scale factor to fit the content to the PDF width
-        const imgWidth = 210; // A4 width in mm
+        const imgWidth = 210;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-        // Add the image to the PDF with the correct scaling
         pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
         pdf.save("routine.pdf");
       })

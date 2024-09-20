@@ -26,53 +26,51 @@
   width: 320px;
   max-height: 500px;
   overflow-y: auto;
-  background: #e9f5f4; /* Light gray background to match the sidebar */
+  background: #e9f5f4;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   z-index: 1000;
-  font-family: 'Inter', sans-serif; /* Matches the font style in the image */
+  font-family: "Inter", sans-serif;
 }
 
 .notification-item {
   padding: 15px;
-  border-bottom: 1px solid #e0e0e0; /* Slightly lighter border */
+  border-bottom: 1px solid #e0e0e0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background 0.2s ease; /* Smooth transition for hover effect */
+  transition: background 0.2s ease;
 }
 
 .notification-item:hover {
-  background-color: #e0f7fa; /* Light cyan hover effect for a subtle visual cue */
+  background-color: #e0f7fa;
 }
 
 .notification-item span {
-  color: #333; /* Darker text color for better readability */
+  color: #333;
   font-size: 14px;
 }
 
 .notification-item button {
   background: none;
   border: none;
-  color: #1C4D53; /* Blue color to match the button color in the image */
+  color: #1c4d53;
   font-size: 16px;
   margin-left: 10px;
   cursor: pointer;
-  transition: color 0.2s ease; /* Smooth transition for hover effect */
+  transition: color 0.2s ease;
 }
 
 .notification-item button:hover {
-  color: #0056b3; /* Darker blue on hover */
+  color: #0056b3;
 }
 
 .notification-empty {
   padding: 15px;
   text-align: center;
-  color: #999; /* Light gray color for empty state text */
+  color: #999;
   font-size: 14px;
 }
-
-/* Notification.css */
 
 .notification-popup {
   position: fixed;
@@ -80,7 +78,7 @@
   right: 100px;
   max-width: 350px;
   padding: 15px 20px;
-  background-color: #45a049; /* Green background color */
+  background-color: #45a049;
   color: white;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -100,7 +98,7 @@
 .notification-close {
   background-color: white;
   border: none;
-  color: #1C4D53;
+  color: #1c4d53;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
