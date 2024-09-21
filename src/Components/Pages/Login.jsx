@@ -45,7 +45,7 @@ const Login = () => {
   return (
     <>
       <div className="navbar2">
-        <img src={logo} alt="TaskLumina Logo" className="logo2" />
+        <img src={logo} alt="TaskLumina Logo" className="logo" />
       </div>
 
       <div className="main-container2">
