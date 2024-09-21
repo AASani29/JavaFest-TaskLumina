@@ -7,7 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="usersmanagementsystem" />
+        <module name="TaskManagementSystem" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -17,7 +17,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="usersmanagementsystem" options="-parameters" />
+      <module name="TaskManagementSystem" options="-parameters" />
       <module name="usersmanagementsystem (2)" options="-parameters" />
     </option>
   </component>

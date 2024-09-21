@@ -1,9 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/tasks
-    username: postgres
-    password: sani9999
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://ep-long-flower-a157ef5v.ap-southeast-1.aws.neon.tech/tasks?user=tasks_owner&password=OFd7Ah2MtHQY&sslmode=require
   jpa:
     hibernate:
       ddl-auto: update
