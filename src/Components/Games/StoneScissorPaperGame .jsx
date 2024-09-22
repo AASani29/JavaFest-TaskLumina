@@ -25,14 +25,24 @@ const StoneScissorPaperGame = () => {
       let updatedUserScore = userScore;
       let updatedBotScore = botScore;
 
-      if (didUserWin === true) {
+      // if (didUserWin === true) {
+      //   setResult("You won!");
+      //   updatedUserScore += 1;
+      // } else if (didUserWin === false) {
+      //   setResult("You lost!");
+      //   updatedBotScore += 1;
+      // } else {
+      //   setResult("It's a tie!");
+      // }
+      if (userVal === rand) {
+        // It's a tie, no points awarded
+        setResult("It's a tie!");
+      } else if (didUserWin === true) {
         setResult("You won!");
         updatedUserScore += 1;
       } else if (didUserWin === false) {
         setResult("You lost!");
         updatedBotScore += 1;
-      } else {
-        setResult("It's a tie!");
       }
 
       if (updatedUserScore === 5 || updatedBotScore === 5) {
