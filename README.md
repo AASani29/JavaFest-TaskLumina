@@ -36,3 +36,16 @@ Prerequisites
 Node.js
 npm (Node Package Manager)
 Git
+
+Setting up the Project:
+Clone the frontend and backend server from each branch. 
+git clone -b frontend [link of the repo]
+git clone -b backend [Link of the repo]
+
+after cloning the fronend server, 
+install node modules:
+npm i
+
+In the backend Server:
+install dependencies 
+
