@@ -1,51 +1,147 @@
-<h1> TaskLumina Frontend</h1>
-TaskLumina is a smart AI-integrated task management system designed to assist users with task creation, to-do lists, AI-generated routines, task prioritization, deadline reminders, and a rewarding system to motivate users. The frontend branch contains the code for the user interface of TaskLumina.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskLumina Frontend</title>
+</head>
+<body>
+  <h1>TaskLumina Frontend</h1>
+  <p>
+    <strong>TaskLumina</strong> is a smart AI-integrated task management system designed to assist users with task creation, 
+    to-do lists, AI-generated routines, task prioritization, deadline reminders, and a rewarding system to motivate productivity.
+  </p>
 
-<h1>Project Overview</h1>
-TaskLumina helps users increase productivity and complete tasks on time by leveraging AI to prioritize tasks based on past behavior and estimate completion times. The system also incorporates fun games into the task management process to make it enjoyable and worthwhile.
+  <h2>Project Overview</h2>
+  <p>
+    TaskLumina is built with <a href="https://reactjs.org/">React</a> on the frontend and 
+    <a href="https://spring.io/projects/spring-boot">Java Spring Boot</a> on the backend. 
+    It leverages modern technologies to provide a seamless task management experience, enhanced by AI-powered features.
+  </p>
+  <p><strong>Technology Stack:</strong></p>
+  <ul>
+    <li><strong>Frontend:</strong> <a href="https://reactjs.org/">React.js</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/HTML">HTML</a>, 
+      <a href="https://developer.mozilla.org/en-US/docs/Web/CSS">CSS</a>, 
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">JavaScript</a>
+    </li>
+    <li><strong>Backend:</strong> <a href="https://spring.io/projects/spring-boot">Java Spring Boot</a>, 
+      <a href="https://spring.io/projects/spring-security">Spring Security</a>
+    </li>
+    <li><strong>Database:</strong> <a href="https://www.postgresql.org/">PostgreSQL</a></li>
+    <li><strong>AI:</strong> <a href="https://spark.apache.org/">Apache Spark</a> (if needed), <a href="https://botpress.com/">Botpress</a></li>
+    <li><strong>Notification System:</strong> <a href="https://firebase.google.com/products/cloud-messaging">Firebase Cloud Messaging (FCM)</a></li>
+    <li><strong>Authentication & Authorization:</strong> JWT</li>
+  </ul>
 
-<h1>Features</h1>
-<h3>Task Management<h3>
-Create, update, delete, and manage tasks and subtasks.
-<h3> AI-driven Prioritization</h3>
-Automatically prioritize tasks based on past behavior.
-<h3>Deadline Reminders</h3> 
-Receive notifications for upcoming deadlines and overdue tasks.
-<h3>Gamification</h3> 
-Earn badges, accumulate points, and participate in challenges and leaderboards.
-<h3>Interaction</h3> 
-Comment on and rate tasks, follow other users, and track progress.
-<h3>Chatbot</h3> 
-Ask questions and get suggestions and tips from the chatbot.
-<h3>Games</h3> 
-Play fun and engaging games during free time.
-<h1>Users and Roles</h1>
-Anonymous User: View public tasks and explore the website. Can register to become a registered user.
-Registered User: Access full functionality, including task management, notifications, gamification, and interaction.
-Admin User: Perform maintenance tasks, manage users, and create categories.
-<h1>Technology Stack</h1>
-Frontend: React.js, HTML/CSS, JavaScript
-Backend: Spring Boot (backend branch)
-Database: PostgreSQL
-AI and Machine Learning: Python, Apache Spark (if needed)
-Chatbot: Dialogflow or Rasa
-Notification System: Firebase Cloud Messaging (FCM)
-Authentication and Authorization: Spring Security, JWT
-<h1>Installation</h1>
-Prerequisites
-Node.js
-npm (Node Package Manager)
-Git
+  <h2>Features</h2>
+  <h3>1. Dashboard</h3>
+  <p>
+    Features a <strong>calendar</strong> and <strong>sidebar</strong> for task overview and management. 
+    Users can add tasks with <strong>category</strong>, <strong>priority</strong>, and <strong>time</strong>. Tasks are color-coded based on priority.
+  </p>
+  <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/Dashboard.png" alt="Dashboard" style="width:100%; max-width:600px;">
+  <p>Includes <strong>voice-based task addition</strong> to simplify task creation.</p>
+  <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/voice task.png" alt="Dashboard" style="width:100%; max-width:600px;">
 
-Setting up the Project:
-Clone the frontend and backend server from each branch. 
-git clone -b frontend [link of the repo]
-git clone -b backend [Link of the repo]
+  <h3>2. Interactive Chatbot</h3>
+  <p>Engage with a chatbot for guidance, tips, and task-related queries.</p>
+  <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/chatbot.png" alt="Chatbot" style="width:100%; max-width:600px;">
 
-after cloning the fronend server, 
-install node modules:
-npm i
+  <h3>3. To-Do List Page</h3>
+  <p>View <strong>upcoming</strong> and <strong>pending tasks</strong>.</p>
+  <p>Filter tasks by <strong>priority</strong>, <strong>category</strong>, and <strong>time</strong>.</p>
+  <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/viewtodolist.png" alt="To-Do List Page" style="width:100%; max-width:600px;">
+  <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/Screenshot (95).png" alt="Filter Options" style="width:100%; max-width:600px;">
 
-In the backend Server:
-install dependencies 
+  <h3>4. AI-Powered Routine Maker</h3>
+  <p>
+    Generates a personalized routine to maximize time utilization while allowing for breaks. 
+    Users can set fixed times and priorities for tasks. Visually appealing routines can be <strong>downloaded</strong> or <strong>printed</strong> directly from the website.
+  </p>
+  <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/routine.png" alt="Routine Page" style="width:100%; max-width:600px;">
+  <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/genroutine.png" alt="Generated Routine" style="width:100%; max-width:600px;">
 
+  <h3>5. Event Calendar</h3>
+  <p>
+    Functions like Google Calendar, enabling users to:
+    <ul>
+      <li>Add tasks and events by clicking on calendar dates.</li>
+      <li>Highlight dates for easy task visualization.</li>
+      <li>Add <strong>working links</strong> and <strong>locations</strong> that integrate with Google Maps.</li>
+    </ul>
+  </p>
+  <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/Screenshot (99).png" alt="Event Calendar" style="width:100%; max-width:600px;">
+  <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/Screenshot (98).png" alt="Event Details" style="width:100%; max-width:600px;">
+
+  <h3>6. Reward System</h3>
+  <p>Motivate users with a <strong>badge-based achievement system</strong>.</p>
+  <p>Visualize earned badges on the <strong>Achievements Page</strong>.</p>
+  <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/Screenshot (101).png" alt="Achievements Page" style="width:100%; max-width:600px;">
+
+  <h3>7. Games</h3>
+  <p>Four fun games are integrated, with one game available for free. Other games unlock based on badge achievements:</p>
+  <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/Screenshot (102).png" alt="Event Calendar" style="width:100%; max-width:600px;">
+  <ul>
+    <li><strong>Stone, Paper, Scissors</strong> (Free)  
+      <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/game1.png" alt="Stone, Paper, Scissors" style="width:100%; max-width:600px;">
+    </li>
+    <li><strong>Tic-Tac-Toe</strong>  
+      <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/game3.png" alt="Tic-Tac-Toe" style="width:100%; max-width:600px;">
+    </li>
+    <li><strong>Word Game</strong>  
+      <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/game2.png" alt="Word Game" style="width:100%; max-width:600px;">
+    </li>
+    <li><strong>Sudoku</strong>  
+      <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/game 4.png" alt="Sudoku" style="width:100%; max-width:600px;">
+    </li>
+  </ul>
+
+  <h3>8. Notification System</h3>
+  <p>Get notified about:</p>
+  <ul>
+    <li>Badge achievements.</li>
+    <li>Game unlocks.</li>
+    <li>Event reminders.</li>
+  </ul>
+  <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/Screenshot (96).png" alt="Notifications" style="width:100%; max-width:600px;">
+  <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/Screenshot (97).png" alt="Notifications" style="width:100%; max-width:600px;">
+
+  <h3>9. Profile Page</h3>
+  <p>View earned badges and track achievements for motivation.</p>
+  <img src="../JavaFest-TaskLumina/src/Components/Assets/ss/profile.png" alt="Profile Page" style="width:100%; max-width:600px;">
+
+  <h2>Project Setup</h2>
+  <h3>Prerequisites</h3>
+  <ul>
+    <li><a href="https://nodejs.org/">Node.js</a></li>
+    <li><a href="https://www.npmjs.com/">npm</a></li>
+    <li><a href="https://git-scm.com/">Git</a></li>
+  </ul>
+  <h3>Steps</h3>
+  <ol>
+    <li>Clone the repositories:
+      <ul>
+        <li>Frontend:  
+          <code>git clone -b frontend [Frontend Repo Link]</code>
+        </li>
+        <li>Backend:  
+          <code>git clone -b backend [Backend Repo Link]</code>
+        </li>
+      </ul>
+    </li>
+    <li>Setup Frontend:
+      <pre>
+cd frontend
+npm install
+npm start
+      </pre>
+    </li>
+    <li>Setup Backend:
+      <ul>
+        <li>Connect the backend to a local <strong>PostgreSQL</strong> database.</li>
+        <li>Install dependencies and start the backend server.</li>
+      </ul>
+    </li>
+  </ol>
+</body>
+</html>
