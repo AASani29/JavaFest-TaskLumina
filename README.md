@@ -85,17 +85,17 @@
   </p>
   <img src="https://raw.githubusercontent.com/AASani29/JavaFest-TaskLumina/frontend/src/Components/Assets/ss/Dashboard.png" alt="Dashboard" style="width:100%; max-width:600px;">
   <p>Includes <strong>voice-based task addition</strong> to simplify task creation.</p>
-  <img src="https://raw.githubusercontent.com/AASani29/JavaFest-TaskLumina/frontend/src/Components/Assets/ss/voice task.png" alt="Dashboard" style="width:100%; max-width:600px;">
+  <img src="https://raw.githubusercontent.com/AASani29/JavaFest-TaskLumina/frontend/src/Components/Assets/ss/voice task.png" alt="Dashboard" style="width:30%; max-width:100px;">
 
   <h3>2. Interactive Chatbot</h3>
   <p>Engage with a chatbot for guidance, tips, and task-related queries.</p>
-  <img src="https://raw.githubusercontent.com/AASani29/JavaFest-TaskLumina/frontend/src/Components/Assets/ss/chatbot.png" alt="Chatbot" style="width:100%; max-width:600px;">
+  <img src="https://raw.githubusercontent.com/AASani29/JavaFest-TaskLumina/frontend/src/Components/Assets/ss/chatbot.png" alt="Chatbot" style="width:30%; max-width:100px;">
 
   <h3>3. To-Do List Page</h3>
   <p>View <strong>upcoming</strong> and <strong>pending tasks</strong>.</p>
   <p>Filter tasks by <strong>priority</strong>, <strong>category</strong>, and <strong>time</strong>.</p>
   <img src="https://raw.githubusercontent.com/AASani29/JavaFest-TaskLumina/frontend/src/Components/Assets/ss/viewtodolist.png" alt="To-Do List Page" style="width:100%; max-width:600px;">
-  <img src="https://raw.githubusercontent.com/AASani29/JavaFest-TaskLumina/frontend/src/Components/Assets/ss/Screenshot (95).png" alt="Filter Options" style="width:100%; max-width:600px;">
+  <img src="https://raw.githubusercontent.com/AASani29/JavaFest-TaskLumina/frontend/src/Components/Assets/ss/Screenshot (95).png" alt="Filter Options" style="width:20%; max-width:100px;">
 
   <h3>4. AI-Powered Routine Maker</h3>
   <p>
@@ -129,14 +129,14 @@
     <li><strong>Stone, Paper, Scissors</strong> (Free)  
       <img src="https://raw.githubusercontent.com/AASani29/JavaFest-TaskLumina/frontend/src/Components/Assets/ss/game1.png" alt="Stone, Paper, Scissors" style="width:100%; max-width:600px;">
     </li>
-    <li><strong>Tic-Tac-Toe</strong>  
-      <img src="https://raw.githubusercontent.com/AASani29/JavaFest-TaskLumina/frontend/src/Components/Assets/ss/game3.png" alt="Tic-Tac-Toe" style="width:100%; max-width:600px;">
+    <li><strong>Tic-Tac-Toe <br /> </strong>  
+      <img src="https://raw.githubusercontent.com/AASani29/JavaFest-TaskLumina/frontend/src/Components/Assets/ss/game3.png" alt="Tic-Tac-Toe" style="width:30%; max-width:100px;">
     </li>
     <li><strong>Word Game</strong>  
       <img src="https://raw.githubusercontent.com/AASani29/JavaFest-TaskLumina/frontend/src/Components/Assets/ss/game2.png" alt="Word Game" style="width:100%; max-width:600px;">
     </li>
-    <li><strong>Sudoku</strong>  
-      <img src="https://raw.githubusercontent.com/AASani29/JavaFest-TaskLumina/frontend/src/Components/Assets/ss/game 4.png" alt="Sudoku" style="width:100%; max-width:600px;">
+    <li><strong>Sudoku <br /> </strong>  
+      <img src="https://raw.githubusercontent.com/AASani29/JavaFest-TaskLumina/frontend/src/Components/Assets/ss/game 4.png" alt="Sudoku" style="width:30%; max-width:100px;">
     </li>
   </ul>
 
